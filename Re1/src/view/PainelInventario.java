@@ -1,10 +1,11 @@
 package view;
-import javax.swing.*;
 
+import javax.swing.*;
+import java.awt.*;
+
+import controller.MapaController;
 import controller.InventarioController;
 import model.Personagem;
-
-import java.awt.*;
 
 // usei o GridBag pra fazer o "Position Layout" do inventario e ele se organizar automatico
 // o Grid comum fica mudando o posicionamento sempre q tu add ou retira um item, ruinzão
@@ -14,7 +15,7 @@ public class PainelInventario extends JPanel {
     private static PainelInventario instancia;
     private Image imagemFundo;
     private JPanel gridItens;
-    private InventarioController controller;    
+    private InventarioController controller;
 
     public PainelInventario() {
         instancia = this;
@@ -24,7 +25,7 @@ public class PainelInventario extends JPanel {
         String caminho = "/resources/imgs/inventario jill.png";
         if (Personagem.getChris()) {
             caminho = "/resources/imgs/inventario chris.png";
-        } 
+        }
 
         imagemFundo = new ImageIcon(getClass().getResource(caminho)).getImage();
 
@@ -33,6 +34,41 @@ public class PainelInventario extends JPanel {
 
         controller = new InventarioController(gridItens);
         controller.criarSlotsFixos();
+
+        JPanel painelBotoes = new JPanel(null);
+        painelBotoes.setOpaque(false);
+        painelBotoes.setBounds(0, 0, 1000, 200);
+
+        JButton fechaInventario = new JButton();
+        fechaInventario.setBounds(635, 95, 117, 40);
+
+        fechaInventario.setOpaque(false);
+        fechaInventario.setContentAreaFilled(false);
+        fechaInventario.setBorderPainted(false);
+        fechaInventario.setFocusPainted(false);
+
+        JButton abreMapa = new JButton();
+        abreMapa.setBounds(525, 55, 110, 40);
+
+        abreMapa.setOpaque(false);
+        abreMapa.setContentAreaFilled(false);
+        abreMapa.setBorderPainted(false);
+        abreMapa.setFocusPainted(false);
+
+        painelBotoes.add(fechaInventario);
+        painelBotoes.add(abreMapa);
+
+        abreMapa.addActionListener(e -> {
+            MapaController.exibirMapa(this);
+        });
+
+        fechaInventario.addActionListener(e -> {
+            JDialog dialog = (JDialog) SwingUtilities.getWindowAncestor(this);
+            dialog.dispose();
+        });
+
+        setLayout(null);
+        add(painelBotoes);
 
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridx = 0;
