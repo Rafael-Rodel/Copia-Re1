@@ -23,16 +23,16 @@ public class Config {
     public static final Font FONTE_PADRAO = new Font("Arial", Font.BOLD, 20);
 
     // construtor dos Itens:
-    public static final Itens PISTOLA = new Itens("pistola", "/resources/imgs/pistola.png");
-    public static final Itens FACA = new Itens("faca", "/resources/imgs/faca.png");
-    public static final Itens SPRAY = new Itens("spray", "/resources/imgs/spray.png");
-    public static final Itens EMBLEMA_DOURADO = new Itens("emblema dourado", "/resources/imgs/emblema dourado.png");
-    public static final Itens TESTE1 = new Itens("teste", "/resources/imgs/capa.png");
-    public static final Itens TESTE2 = new Itens("teste", "/resources/imgs/capa.png");
-    public static final Itens TESTE3 = new Itens("teste", "/resources/imgs/capa.png");
+    public static final Itens PISTOLA = new Itens("Pistola", "/resources/imgs/pistola.png", "Uma pistola semiautomática 9mm. Baixo poder de fogo, mas boa para conter inimigos comuns.");
+    public static final Itens FACA = new Itens("Faca", "/resources/imgs/faca.png", "Uma faca padrão das Forças Especiais. Tem pouco alcance e causa pouco dano, mas pode salvar em situações críticas.");
+    public static final Itens SPRAY = new Itens("Spray", "/resources/imgs/spray.png", "Restaura totalmente a saúde. Um item valioso em momentos de perigo.");
+    public static final Itens EMBLEMA_DOURADO = new Itens("Emblema dourado", "/resources/imgs/emblema dourado.png", "Um pesado emblema dourado com entalhes de família. Parece encaixar em algum mecanismo especial.");
+    public static final Itens TESTE1 = new Itens("teste", "/resources/imgs/capa.png", "teste1");
+    public static final Itens TESTE2 = new Itens("teste", "/resources/imgs/capa.png", "teste2");
+    public static final Itens TESTE3 = new Itens("teste", "/resources/imgs/capa.png", "teste3");
 
-    public static void criaPopupPadrao(String titulo, String caminhoImagem, String textoPop, JFrame parent) {
-        JDialog popPadrao = new JDialog(parent, titulo, true);
+    public static void criaPopupPadrao(String titulo, String caminhoImagem, String textoPop, Window parent) {
+        JDialog popPadrao = new JDialog(parent, titulo, Dialog.ModalityType.APPLICATION_MODAL);
         popPadrao.setSize(400, 250);
         popPadrao.setLocationRelativeTo(parent);
 

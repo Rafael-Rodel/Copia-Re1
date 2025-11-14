@@ -23,6 +23,10 @@ public class JogoController {
 
         Personagem.iniciarPersonagem();
 
+        Inventario.adicionarItem(Config.TESTE1);
+        Inventario.adicionarItem(Config.TESTE2);
+        Inventario.adicionarItem(Config.TESTE3);
+
         new TelaInicial();
     }
 

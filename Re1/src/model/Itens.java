@@ -10,19 +10,25 @@ import java.awt.*;
 public class Itens {
     private String nome;
     private String caminhoImagem;
+    private String descricao;
     private int linha;
     private int coluna;
     private boolean possuido = false;
     private static List<Itens> listaItens = new ArrayList<>();
 
-    public Itens(String nome, String Imagem) {
+    public Itens(String nome, String imagem, String descricao) {
         this.nome = nome;
-        this.caminhoImagem = Imagem;
+        this.caminhoImagem = imagem;
+        this.descricao = descricao;
         listaItens.add(this);
     }
 
     public String getNome() {
         return nome;
+    }
+
+    public String getDescricao() {
+        return descricao;
     }
 
     public String getCaminhoImagem() {

@@ -19,7 +19,6 @@ public class Inventario {
 
         item.setLinha(linha);
         item.setColuna(coluna);
-
         itens.add(item);
         item.setPossuido(true);
 

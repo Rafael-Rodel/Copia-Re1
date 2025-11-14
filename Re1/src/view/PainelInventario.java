@@ -30,9 +30,7 @@ public class PainelInventario extends JPanel {
         imagemFundo = new ImageIcon(getClass().getResource(caminho)).getImage();
 
         String gifPath = getClass().getResource("/resources/imgs/vida.gif").toExternalForm();
-
         JLabel gifVida = new JLabel("<html><img src='" + gifPath + "' width='165' height='100'></html>");
-
         gifVida.setBounds(172, 386, 165, 100);
         add(gifVida);
 
@@ -103,18 +101,5 @@ public class PainelInventario extends JPanel {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         g.drawImage(imagemFundo, 0, 0, getWidth(), getHeight(), this);
-    }
-
-    public static void main(String[] args) {
-        JDialog dialog = new JDialog();
-        dialog.setTitle("Teste Inventário");
-        dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-        dialog.setSize(800, 640);
-        dialog.setLocationRelativeTo(null);
-
-        PainelInventario painel = new PainelInventario();
-        dialog.add(painel);
-
-        dialog.setVisible(true);
     }
 }
