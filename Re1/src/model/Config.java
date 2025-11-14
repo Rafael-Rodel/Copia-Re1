@@ -24,10 +24,12 @@ public class Config {
 
     // construtor dos Itens:
     public static final Itens PISTOLA = new Itens("pistola", "/resources/imgs/pistola.png");
-    public static final Itens CHAVE = new Itens("chave", "/resources/imgs/chave.png");
     public static final Itens FACA = new Itens("faca", "/resources/imgs/faca.png");
     public static final Itens SPRAY = new Itens("spray", "/resources/imgs/spray.png");
     public static final Itens EMBLEMA_DOURADO = new Itens("emblema dourado", "/resources/imgs/emblema dourado.png");
+    public static final Itens TESTE1 = new Itens("teste", "/resources/imgs/capa.png");
+    public static final Itens TESTE2 = new Itens("teste", "/resources/imgs/capa.png");
+    public static final Itens TESTE3 = new Itens("teste", "/resources/imgs/capa.png");
 
     public static void criaPopupPadrao(String titulo, String caminhoImagem, String textoPop, JFrame parent) {
         JDialog popPadrao = new JDialog(parent, titulo, true);

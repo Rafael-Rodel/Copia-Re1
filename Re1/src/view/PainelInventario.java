@@ -19,8 +19,8 @@ public class PainelInventario extends JPanel {
 
     public PainelInventario() {
         instancia = this;
-        setLayout(new GridBagLayout());
         setOpaque(false);
+        setLayout(null);
 
         String caminho = "/resources/imgs/inventario jill.png";
         if (Personagem.getChris()) {
@@ -29,11 +29,31 @@ public class PainelInventario extends JPanel {
 
         imagemFundo = new ImageIcon(getClass().getResource(caminho)).getImage();
 
+        String gifPath = getClass().getResource("/resources/imgs/vida.gif").toExternalForm();
+
+        JLabel gifVida = new JLabel("<html><img src='" + gifPath + "' width='165' height='100'></html>");
+
+        gifVida.setBounds(172, 386, 165, 100);
+        add(gifVida);
+
         gridItens = new JPanel(new GridBagLayout());
         gridItens.setOpaque(false);
 
         controller = new InventarioController(gridItens);
         controller.criarSlotsFixos();
+
+        JPanel painelInventario = new JPanel(new GridBagLayout());
+        painelInventario.setOpaque(false);
+        painelInventario.setBounds(0, 0, 785, 640);
+        add(painelInventario);
+
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.anchor = GridBagConstraints.NORTHWEST;
+        gbc.insets = new Insets(13, 487, 0, 0);
+
+        painelInventario.add(gridItens, gbc);
 
         JPanel painelBotoes = new JPanel(null);
         painelBotoes.setOpaque(false);
@@ -69,13 +89,6 @@ public class PainelInventario extends JPanel {
 
         setLayout(null);
         add(painelBotoes);
-
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        gbc.anchor = GridBagConstraints.NORTHWEST;
-        gbc.insets = new Insets(13, 487, 0, 0);
-        add(gridItens, gbc);
     }
 
     public static PainelInventario getInstancia() {
@@ -90,5 +103,18 @@ public class PainelInventario extends JPanel {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         g.drawImage(imagemFundo, 0, 0, getWidth(), getHeight(), this);
+    }
+
+    public static void main(String[] args) {
+        JDialog dialog = new JDialog();
+        dialog.setTitle("Teste Inventário");
+        dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+        dialog.setSize(800, 640);
+        dialog.setLocationRelativeTo(null);
+
+        PainelInventario painel = new PainelInventario();
+        dialog.add(painel);
+
+        dialog.setVisible(true);
     }
 }

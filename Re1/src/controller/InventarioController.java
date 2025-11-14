@@ -11,7 +11,7 @@ import view.PainelInventario;
 
 public class InventarioController {
 
-    private final int LINHAS = 3;
+    private final int LINHAS = 4;
     private final int COLUNAS = 2;
     private final int LARGURA_SLOT = 90;
     private final int ALTURA_SLOT = 70;

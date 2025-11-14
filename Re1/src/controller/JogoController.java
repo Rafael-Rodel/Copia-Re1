@@ -21,9 +21,6 @@ public class JogoController {
     public void iniciarJogo() {
         new PainelInventario();
 
-        Inventario.adicionarItem(Config.FACA);
-        Inventario.adicionarItem(Config.SPRAY);
-
         Personagem.iniciarPersonagem();
 
         new TelaInicial();
@@ -32,10 +29,14 @@ public class JogoController {
     public static void iniciaJill() {
         Personagem.setJill(true);
         Inventario.adicionarItem(Config.PISTOLA);
+        Inventario.adicionarItem(Config.FACA);
+        Inventario.adicionarItem(Config.SPRAY);
     }
 
     public static void iniciaChris() {
         Personagem.setChris(true);
+        Inventario.adicionarItem(Config.FACA);
+        Inventario.adicionarItem(Config.SPRAY);
     }
 
     public static void trocaCenario(JFrame parent, String nomeCenario) {
