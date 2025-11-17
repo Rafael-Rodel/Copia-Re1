@@ -2,14 +2,7 @@ package model;
 public class Personagem {
     private static boolean Jill = false;
     private static boolean Chris = false;
-
-    // N sei se essa classe é necessaria, se pa da pra colocar isso na Config
-    // -R
-
-    public static void iniciarPersonagem() {
-        Config.FACA.setPossuido(true);
-        Config.SPRAY.setPossuido(true);
-    }
+    private static int vida;
 
     public static boolean getJill() {
         return Jill;
@@ -25,5 +18,17 @@ public class Personagem {
 
     public static void setChris(boolean valor) {
         Chris = valor;
+    }
+
+    public static int getVida() {
+		return vida;
+	}
+
+    public static void setVida(int vlrVida) {
+		vida = vlrVida;
+	}
+
+    public static void levarDano(int dano) {
+        vida = vida - dano;
     }
 }

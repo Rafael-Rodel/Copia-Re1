@@ -11,15 +11,17 @@ public class Itens {
     private String nome;
     private String caminhoImagem;
     private String descricao;
+    private String tipoItem;
+    private int idChave;
     private int linha;
     private int coluna;
-    private boolean possuido = false;
     private static List<Itens> listaItens = new ArrayList<>();
 
-    public Itens(String nome, String imagem, String descricao) {
+    public Itens(String nome, String imagem, String descricao, String tipoItem) {
         this.nome = nome;
         this.caminhoImagem = imagem;
         this.descricao = descricao;
+        this.tipoItem = tipoItem;
         listaItens.add(this);
     }
 
@@ -51,24 +53,21 @@ public class Itens {
         this.coluna = coluna;
     }
 
-    public boolean getPossuido() {
-        return this.possuido;
+    public String getTipoItem() {
+        return this.tipoItem;
     }
 
-    public void setPossuido(boolean possuido) {
-        this.possuido = possuido;
+    public int getIdChave() {
+        return this.idChave;
     }
 
-    public static void popupItem(String nomeItem, String textoPop, JFrame parent) {
+    public void setIdChave(int idChave) {
+        this.idChave = idChave;
+    }
+
+    public static void popupItem(String textoPop, JFrame parent) {
         String caminhoImagem = null;
 
-        for (Itens i : listaItens) {
-            if (i.getNome().equalsIgnoreCase(nomeItem)) {
-                caminhoImagem = i.getCaminhoImagem();
-                i.setPossuido(true);
-                break;
-            }
-        }
         JDialog popup = new JDialog(parent, "Achou Item", true);
         popup.setSize(800, 600);
         popup.setLocationRelativeTo(parent);

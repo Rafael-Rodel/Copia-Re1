@@ -2,6 +2,7 @@ package view;
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 
+import controller.CombateController;
 import controller.InventarioController;
 import controller.JogoController;
 import model.Cenario;
@@ -17,7 +18,7 @@ public class SalaJantar2 extends Cenario {
     public SalaJantar2() {
         super("Sala de Jantar");
         
-        mostrarImagem("/resources/imgs/sala jantar 2.png");
+        mostrarImagem("/resources/imgs/sala_jantar_2.png");
         mostrarTexto("Segunda metade da sala: \nVocê vê uma porta a direita, um vaso e uma lareira com um emblema em cima...");
         configurarBotoes();
         setVisible(true);
@@ -51,7 +52,7 @@ public class SalaJantar2 extends Cenario {
             JogoController.pegarBrasao(this);
         });
         portaDireita.addActionListener(e -> {
-            JogoController.trocaCenario(this, "Corredor1AndarOeste");
+            new CombateController(Config.ZUMBI).iniciar(this);
         });
         voltar.addActionListener(e -> {
             JogoController.trocaCenario(this, "SalaJantar1");

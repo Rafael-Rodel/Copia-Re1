@@ -21,8 +21,6 @@ public class JogoController {
     public void iniciarJogo() {
         new PainelInventario();
 
-        Personagem.iniciarPersonagem();
-
         Inventario.adicionarItem(Config.TESTE1);
         Inventario.adicionarItem(Config.TESTE2);
         Inventario.adicionarItem(Config.TESTE3);
@@ -32,6 +30,7 @@ public class JogoController {
 
     public static void iniciaJill() {
         Personagem.setJill(true);
+        Personagem.setVida(25);
         Inventario.adicionarItem(Config.PISTOLA);
         Inventario.adicionarItem(Config.FACA);
         Inventario.adicionarItem(Config.SPRAY);
@@ -39,6 +38,7 @@ public class JogoController {
 
     public static void iniciaChris() {
         Personagem.setChris(true);
+        Personagem.setVida(20);
         Inventario.adicionarItem(Config.FACA);
         Inventario.adicionarItem(Config.SPRAY);
     }
@@ -64,17 +64,17 @@ public class JogoController {
 
     public static void verificarEventosHall(JFrame tela) {
         if (Personagem.getChris() && viuZumbi) {
-            Itens.popupItem("pistola", "Você vê uma pistola no chão!", tela);
+            Itens.popupItem("Você vê uma pistola no chão!", tela);
             Inventario.adicionarItem(Config.PISTOLA);
         }
     }
 
     public static void pegarBrasao(JFrame parent) {
         if (Inventario.possui(Config.EMBLEMA_DOURADO)) {
-            Config.criaPopupPadrao("Lareira", "/resources/imgs/lareira vazia.png", "O brasão foi removido...", parent);
+            Config.criaPopupPadrao("Lareira", "/resources/imgs/lareira_vazia.png", "O brasão foi removido...", parent);
         } else {
-            Config.criaPopupPadrao("Lareira", "/resources/imgs/emblema na parede.png", "O brasão parece removivel...", parent);
-            Itens.popupItem("emblema dourado", "Você pegou um emblema dourado com um brasão de familia...", parent);
+            Config.criaPopupPadrao("Lareira", "/resources/imgs/emblema_parede.png", "O brasão parece removivel...", parent);
+            Itens.popupItem("Você pegou um emblema dourado com um brasão de familia...", parent);
             Inventario.adicionarItem(Config.EMBLEMA_DOURADO);
         }
     }

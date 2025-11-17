@@ -8,6 +8,7 @@ import java.awt.*;
 import model.Config;
 import model.Inventario;
 import model.Itens;
+import model.Personagem;
 import view.PainelInventario;
 
 public class InventarioController {
@@ -56,7 +57,6 @@ public class InventarioController {
                 imagem.setAlignmentX(1.0f);
                 imagem.setAlignmentY(1.0f);
 
-                // Garante que o botão não limite o tamanho
                 botao.setMinimumSize(new Dimension(0, 0));
                 botao.setPreferredSize(null);
 
@@ -66,11 +66,7 @@ public class InventarioController {
                     if (item != null) {
                         Window parent = SwingUtilities.getWindowAncestor(gridItens);
 
-                        Config.criaPopupPadrao(
-                                item.getNome(),
-                                item.getCaminhoImagem(),
-                                item.getDescricao(),
-                                parent);
+                        criaPopupItem(this, item, parent);
                     }
                 });
 
@@ -124,24 +120,168 @@ public class InventarioController {
         }
     }
 
-    public static void exibirInventario(JFrame parent) {
-        JDialog popInventario = new JDialog(parent, "Inventário", true);
+    public static void exibirInventario(Window parent) {
+        JDialog popInventario = new JDialog(parent, "Inventário", Dialog.ModalityType.APPLICATION_MODAL);
         popInventario.setSize(800, 600);
         popInventario.setLocationRelativeTo(parent);
 
         PainelInventario inventario = new PainelInventario();
         inventario.getController().atualizarInventario();
+        inventario.atualizarEquipado();
+        PainelInventario.getInstancia().atualizarVida();
         popInventario.add(inventario);
         popInventario.setVisible(true);
     }
 
     public void atualizarInventario() {
-        for (JLabel slot : slotsImagem.values()) {
-            slot.setIcon(null);
+        for (Point p : slotsImagem.keySet()) {
+            JLabel img = slotsImagem.get(p);
+            JButton btn = slotsBotao.get(p);
+
+            img.setIcon(null);
+            btn.putClientProperty("item", null);
         }
 
+        int index = 0;
         for (Itens item : Inventario.getItens()) {
-            colocarItem(item);
+
+            int linha = index / COLUNAS;
+            int coluna = index % COLUNAS;
+            Point pos = new Point(coluna, linha);
+
+            JLabel img = slotsImagem.get(pos);
+            JButton btn = slotsBotao.get(pos);
+
+            if (img != null) {
+                ImageIcon icon = new ImageIcon(getClass().getResource(item.getCaminhoImagem()));
+                Image scaled = icon.getImage().getScaledInstance(90, 70, Image.SCALE_SMOOTH);
+                img.setIcon(new ImageIcon(scaled));
+            }
+
+            if (btn != null) {
+                btn.putClientProperty("item", item);
+            }
+
+            index++;
         }
+
+        gridItens.revalidate();
+        gridItens.repaint();
+    }
+
+    public static void criaPopupItem(InventarioController controller, Itens item, Window parent) {
+        JDialog popPadrao = new JDialog(parent, item.getNome(), Dialog.ModalityType.APPLICATION_MODAL);
+        popPadrao.setSize(400, 250);
+        popPadrao.setLocationRelativeTo(parent);
+
+        JPanel painel = new JPanel();
+        painel.setBackground(Color.decode(Config.COR_FUNDO));
+        painel.setLayout(new BoxLayout(painel, BoxLayout.Y_AXIS));
+        painel.setBorder(BorderFactory.createEmptyBorder(30, 30, 30, 30));
+
+        if (item.getCaminhoImagem() != null) {
+            popPadrao.setSize(500, 500);
+            popPadrao.setLocationRelativeTo(parent);
+
+            ImageIcon imagem = new ImageIcon(Itens.class.getResource(item.getCaminhoImagem()));
+            Image redimensImage = imagem.getImage().getScaledInstance(300, 200,
+                    Image.SCALE_SMOOTH);
+            imagem = new ImageIcon(redimensImage);
+
+            JPanel painelImagem = new JPanel();
+            painelImagem.setOpaque(false);
+            painelImagem.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 0));
+
+            JLabel img = new JLabel(imagem);
+            img.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+            painelImagem.add(img);
+            painel.add(painelImagem);
+        }
+
+        JTextArea texto = new JTextArea(item.getDescricao());
+        texto.setWrapStyleWord(true);
+        texto.setLineWrap(true);
+        texto.setEditable(false);
+        texto.setFocusable(false);
+        texto.setOpaque(false);
+        texto.setFont(Config.FONTE_PADRAO);
+        texto.setForeground(Color.decode(Config.COR_TEXTO));
+
+        painel.add(Box.createVerticalStrut(20));
+        painel.add(texto);
+
+        JButton usar;
+
+        switch (item.getTipoItem()) {
+            case "arma":
+                usar = new JButton("Equipar");
+                usar.setAlignmentX(Component.CENTER_ALIGNMENT);
+                usar.addActionListener(ev -> {
+                    Inventario.setEquipado(item);
+                    popPadrao.dispose();
+                });
+
+                usar.setForeground(Color.decode(Config.COR_DESTAQUE));
+                usar.setBackground(Color.decode(Config.COR_BOTAO));
+                usar.setFont(Config.FONTE_BOTAO);
+
+                painel.add(Box.createVerticalStrut(10));
+                painel.add(usar);
+                break;
+            case "consumivel":
+                usar = new JButton("Usar");
+                usar.setAlignmentX(Component.CENTER_ALIGNMENT);
+                usar.addActionListener(ev -> {
+                    if (Personagem.getChris()) {
+                        Personagem.setVida(10);
+                    } else {
+                        Personagem.setVida(15);
+                    }
+                    Inventario.removerItem(item);
+                    controller.atualizarInventario();
+                    PainelInventario.getInstancia().atualizarVida();
+                    popPadrao.dispose();
+                });
+
+                usar.setForeground(Color.decode(Config.COR_DESTAQUE));
+                usar.setBackground(Color.decode(Config.COR_BOTAO));
+                usar.setFont(Config.FONTE_BOTAO);
+
+                painel.add(Box.createVerticalStrut(10));
+                painel.add(usar);
+                break;
+            case "chave":
+                usar = new JButton("Usar");
+                usar.setAlignmentX(Component.CENTER_ALIGNMENT);
+                usar.addActionListener(ev -> {
+                    System.out.println("chave");
+                    popPadrao.dispose();
+                });
+
+                usar.setForeground(Color.decode(Config.COR_DESTAQUE));
+                usar.setBackground(Color.decode(Config.COR_BOTAO));
+                usar.setFont(Config.FONTE_BOTAO);
+
+                painel.add(Box.createVerticalStrut(10));
+                painel.add(usar);
+                break;
+        }
+
+        JButton ok = new JButton("Prosseguir");
+        ok.setAlignmentX(Component.CENTER_ALIGNMENT);
+        ok.addActionListener(ev -> {
+            popPadrao.dispose();
+        });
+
+        ok.setForeground(Color.decode(Config.COR_DESTAQUE));
+        ok.setBackground(Color.decode(Config.COR_BOTAO));
+        ok.setFont(Config.FONTE_BOTAO);
+
+        painel.add(Box.createVerticalStrut(10));
+        painel.add(ok);
+
+        popPadrao.add(painel);
+        popPadrao.setVisible(true);
     }
 }

@@ -18,7 +18,7 @@ public class SalaJantar1 extends Cenario {
     public SalaJantar1() {
         super("Sala de Jantar");
 
-        mostrarImagem("/resources/imgs/sala jantar 1.png");
+        mostrarImagem("/resources/imgs/sala_jantar_1.png");
         mostrarTexto("Primeira metade da sala: \nVocê vê um relogio antigo, uma porta dupla e um quadro...");
         configurarBotoes();
         setVisible(true);

@@ -5,6 +5,8 @@ import java.awt.*;
 
 import controller.MapaController;
 import controller.InventarioController;
+import model.Inventario;
+import model.Itens;
 import model.Personagem;
 
 // usei o GridBag pra fazer o "Position Layout" do inventario e ele se organizar automatico
@@ -16,23 +18,30 @@ public class PainelInventario extends JPanel {
     private Image imagemFundo;
     private JPanel gridItens;
     private InventarioController controller;
+    private JLabel imagemEquipado;
+    private JLabel gifVida;
 
     public PainelInventario() {
         instancia = this;
         setOpaque(false);
         setLayout(null);
 
-        String caminho = "/resources/imgs/inventario jill.png";
+        String caminho = "/resources/imgs/inventario_jill.png";
         if (Personagem.getChris()) {
-            caminho = "/resources/imgs/inventario chris.png";
+            caminho = "/resources/imgs/inventario_chris.png";
         }
 
         imagemFundo = new ImageIcon(getClass().getResource(caminho)).getImage();
 
-        String gifPath = getClass().getResource("/resources/imgs/vida.gif").toExternalForm();
-        JLabel gifVida = new JLabel("<html><img src='" + gifPath + "' width='165' height='100'></html>");
-        gifVida.setBounds(172, 386, 165, 100);
+        gifVida = new JLabel();
+        atualizarVida();
+        gifVida.setBounds(174, 388, 165, 100);
         add(gifVida);
+
+        imagemEquipado = new JLabel();
+        imagemEquipado.setBounds(395, 400, 90, 70);
+        imagemEquipado.setOpaque(false);
+        add(imagemEquipado);
 
         gridItens = new JPanel(new GridBagLayout());
         gridItens.setOpaque(false);
@@ -95,6 +104,30 @@ public class PainelInventario extends JPanel {
 
     public InventarioController getController() {
         return controller;
+    }
+
+    public void atualizarVida() {
+        String gifPath = getClass().getResource("/resources/imgs/vida_fine.gif").toExternalForm();
+
+        if (Personagem.getVida() < 5) {
+            gifPath = getClass().getResource("/resources/imgs/vida_danger.gif").toExternalForm();
+        }
+
+        gifVida.setText("<html><img src='" + gifPath + "' width='165' height='100'></html>");
+    }
+
+    public void atualizarEquipado() {
+        Itens item = Inventario.getEquipado();
+
+        if (item == null) {
+            imagemEquipado.setIcon(null);
+            return;
+        }
+
+        ImageIcon icon = new ImageIcon(getClass().getResource(item.getCaminhoImagem()));
+        Image img = icon.getImage().getScaledInstance(90, 70, Image.SCALE_SMOOTH);
+
+        imagemEquipado.setIcon(new ImageIcon(img));
     }
 
     @Override
