@@ -1,4 +1,5 @@
 package model;
+
 import javax.swing.*;
 
 import java.awt.*;
@@ -10,7 +11,7 @@ public abstract class Cenario extends JFrame {
     protected JButton portaEsquerda, portaDireita, inventario;
     protected ImageIcon imagemFundo;
     protected JTextArea texto;
-    protected JPanel painelPrincipal, painelTexto;
+    protected JPanel painelPrincipal, painelTexto, painelImagem;
 
     public Cenario(String titulo) {
         setTitle(titulo);
@@ -29,19 +30,26 @@ public abstract class Cenario extends JFrame {
         getContentPane().add(painelPrincipal, BorderLayout.NORTH);
     }
 
+    public void atualizarImagem(String path) {
+        painelImagem.removeAll();
+        mostrarImagem(path);
+        painelImagem.revalidate();
+        painelImagem.repaint();
+    }
+
     protected void mostrarImagem(String caminhoImagem) {
         imagemFundo = new ImageIcon(getClass().getResource(caminhoImagem));
         Image redimensImage = imagemFundo.getImage().getScaledInstance(Config.LARGURA_IMAGEM, Config.ALTURA_IMAGEM,
                 Image.SCALE_SMOOTH);
         imagemFundo = new ImageIcon(redimensImage);
-        
-        JPanel painelImagem = new JPanel();
+
+        painelImagem = new JPanel();
         painelImagem.setOpaque(false);
         painelImagem.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 0));
 
         JLabel fundo = new JLabel(imagemFundo);
         fundo.setAlignmentX(Component.CENTER_ALIGNMENT);
-        
+
         painelImagem.add(fundo);
         painelPrincipal.add(painelImagem);
         painelPrincipal.revalidate();

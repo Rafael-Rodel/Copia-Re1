@@ -8,25 +8,28 @@ import controller.JogoController;
 import model.Cenario;
 import model.Config;
 
-public class SalaJantar2 extends Cenario {
-
-    JButton vaso, lareira, voltar;
+public class Bar extends Cenario {
+    
+    JButton piano, bar, estante, voltar;
     JPanel painelMenu;
 
-    public SalaJantar2() {
-        super("Sala de Jantar");
-        
-        mostrarImagem("/resources/imgs/sala_jantar_2.png");
-        mostrarTexto("Segunda metade da sala: \nVocê vê uma porta a direita, um vaso e uma lareira com um emblema em cima...");
+    public Bar() {
+        super("Bar");
+
+        mostrarImagem(JogoController.verificarBar());
+
+        mostrarTexto("Você vê um bar com bebidas classicas, um piano e um estante no canto da sala...");
+
         configurarBotoes();
+
         setVisible(true);
     }
 
     @Override
     public void configurarBotoes() {
         painelMenu = new JPanel();
-        painelMenu.setPreferredSize(new Dimension(550, 120));
-        painelMenu.setMaximumSize(new Dimension(550, 120));
+        painelMenu.setPreferredSize(new Dimension(320, 120));
+        painelMenu.setMaximumSize(new Dimension(320, 120));
         painelMenu.setLayout(new FlowLayout(FlowLayout.CENTER));
         painelMenu.setOpaque(false);
         TitledBorder borda = BorderFactory.createTitledBorder(
@@ -38,35 +41,35 @@ public class SalaJantar2 extends Cenario {
         borda.setTitleFont(Config.FONTE_TITULO_BORDA);
         painelMenu.setBorder(borda);
 
-        vaso = new JButton("Vaso");
-        lareira = new JButton("Lareira");
-        portaDireita = new JButton("Porta à direita");
-        voltar = new JButton("Voltar na sala");
+        piano = new JButton("Piano");
+        bar = new JButton("Bar");
+        estante = new JButton("estante");
+        voltar = new JButton("voltar");
 
-        vaso.addActionListener(e -> {
-            Config.criaPopupPadrao("Vaso", null, "Apenas um vaso comum \nnão há nada dentro...", this);
+        piano.addActionListener(e -> {
+            JogoController.tocarPiano(this);
         });
-        lareira.addActionListener(e -> {
-            JogoController.pegarBrasao(this);
+        bar.addActionListener(e -> {
+            Config.criaPopupPadrao("Bar", null, "Apenas bebidas comuns, nada util.", this);
         });
-        portaDireita.addActionListener(e -> {
-            JogoController.trocaCenario(this, "Corredor1AndarOeste");
+        estante.addActionListener(e -> {
+            JogoController.pegarPartitura(this);
         });
         voltar.addActionListener(e -> {
-            JogoController.trocaCenario(this, "SalaJantar1");
+            JogoController.trocaCenario(this, "Corredor1AndarOeste");
         });
 
-        vaso.setForeground(Color.decode(Config.COR_TEXTO));
-        vaso.setBackground(Color.decode(Config.COR_BOTAO));
-        vaso.setFont(Config.FONTE_BOTAO);
+        piano.setForeground(Color.decode(Config.COR_TEXTO));
+        piano.setBackground(Color.decode(Config.COR_BOTAO));
+        piano.setFont(Config.FONTE_BOTAO);
 
-        lareira.setForeground(Color.decode(Config.COR_TEXTO));
-        lareira.setBackground(Color.decode(Config.COR_BOTAO));
-        lareira.setFont(Config.FONTE_BOTAO);
+        bar.setForeground(Color.decode(Config.COR_TEXTO));
+        bar.setBackground(Color.decode(Config.COR_BOTAO));
+        bar.setFont(Config.FONTE_BOTAO);
 
-        portaDireita.setForeground(Color.decode(Config.COR_TEXTO));
-        portaDireita.setBackground(Color.decode(Config.COR_BOTAO));
-        portaDireita.setFont(Config.FONTE_BOTAO);
+        estante.setForeground(Color.decode(Config.COR_TEXTO));
+        estante.setBackground(Color.decode(Config.COR_BOTAO));
+        estante.setFont(Config.FONTE_BOTAO);
 
         voltar.setForeground(Color.decode(Config.COR_TEXTO));
         voltar.setBackground(Color.decode(Config.COR_BOTAO));
@@ -88,18 +91,17 @@ public class SalaJantar2 extends Cenario {
         inventario.setBackground(Color.decode(Config.COR_BOTAO));
         inventario.setAlignmentX(Component.CENTER_ALIGNMENT);
         inventario.setFont(Config.FONTE_BOTAO);
-        
-        navMenu.add(vaso);
-        navMenu.add(lareira);
-        navMenu.add(portaDireita);
-        navMenu.add(voltar);
-        
+
+        navMenu.add(piano);
+        navMenu.add(bar);
+        navMenu.add(estante);
+
         painelMenu.add(navMenu);
         painelMenu.add(navInventario);
         painelPrincipal.add(painelMenu);
     }
-
     public static void main(String[] args) {
-        new SalaJantar2();
+        new Bar();
     }
 }
+

@@ -35,15 +35,16 @@ public class Config {
         public static final Itens EMBLEMA_DOURADO = new Itens("Emblema dourado", "/resources/imgs/emblema_dourado.png",
                         "Um pesado emblema dourado com entalhes de família. Parece encaixar em algum mecanismo especial.",
                         "chave");
+        public static final Itens EMBLEMA_VELHO = new Itens("Emblema velho", "/resources/imgs/emblema_velho.png",
+                        "Um estranho emblema de madeira com entalhes de família. Parece encaixar em algum mecanismo especial.",
+                        "chave");
+        public static final Itens PARTITURA = new Itens("Partitura", "/resources/imgs/partitura.png",
+                        "O titulo diz 'a sonata do luar' de Beethoven.",
+                        "chave");                
         public static final Itens TESTE1 = new Itens("teste1", "/resources/imgs/capa.png", "teste1 consumivel",
                         "consumivel");
         public static final Itens TESTE2 = new Itens("teste2", "/resources/imgs/capa.png", "teste2 arma", "arma");
         public static final Itens TESTE3 = new Itens("teste3", "/resources/imgs/capa.png", "teste3 chave", "chave");
-
-        static {
-                EMBLEMA_DOURADO.setIdChave(1);
-                TESTE3.setIdChave(2);
-        }
 
         public static final Inimigo ZUMBI = new Inimigo("Zumbi", "/resources/imgs/zumbi.png",
                         "O zumbi se aproxima lentamente...", 40, 5, 6, 1);

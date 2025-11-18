@@ -8,25 +8,29 @@ import controller.JogoController;
 import model.Cenario;
 import model.Config;
 
-public class SalaJantar2 extends Cenario {
-
-    JButton vaso, lareira, voltar;
+public class SalaCorredor1 extends Cenario{
+    JButton voltar;
     JPanel painelMenu;
 
-    public SalaJantar2() {
-        super("Sala de Jantar");
-        
-        mostrarImagem("/resources/imgs/sala_jantar_2.png");
-        mostrarTexto("Segunda metade da sala: \nVocê vê uma porta a direita, um vaso e uma lareira com um emblema em cima...");
+    public SalaCorredor1(){
+        super("Sala Corredor");
+
+        JogoController.verificarEventosCorredor1(this);
+
+        mostrarImagem("/resources/imgs/sala_corredor1.png");
+
+        mostrarTexto("O que era aquela criatura? \nEsta sala não possui nada util...");
+
         configurarBotoes();
+
         setVisible(true);
     }
 
     @Override
     public void configurarBotoes() {
         painelMenu = new JPanel();
-        painelMenu.setPreferredSize(new Dimension(550, 120));
-        painelMenu.setMaximumSize(new Dimension(550, 120));
+        painelMenu.setPreferredSize(new Dimension(200, 120));
+        painelMenu.setMaximumSize(new Dimension(200, 120));
         painelMenu.setLayout(new FlowLayout(FlowLayout.CENTER));
         painelMenu.setOpaque(false);
         TitledBorder borda = BorderFactory.createTitledBorder(
@@ -38,35 +42,12 @@ public class SalaJantar2 extends Cenario {
         borda.setTitleFont(Config.FONTE_TITULO_BORDA);
         painelMenu.setBorder(borda);
 
-        vaso = new JButton("Vaso");
-        lareira = new JButton("Lareira");
-        portaDireita = new JButton("Porta à direita");
-        voltar = new JButton("Voltar na sala");
+        voltar = new JButton("Voltar ao corredor");
+        
 
-        vaso.addActionListener(e -> {
-            Config.criaPopupPadrao("Vaso", null, "Apenas um vaso comum \nnão há nada dentro...", this);
-        });
-        lareira.addActionListener(e -> {
-            JogoController.pegarBrasao(this);
-        });
-        portaDireita.addActionListener(e -> {
+        voltar.addActionListener(e -> {
             JogoController.trocaCenario(this, "Corredor1AndarOeste");
         });
-        voltar.addActionListener(e -> {
-            JogoController.trocaCenario(this, "SalaJantar1");
-        });
-
-        vaso.setForeground(Color.decode(Config.COR_TEXTO));
-        vaso.setBackground(Color.decode(Config.COR_BOTAO));
-        vaso.setFont(Config.FONTE_BOTAO);
-
-        lareira.setForeground(Color.decode(Config.COR_TEXTO));
-        lareira.setBackground(Color.decode(Config.COR_BOTAO));
-        lareira.setFont(Config.FONTE_BOTAO);
-
-        portaDireita.setForeground(Color.decode(Config.COR_TEXTO));
-        portaDireita.setBackground(Color.decode(Config.COR_BOTAO));
-        portaDireita.setFont(Config.FONTE_BOTAO);
 
         voltar.setForeground(Color.decode(Config.COR_TEXTO));
         voltar.setBackground(Color.decode(Config.COR_BOTAO));
@@ -88,18 +69,14 @@ public class SalaJantar2 extends Cenario {
         inventario.setBackground(Color.decode(Config.COR_BOTAO));
         inventario.setAlignmentX(Component.CENTER_ALIGNMENT);
         inventario.setFont(Config.FONTE_BOTAO);
-        
-        navMenu.add(vaso);
-        navMenu.add(lareira);
-        navMenu.add(portaDireita);
+
         navMenu.add(voltar);
-        
+
         painelMenu.add(navMenu);
         painelMenu.add(navInventario);
         painelPrincipal.add(painelMenu);
     }
-
     public static void main(String[] args) {
-        new SalaJantar2();
+        new SalaCorredor1();
     }
 }

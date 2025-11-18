@@ -12,7 +12,6 @@ public class Itens {
     private String caminhoImagem;
     private String descricao;
     private String tipoItem;
-    private int idChave;
     private int linha;
     private int coluna;
     private static List<Itens> listaItens = new ArrayList<>();
@@ -57,16 +56,15 @@ public class Itens {
         return this.tipoItem;
     }
 
-    public int getIdChave() {
-        return this.idChave;
-    }
-
-    public void setIdChave(int idChave) {
-        this.idChave = idChave;
-    }
-
-    public static void popupItem(String textoPop, JFrame parent) {
+    public static void popupItem(String nomeItem, String textoPop, JFrame parent) {
         String caminhoImagem = null;
+
+        for (Itens i : listaItens) {
+            if (i.getNome().equalsIgnoreCase(nomeItem)) {
+                caminhoImagem = i.getCaminhoImagem();
+                break;
+            }
+        }
 
         JDialog popup = new JDialog(parent, "Achou Item", true);
         popup.setSize(800, 600);

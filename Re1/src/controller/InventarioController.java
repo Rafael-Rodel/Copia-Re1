@@ -251,21 +251,6 @@ public class InventarioController {
                 painel.add(Box.createVerticalStrut(10));
                 painel.add(usar);
                 break;
-            case "chave":
-                usar = new JButton("Usar");
-                usar.setAlignmentX(Component.CENTER_ALIGNMENT);
-                usar.addActionListener(ev -> {
-                    System.out.println("chave");
-                    popPadrao.dispose();
-                });
-
-                usar.setForeground(Color.decode(Config.COR_DESTAQUE));
-                usar.setBackground(Color.decode(Config.COR_BOTAO));
-                usar.setFont(Config.FONTE_BOTAO);
-
-                painel.add(Box.createVerticalStrut(10));
-                painel.add(usar);
-                break;
         }
 
         JButton ok = new JButton("Prosseguir");

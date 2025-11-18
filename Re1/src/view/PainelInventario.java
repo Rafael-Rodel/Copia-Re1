@@ -109,7 +109,7 @@ public class PainelInventario extends JPanel {
     public void atualizarVida() {
         String gifPath = getClass().getResource("/resources/imgs/vida_fine.gif").toExternalForm();
 
-        if (Personagem.getVida() < 5) {
+        if (Personagem.getVida() < 10) {
             gifPath = getClass().getResource("/resources/imgs/vida_danger.gif").toExternalForm();
         }
 
