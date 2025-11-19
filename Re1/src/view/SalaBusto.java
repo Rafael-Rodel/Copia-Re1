@@ -1,4 +1,5 @@
 package view;
+
 import java.awt.*;
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
@@ -8,17 +9,17 @@ import controller.JogoController;
 import model.Cenario;
 import model.Config;
 
-public class Bar extends Cenario {
-    
-    JButton piano, bar, estante, voltar;
-    JPanel painelMenu;
+public class SalaBusto extends Cenario {
 
-    public Bar() {
-        super("Bar");
+    JButton busto;
 
-        mostrarImagem("/resources/imgs/bar.png");
+    public SalaBusto() {
+        super("Sala com busto");
 
-        mostrarTexto("Você vê um bar com bebidas classicas, um piano e um estante no canto da sala...");
+        mostrarImagem("/resources/imgs/sala_busto.png");
+
+        mostrarTexto(
+                "Você vê uma pequena sala com uma grande janela para rua, esta muito escuro para enxergar, no fundo da sala há um busto...");
 
         configurarBotoes();
 
@@ -27,9 +28,9 @@ public class Bar extends Cenario {
 
     @Override
     public void configurarBotoes() {
-        painelMenu = new JPanel();
-        painelMenu.setPreferredSize(new Dimension(350, 120));
-        painelMenu.setMaximumSize(new Dimension(350, 120));
+        JPanel painelMenu = new JPanel();
+        painelMenu.setPreferredSize(new Dimension(200, 120));
+        painelMenu.setMaximumSize(new Dimension(200, 120));
         painelMenu.setLayout(new FlowLayout(FlowLayout.CENTER));
         painelMenu.setOpaque(false);
         TitledBorder borda = BorderFactory.createTitledBorder(
@@ -41,35 +42,26 @@ public class Bar extends Cenario {
         borda.setTitleFont(Config.FONTE_TITULO_BORDA);
         painelMenu.setBorder(borda);
 
-        piano = new JButton("Piano");
-        bar = new JButton("Bar");
-        estante = new JButton("estante");
-        voltar = new JButton("voltar");
+        busto = new JButton("Busto");
+        voltar = new JButton("Voltar ao bar");
 
-        piano.addActionListener(e -> {
-            JogoController.tocarPiano(this);
+        busto.addActionListener(e -> {
+            JogoController.trocarBustoBar(this);
         });
-        bar.addActionListener(e -> {
-            Config.criaPopupPadrao("Bar", null, "Apenas bebidas comuns, nada util.", this);
-        });
-        estante.addActionListener(e -> {
-            JogoController.pegarPartitura(this);
-        });
-        voltar.addActionListener(e -> {
-            JogoController.trocaCenario(this, "Corredor1AndarOeste");
-        });
+        if (JogoController.checarPortaTrancadaBar()) {
+            voltar.addActionListener(e -> {
+                Config.criaPopupPadrao("Porta trancada!", null,
+                        "A porta está trancada! \nO mecanismo foi ativado quando removi o emblema...", this);
+            });
+        } else {
+            voltar.addActionListener(e -> {
+                JogoController.trocaCenario(this, "BarAberto");
+            });
+        }
 
-        piano.setForeground(Color.decode(Config.COR_TEXTO));
-        piano.setBackground(Color.decode(Config.COR_BOTAO));
-        piano.setFont(Config.FONTE_BOTAO);
-
-        bar.setForeground(Color.decode(Config.COR_TEXTO));
-        bar.setBackground(Color.decode(Config.COR_BOTAO));
-        bar.setFont(Config.FONTE_BOTAO);
-
-        estante.setForeground(Color.decode(Config.COR_TEXTO));
-        estante.setBackground(Color.decode(Config.COR_BOTAO));
-        estante.setFont(Config.FONTE_BOTAO);
+        busto.setForeground(Color.decode(Config.COR_TEXTO));
+        busto.setBackground(Color.decode(Config.COR_BOTAO));
+        busto.setFont(Config.FONTE_BOTAO);
 
         voltar.setForeground(Color.decode(Config.COR_TEXTO));
         voltar.setBackground(Color.decode(Config.COR_BOTAO));
@@ -92,17 +84,15 @@ public class Bar extends Cenario {
         inventario.setAlignmentX(Component.CENTER_ALIGNMENT);
         inventario.setFont(Config.FONTE_BOTAO);
 
-        navMenu.add(piano);
-        navMenu.add(bar);
-        navMenu.add(estante);
+        navMenu.add(busto);
         navMenu.add(voltar);
 
         painelMenu.add(navMenu);
         painelMenu.add(navInventario);
         painelPrincipal.add(painelMenu);
     }
+
     public static void main(String[] args) {
-        new Bar();
+        new SalaBusto();
     }
 }
-

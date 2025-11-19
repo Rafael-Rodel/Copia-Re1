@@ -8,7 +8,7 @@ import java.awt.*;
 // -R
 
 public abstract class Cenario extends JFrame {
-    protected JButton portaEsquerda, portaDireita, inventario;
+    protected JButton portaEsquerda, portaDireita, inventario, voltar;
     protected ImageIcon imagemFundo;
     protected JTextArea texto;
     protected JPanel painelPrincipal, painelTexto, painelImagem;

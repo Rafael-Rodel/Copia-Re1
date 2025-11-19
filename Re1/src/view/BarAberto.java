@@ -16,7 +16,7 @@ public class BarAberto extends Cenario {
     public BarAberto() {
         super("Bar");
 
-        mostrarImagem(JogoController.verificarBar());
+        mostrarImagem("/resources/imgs/bar_aberto.png");
 
         mostrarTexto("Você vê um bar com bebidas classicas, um piano e um estante no canto da sala \nAgora também há uma passagem na parede...");
 
@@ -28,8 +28,8 @@ public class BarAberto extends Cenario {
     @Override
     public void configurarBotoes() {
         painelMenu = new JPanel();
-        painelMenu.setPreferredSize(new Dimension(320, 120));
-        painelMenu.setMaximumSize(new Dimension(320, 120));
+        painelMenu.setPreferredSize(new Dimension(500, 120));
+        painelMenu.setMaximumSize(new Dimension(500, 120));
         painelMenu.setLayout(new FlowLayout(FlowLayout.CENTER));
         painelMenu.setOpaque(false);
         TitledBorder borda = BorderFactory.createTitledBorder(
@@ -101,16 +101,18 @@ public class BarAberto extends Cenario {
         inventario.setAlignmentX(Component.CENTER_ALIGNMENT);
         inventario.setFont(Config.FONTE_BOTAO);
 
+        navMenu.add(passagem);
         navMenu.add(piano);
         navMenu.add(bar);
         navMenu.add(estante);
+        navMenu.add(voltar);
 
         painelMenu.add(navMenu);
         painelMenu.add(navInventario);
         painelPrincipal.add(painelMenu);
     }
     public static void main(String[] args) {
-        new Bar();
+        new BarAberto();
     }
 }
 

@@ -9,7 +9,6 @@ import model.Cenario;
 import model.Config;
 
 public class SalaCorredor1 extends Cenario{
-    JButton voltar;
     JPanel painelMenu;
 
     public SalaCorredor1(){

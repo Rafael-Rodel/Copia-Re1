@@ -3,14 +3,7 @@ package controller;
 import model.Inventario;
 import model.Itens;
 import model.Personagem;
-import view.Bar;
-import view.Corredor1AndarOeste;
-import view.HallEntrada;
-import view.PainelInventario;
-import view.SalaJantar1;
-import view.SalaJantar2;
-import view.TelaInicial;
-import view.SalaCorredor1;
+import view.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -21,6 +14,7 @@ public class JogoController {
 
     private static boolean viuZumbiCorredor = false;
     private static boolean passagemBar = false;
+    private static String emblemaInseridoBar = "dourado";
 
     public void iniciarJogo() {
         new PainelInventario();
@@ -62,6 +56,10 @@ public class JogoController {
             case "SalaCorredor1" -> new SalaCorredor1();
 
             case "Bar" -> new Bar();
+
+            case "BarAberto" -> new BarAberto();
+
+            case "SalaBusto" -> new SalaBusto();
         }
     }
 
@@ -105,13 +103,13 @@ public class JogoController {
     }
 
     public static String verificarBar() {
-        String imgBar;
+        String classeBar;
         if (passagemBar) {
-            imgBar = "/resources/imgs/bar_aberto.png";
+            classeBar = "BarAberto";
         } else {
-            imgBar = "/resources/imgs/bar.png";
+            classeBar = "Bar";
         }
-        return imgBar;
+        return classeBar;
     }
 
     public static void tocarPiano(JFrame parent) {
@@ -125,7 +123,7 @@ public class JogoController {
             painel.setLayout(new BoxLayout(painel, BoxLayout.Y_AXIS));
             painel.setBorder(BorderFactory.createEmptyBorder(30, 30, 30, 30));
 
-            JTextArea texto = new JTextArea("Deseja tocar a musica da partitura?");
+            JTextArea texto = new JTextArea("Deseja dourado a musica da partitura?");
             texto.setWrapStyleWord(true);
             texto.setLineWrap(true);
             texto.setEditable(false);
@@ -134,40 +132,122 @@ public class JogoController {
             texto.setFont(Config.FONTE_PADRAO);
             texto.setForeground(Color.decode(Config.COR_TEXTO));
 
-            JButton ok = new JButton("Tocar");
-            JButton sair = new JButton("Sair");
+            JButton dourado = new JButton("Tocar");
+            JButton velho = new JButton("Sair");
 
-            ok.setForeground(Color.decode(Config.COR_TEXTO));
-            ok.setBackground(Color.decode(Config.COR_BOTAO));
-            ok.setFont(Config.FONTE_BOTAO);
-            ok.setAlignmentX(Component.CENTER_ALIGNMENT);
+            dourado.setForeground(Color.decode(Config.COR_TEXTO));
+            dourado.setBackground(Color.decode(Config.COR_BOTAO));
+            dourado.setFont(Config.FONTE_BOTAO);
+            dourado.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-            sair.setForeground(Color.decode(Config.COR_DESTAQUE));
-            sair.setBackground(Color.decode(Config.COR_BOTAO));
-            sair.setFont(Config.FONTE_BOTAO);
-            sair.setAlignmentX(Component.CENTER_ALIGNMENT);
+            velho.setForeground(Color.decode(Config.COR_DESTAQUE));
+            velho.setBackground(Color.decode(Config.COR_BOTAO));
+            velho.setFont(Config.FONTE_BOTAO);
+            velho.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-            ok.addActionListener(e -> {
+            dourado.addActionListener(e -> {
                 Config.criaPopupPadrao("Passagem Secreta!", null, "Uma passagem se abriu na parede do bar!", parent);
+                Config.criaPopupPadrao("Partitura", null, "Essa partitura não é mais util e será descartada.", parent);
+                Inventario.removerItem(Config.PARTITURA);
                 passagemBar = true;
                 popPiano.dispose();
                 trocaCenario(parent, "BarAberto");
             });
-            sair.addActionListener(e -> {
+            velho.addActionListener(e -> {
                 popPiano.dispose();
             });
 
             painel.add(Box.createVerticalStrut(20));
             painel.add(texto);
             painel.add(Box.createVerticalStrut(10));
-            painel.add(ok);
+            painel.add(dourado);
             painel.add(Box.createVerticalStrut(10));
-            painel.add(sair);
+            painel.add(velho);
 
             popPiano.add(painel);
             popPiano.setVisible(true);
         } else {
             Config.criaPopupPadrao("Piano", null, "Um belo piano grande.", parent);
+        }
+    }
+
+    public static void trocarBustoBar(JFrame parent) {
+        if (Inventario.possui(Config.EMBLEMA_DOURADO) && Inventario.possui(Config.EMBLEMA_VELHO)) {
+            JDialog popBusto = new JDialog(parent, "Busto", true);
+            popBusto.setSize(600, 250);
+            popBusto.setLocationRelativeTo(parent);
+
+            JPanel painel = new JPanel();
+            painel.setBackground(Color.decode(Config.COR_FUNDO));
+            painel.setLayout(new BoxLayout(painel, BoxLayout.Y_AXIS));
+            painel.setBorder(BorderFactory.createEmptyBorder(30, 30, 30, 30));
+
+            JTextArea texto = new JTextArea("O busto esta vazio, deseja colocar algum emblema?");
+            texto.setWrapStyleWord(true);
+            texto.setLineWrap(true);
+            texto.setEditable(false);
+            texto.setFocusable(false);
+            texto.setOpaque(false);
+            texto.setFont(Config.FONTE_PADRAO);
+            texto.setForeground(Color.decode(Config.COR_TEXTO));
+
+            JButton dourado = new JButton("Emblema dourado");
+            JButton velho = new JButton("Emblema velho");
+
+            dourado.setForeground(Color.decode(Config.COR_TEXTO));
+            dourado.setBackground(Color.decode(Config.COR_BOTAO));
+            dourado.setFont(Config.FONTE_BOTAO);
+            dourado.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+            velho.setForeground(Color.decode(Config.COR_TEXTO));
+            velho.setBackground(Color.decode(Config.COR_BOTAO));
+            velho.setFont(Config.FONTE_BOTAO);
+            velho.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+            dourado.addActionListener(e -> {
+                Inventario.removerItem(Config.EMBLEMA_DOURADO);
+                emblemaInseridoBar = "dourado";
+                JogoController.trocaCenario(parent, "SalaBusto");
+                popBusto.dispose();
+            });
+            velho.addActionListener(e -> {
+                Inventario.removerItem(Config.EMBLEMA_VELHO);
+                emblemaInseridoBar = "velho";
+                JogoController.trocaCenario(parent, "SalaBusto");
+                popBusto.dispose();
+            });
+
+            painel.add(Box.createVerticalStrut(20));
+            painel.add(texto);
+            painel.add(Box.createVerticalStrut(10));
+            painel.add(dourado);
+            painel.add(Box.createVerticalStrut(10));
+            painel.add(velho);
+
+            popBusto.add(painel);
+            popBusto.setVisible(true);
+        } else {
+            Config.criaPopupPadrao("Busto", null, "O emblema parece removivel", parent);
+            if (emblemaInseridoBar == "dourado") {
+                emblemaInseridoBar = null;
+                Itens.popupItem("Emblema dourado", "Você pegou um emblema dourado com um brasão de familia...", parent);
+                Inventario.adicionarItem(Config.EMBLEMA_DOURADO);
+            } else {
+                emblemaInseridoBar = null;
+                Itens.popupItem("Emblema dourado", "Você pegou um emblema velho com um brasão de familia...", parent);
+                Inventario.adicionarItem(Config.EMBLEMA_VELHO);
+            }
+        }
+    }
+
+    public static Boolean checarPortaTrancadaBar() {
+        Boolean portaTrancada;
+        if (emblemaInseridoBar == null) {
+            portaTrancada = true;
+            return portaTrancada;
+        } else {
+            portaTrancada = false;
+            return portaTrancada;
         }
     }
 }
