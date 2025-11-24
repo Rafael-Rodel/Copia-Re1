@@ -28,9 +28,9 @@ public class SalaBusto extends Cenario {
 
     @Override
     public void configurarBotoes() {
-        JPanel painelMenu = new JPanel();
-        painelMenu.setPreferredSize(new Dimension(200, 120));
-        painelMenu.setMaximumSize(new Dimension(200, 120));
+        painelMenu = new JPanel();
+        painelMenu.setPreferredSize(new Dimension(250, 120));
+        painelMenu.setMaximumSize(new Dimension(250, 120));
         painelMenu.setLayout(new FlowLayout(FlowLayout.CENTER));
         painelMenu.setOpaque(false);
         TitledBorder borda = BorderFactory.createTitledBorder(
@@ -48,16 +48,14 @@ public class SalaBusto extends Cenario {
         busto.addActionListener(e -> {
             JogoController.trocarBustoBar(this);
         });
-        if (JogoController.checarPortaTrancadaBar()) {
-            voltar.addActionListener(e -> {
+        voltar.addActionListener(e -> {
+            if (JogoController.checarPortaTrancadaBar()) {
                 Config.criaPopupPadrao("Porta trancada!", null,
                         "A porta está trancada! \nO mecanismo foi ativado quando removi o emblema...", this);
-            });
-        } else {
-            voltar.addActionListener(e -> {
+            } else {
                 JogoController.trocaCenario(this, "BarAberto");
-            });
-        }
+            }
+        });
 
         busto.setForeground(Color.decode(Config.COR_TEXTO));
         busto.setBackground(Color.decode(Config.COR_BOTAO));

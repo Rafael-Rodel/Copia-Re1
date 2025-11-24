@@ -1,21 +1,66 @@
 package controller;
 
 import javax.swing.*;
-
-import view.PainelMapa;
-
 import java.awt.*;
+
+import model.Config;
+import view.PainelMapa;
 
 public class MapaController extends JPanel {
 
-    public static void exibirMapa(JPanel parent) {
-        Window janela = SwingUtilities.getWindowAncestor(parent);
-        JDialog popMapa = new JDialog(janela, "Mapa", Dialog.ModalityType.APPLICATION_MODAL);
-        popMapa.setSize(800, 600);
-        popMapa.setLocationRelativeTo(parent);
+    private static final int larguraGif = 40;
+    private static final int alturaGif = 40;
+    private static boolean possuiMapa = false;
 
-        PainelMapa mapa = new PainelMapa();
-        popMapa.add(mapa);
-        popMapa.setVisible(true);
+    public static void setPossuiMapa(boolean temMapa) {
+        possuiMapa = temMapa;
+    }
+
+    public static boolean getPossuiMapa() {
+        return possuiMapa;
+    }
+
+    public static void exibirMapa(JPanel parent) {
+        if (possuiMapa) {
+            Window janela = SwingUtilities.getWindowAncestor(parent);
+            JDialog popMapa = new JDialog(janela, "Mapa", Dialog.ModalityType.APPLICATION_MODAL);
+            popMapa.setSize(800, 600);
+            popMapa.setLocationRelativeTo(parent);
+
+            PainelMapa mapa = new PainelMapa();
+
+            ImageIcon localAtual = new ImageIcon(
+                    MapaController.class.getResource("/resources/imgs/pontoVermelhoMapa.gif"));
+            Image localRedimens = localAtual.getImage().getScaledInstance(larguraGif, alturaGif, Image.SCALE_DEFAULT);
+            ImageIcon iconRedimensionado = new ImageIcon(localRedimens);
+            JLabel gifLabel = new JLabel(iconRedimensionado);
+
+            switch (JogoController.getCenarioAtual()) {
+                case "HallEntrada" -> gifLabel.setBounds(400, 420, larguraGif, alturaGif);
+
+                case "SalaJantar1" -> gifLabel.setBounds(280, 400, larguraGif, alturaGif);
+
+                case "SalaJantar2" -> gifLabel.setBounds(180, 400, larguraGif, alturaGif);
+
+                case "Corredor1AndarOeste" -> gifLabel.setBounds(140, 345, larguraGif, alturaGif);
+
+                case "SalaCorredor1" -> gifLabel.setBounds(85, 330, larguraGif, alturaGif);
+
+                case "Bar" -> gifLabel.setBounds(240, 295, larguraGif, alturaGif);
+
+                case "BarAberto" -> gifLabel.setBounds(240, 295, larguraGif, alturaGif);
+
+                case "SalaBusto" -> gifLabel.setBounds(230, 220, larguraGif, alturaGif);
+
+                case "SalaEstatua" -> gifLabel.setBounds(510, 420, larguraGif, alturaGif);
+            }
+
+            popMapa.add(mapa);
+            mapa.add(gifLabel);
+            popMapa.setVisible(true);
+        } else {
+            Window janela = SwingUtilities.getWindowAncestor(parent);
+            Config.criaPopupPadrao("Mapa", null, "Ainda não possuo o mapa da mansão.", janela);
+        }
     }
 }

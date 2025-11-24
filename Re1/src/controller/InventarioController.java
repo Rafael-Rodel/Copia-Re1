@@ -1,14 +1,10 @@
 package controller;
 
 import java.util.HashMap;
-
 import javax.swing.*;
 import java.awt.*;
 
-import model.Config;
-import model.Inventario;
-import model.Itens;
-import model.Personagem;
+import model.*;
 import view.PainelInventario;
 
 public class InventarioController {

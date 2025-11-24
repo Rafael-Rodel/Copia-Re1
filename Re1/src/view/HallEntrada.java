@@ -1,4 +1,5 @@
 package view;
+import java.awt.*;
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 
@@ -7,13 +8,10 @@ import controller.JogoController;
 import model.Cenario;
 import model.Config;
 
-import java.awt.*;
-
 public class HallEntrada extends Cenario {
 
     private static boolean primeiraVezHall = true;
     private JButton escadaria, maquina, portaPequena;
-    private JPanel painelMenuHall;
 
     public HallEntrada() {
         super("Hall de Entrada");
@@ -73,11 +71,11 @@ public class HallEntrada extends Cenario {
     @Override
     public void configurarBotoes() {
 
-        painelMenuHall = new JPanel();
-        painelMenuHall.setPreferredSize(new Dimension(800, 120));
-        painelMenuHall.setMaximumSize(new Dimension(800, 120));
-        painelMenuHall.setLayout(new FlowLayout(FlowLayout.CENTER));
-        painelMenuHall.setOpaque(false);
+        painelMenu = new JPanel();
+        painelMenu.setPreferredSize(new Dimension(800, 120));
+        painelMenu.setMaximumSize(new Dimension(800, 120));
+        painelMenu.setLayout(new FlowLayout(FlowLayout.CENTER));
+        painelMenu.setOpaque(false);
         TitledBorder borda = BorderFactory.createTitledBorder(
                 BorderFactory.createLineBorder(Color.decode(Config.COR_DESTAQUE), 3),
                 "Menu",
@@ -85,7 +83,7 @@ public class HallEntrada extends Cenario {
                 TitledBorder.TOP);
         borda.setTitleColor(Color.decode(Config.COR_DESTAQUE));
         borda.setTitleFont(Config.FONTE_TITULO_BORDA);
-        painelMenuHall.setBorder(borda);
+        painelMenu.setBorder(borda);
 
         portaEsquerda = new JButton("Porta à Esquerda");
         portaDireita = new JButton("Porta à Direita");
@@ -97,10 +95,10 @@ public class HallEntrada extends Cenario {
             JogoController.trocaCenario(this, "SalaJantar1");
         });
         portaDireita.addActionListener(e -> {
-            Config.criaPopupPadrao("Porta grande à direita", null, "Não posso ir pra lá ainda.", this);
+            JogoController.trocaCenario(this, "SalaEstatua");
         });
         portaPequena.addActionListener(e -> {
-            Config.criaPopupPadrao("Porta pequena à direita", null, "Não posso ir pra lá ainda.", this);
+            Config.criaPopupPadrao("Porta pequena à direita", null, "A porta está trancada, há uma gravura de escudo.", this);
         });
         escadaria.addActionListener(e -> {
             Config.criaPopupPadrao("Escadaria", null, "Não posso ir pra lá ainda.", this);
@@ -153,9 +151,9 @@ public class HallEntrada extends Cenario {
         navMenu.add(escadaria);
         navMenu.add(maquina);
 
-        painelMenuHall.add(navMenu);
-        painelMenuHall.add(navInventario);
-        painelPrincipal.add(painelMenuHall);
+        painelMenu.add(navMenu);
+        painelMenu.add(navInventario);
+        painelPrincipal.add(painelMenu);
     }
 
     public static void main(String[] args) {

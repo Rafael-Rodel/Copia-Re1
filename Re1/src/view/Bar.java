@@ -11,7 +11,6 @@ import model.Config;
 public class Bar extends Cenario {
     
     JButton piano, bar, estante, voltar;
-    JPanel painelMenu;
 
     public Bar() {
         super("Bar");

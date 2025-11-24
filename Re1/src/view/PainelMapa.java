@@ -8,7 +8,7 @@ public class PainelMapa extends JPanel{
     private Image imagemFundo;
     
     public PainelMapa() {
-        setOpaque(false);
+        setLayout(null);
 
         imagemFundo = new ImageIcon(getClass().getResource("/resources/imgs/mapa.png")).getImage();
     }

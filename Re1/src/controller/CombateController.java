@@ -3,11 +3,7 @@ package controller;
 import javax.swing.*;
 import java.awt.*;
 
-import model.Config;
-import model.Inimigo;
-import model.Itens;
-import model.Inventario;
-import model.Personagem;
+import model.*;
 
 public class CombateController {
 

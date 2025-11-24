@@ -1,20 +1,19 @@
 package controller;
 
-import model.Inventario;
-import model.Itens;
-import model.Personagem;
+import model.*;
 import view.*;
 
 import javax.swing.*;
 import java.awt.*;
 
-import model.Config;
 
 public class JogoController {
 
     private static boolean viuZumbiCorredor = false;
     private static boolean passagemBar = false;
     private static String emblemaInseridoBar = "dourado";
+    private static String emblemaInseridoLareira = "velho";
+    private static String cenarioAtual; 
 
     public void iniciarJogo() {
         new PainelInventario();
@@ -41,8 +40,10 @@ public class JogoController {
         Inventario.adicionarItem(Config.SPRAY);
     }
 
-    public static void trocaCenario(JFrame parent, String nomeCenario) {
+    public static void trocaCenario(Window parent, String nomeCenario) {
         parent.dispose();
+
+        cenarioAtual = nomeCenario;
 
         switch (nomeCenario) {
             case "HallEntrada" -> new HallEntrada();
@@ -60,7 +61,13 @@ public class JogoController {
             case "BarAberto" -> new BarAberto();
 
             case "SalaBusto" -> new SalaBusto();
+
+            case "SalaEstatua" -> new SalaEstatua();
         }
+    }
+
+    public static String getCenarioAtual() {
+        return cenarioAtual;
     }
 
     public static void verificarEventosHall(JFrame parent) {
@@ -70,14 +77,77 @@ public class JogoController {
         }
     }
 
-    public static void pegarBrasao(JFrame parent) {
-        if (Inventario.possui(Config.EMBLEMA_VELHO)) {
-            Config.criaPopupPadrao("Lareira", "/resources/imgs/lareira_vazia.png", "O brasão foi removido...", parent);
+    public static void pegarBrasaoLareira(JFrame parent) {
+        if (emblemaInseridoLareira == null) {
+            JDialog popLareira = new JDialog(parent, "Lareira", true);
+            popLareira.setSize(600, 250);
+            popLareira.setLocationRelativeTo(parent);
+
+            JPanel painel = new JPanel();
+            painel.setBackground(Color.decode(Config.COR_FUNDO));
+            painel.setLayout(new BoxLayout(painel, BoxLayout.Y_AXIS));
+            painel.setBorder(BorderFactory.createEmptyBorder(30, 30, 30, 30));
+
+            JTextArea texto = new JTextArea("O espaço na lareira esta vazio, deseja colocar algum emblema?");
+            texto.setWrapStyleWord(true);
+            texto.setLineWrap(true);
+            texto.setEditable(false);
+            texto.setFocusable(false);
+            texto.setOpaque(false);
+            texto.setFont(Config.FONTE_PADRAO);
+            texto.setForeground(Color.decode(Config.COR_TEXTO));
+
+            JButton dourado = new JButton("Emblema dourado");
+            JButton velho = new JButton("Emblema velho");
+
+            dourado.setForeground(Color.decode(Config.COR_TEXTO));
+            dourado.setBackground(Color.decode(Config.COR_BOTAO));
+            dourado.setFont(Config.FONTE_BOTAO);
+            dourado.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+            velho.setForeground(Color.decode(Config.COR_TEXTO));
+            velho.setBackground(Color.decode(Config.COR_BOTAO));
+            velho.setFont(Config.FONTE_BOTAO);
+            velho.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+            painel.add(Box.createVerticalStrut(20));
+            painel.add(texto);
+
+            if (Inventario.possui(Config.EMBLEMA_DOURADO)) {
+                dourado.addActionListener(e -> {
+                    Inventario.removerItem(Config.EMBLEMA_DOURADO);
+                    emblemaInseridoLareira = "dourado";
+                    JogoController.trocaCenario(parent, "SalaJantar2");
+                    popLareira.dispose();
+
+                });
+                painel.add(Box.createVerticalStrut(10));
+                painel.add(dourado);
+            }
+            if (Inventario.possui(Config.EMBLEMA_VELHO)) {
+                velho.addActionListener(e -> {
+                    Inventario.removerItem(Config.EMBLEMA_VELHO);
+                    emblemaInseridoLareira = "velho";
+                    JogoController.trocaCenario(parent, "SalaJantar2");
+                    popLareira.dispose();
+                });
+                painel.add(Box.createVerticalStrut(10));
+                painel.add(velho);
+            }
+
+            popLareira.add(painel);
+            popLareira.setVisible(true);
         } else {
-            Config.criaPopupPadrao("Lareira", "/resources/imgs/emblema_parede.png", "O brasão parece removivel...",
-                    parent);
-            Itens.popupItem("Emblema velho", "Você pegou um emblema velho com um brasão de familia...", parent);
-            Inventario.adicionarItem(Config.EMBLEMA_VELHO);
+            Config.criaPopupPadrao("Lareira", null, "O emblema parece removivel", parent);
+            if (emblemaInseridoLareira == "dourado") {
+                emblemaInseridoLareira = null;
+                Itens.popupItem("Emblema dourado", "Você pegou um emblema dourado com um brasão de familia...", parent);
+                Inventario.adicionarItem(Config.EMBLEMA_DOURADO);
+            } else {
+                emblemaInseridoLareira = null;
+                Itens.popupItem("Emblema velho", "Você pegou um emblema velho com um brasão de familia...", parent);
+                Inventario.adicionarItem(Config.EMBLEMA_VELHO);
+            }
         }
     }
 
@@ -123,7 +193,7 @@ public class JogoController {
             painel.setLayout(new BoxLayout(painel, BoxLayout.Y_AXIS));
             painel.setBorder(BorderFactory.createEmptyBorder(30, 30, 30, 30));
 
-            JTextArea texto = new JTextArea("Deseja dourado a musica da partitura?");
+            JTextArea texto = new JTextArea("Deseja tocar a musica da partitura?");
             texto.setWrapStyleWord(true);
             texto.setLineWrap(true);
             texto.setEditable(false);
@@ -172,7 +242,7 @@ public class JogoController {
     }
 
     public static void trocarBustoBar(JFrame parent) {
-        if (Inventario.possui(Config.EMBLEMA_DOURADO) && Inventario.possui(Config.EMBLEMA_VELHO)) {
+        if (emblemaInseridoBar == null) {
             JDialog popBusto = new JDialog(parent, "Busto", true);
             popBusto.setSize(600, 250);
             popBusto.setLocationRelativeTo(parent);
@@ -204,25 +274,30 @@ public class JogoController {
             velho.setFont(Config.FONTE_BOTAO);
             velho.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-            dourado.addActionListener(e -> {
-                Inventario.removerItem(Config.EMBLEMA_DOURADO);
-                emblemaInseridoBar = "dourado";
-                JogoController.trocaCenario(parent, "SalaBusto");
-                popBusto.dispose();
-            });
-            velho.addActionListener(e -> {
-                Inventario.removerItem(Config.EMBLEMA_VELHO);
-                emblemaInseridoBar = "velho";
-                JogoController.trocaCenario(parent, "SalaBusto");
-                popBusto.dispose();
-            });
-
             painel.add(Box.createVerticalStrut(20));
             painel.add(texto);
-            painel.add(Box.createVerticalStrut(10));
-            painel.add(dourado);
-            painel.add(Box.createVerticalStrut(10));
-            painel.add(velho);
+
+            if (Inventario.possui(Config.EMBLEMA_DOURADO)) {
+                dourado.addActionListener(e -> {
+                    Inventario.removerItem(Config.EMBLEMA_DOURADO);
+                    emblemaInseridoBar = "dourado";
+                    JogoController.trocaCenario(parent, "SalaBusto");
+                    popBusto.dispose();
+
+                });
+                painel.add(Box.createVerticalStrut(10));
+                painel.add(dourado);
+            }
+            if (Inventario.possui(Config.EMBLEMA_VELHO)) {
+                velho.addActionListener(e -> {
+                    Inventario.removerItem(Config.EMBLEMA_VELHO);
+                    emblemaInseridoBar = "velho";
+                    JogoController.trocaCenario(parent, "SalaBusto");
+                    popBusto.dispose();
+                });
+                painel.add(Box.createVerticalStrut(10));
+                painel.add(velho);
+            }
 
             popBusto.add(painel);
             popBusto.setVisible(true);
@@ -234,7 +309,7 @@ public class JogoController {
                 Inventario.adicionarItem(Config.EMBLEMA_DOURADO);
             } else {
                 emblemaInseridoBar = null;
-                Itens.popupItem("Emblema dourado", "Você pegou um emblema velho com um brasão de familia...", parent);
+                Itens.popupItem("Emblema velho", "Você pegou um emblema velho com um brasão de familia...", parent);
                 Inventario.adicionarItem(Config.EMBLEMA_VELHO);
             }
         }
@@ -250,4 +325,34 @@ public class JogoController {
             return portaTrancada;
         }
     }
+
+    public static void checarRelogio(Window parent) {
+
+        if (emblemaInseridoLareira == "dourado") {
+            if (Inventario.possui(Config.CHAVE_ESCUDO)) {
+                Config.criaPopupPadrao("Relogio", "/resources/imgs/relogio_aberto.png",
+                        "Atras do relógio há um cofre aberto vazio.", parent);
+            } else {
+                Config.criaPopupPadrao("Relogio", "/resources/imgs/relogio_aberto.png",
+                        "O relógio se moveu sozinho! Atrás há um cofre agora aberto. \nHá uma chave no cofre.", parent);
+                Itens.popupItem("Chave escudo", "Você achou uma chave!", null);
+                Inventario.adicionarItem(Config.CHAVE_ESCUDO);
+            }
+        } else {
+            Config.criaPopupPadrao("Relógio", "/resources/imgs/relogio.png",
+                    "Um velho relógio \nParece ter algo atrás mas não consigo move-lo...", parent);
+        }
+    }
+
+    public static void pegarMapa(Window parent) {
+        if (!MapaController.getPossuiMapa()) {
+        Config.criaPopupPadrao("Mapa", null,
+                    "Você achou um mapa do primeiro andar da mansão! \nO mapa está disponivel no inventario.", parent);
+            MapaController.setPossuiMapa(true);
+            trocaCenario(parent, "SalaEstatua");
+        } else {
+            Config.criaPopupPadrao("Estatua", null,
+                    "A estatua não possui mais nada.", parent);
+        }
+    }   
 }

@@ -40,12 +40,16 @@ public class Config {
                         "chave");
         public static final Itens PARTITURA = new Itens("Partitura", "/resources/imgs/partitura.png",
                         "O titulo diz 'a sonata do luar' de Beethoven.",
-                        "chave");                
+                        "chave");
+        public static final Itens CHAVE_ESCUDO = new Itens("Chave escudo", "/resources/imgs/chave_escudo.png",
+                        "Uma chave com um escudo entalhado", "chave");
+
         public static final Itens TESTE1 = new Itens("teste1", "/resources/imgs/capa.png", "teste1 consumivel",
                         "consumivel");
         public static final Itens TESTE2 = new Itens("teste2", "/resources/imgs/capa.png", "teste2 arma", "arma");
         public static final Itens TESTE3 = new Itens("teste3", "/resources/imgs/capa.png", "teste3 chave", "chave");
 
+        // construtor inimigos :
         public static final Inimigo ZUMBI = new Inimigo("Zumbi", "/resources/imgs/zumbi.png",
                         "O zumbi se aproxima lentamente...", 40, 5, 6, 1);
 

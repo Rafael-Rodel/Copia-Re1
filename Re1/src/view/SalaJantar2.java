@@ -11,7 +11,6 @@ import model.Config;
 public class SalaJantar2 extends Cenario {
 
     JButton vaso, lareira, voltar;
-    JPanel painelMenu;
 
     public SalaJantar2() {
         super("Sala de Jantar");
@@ -47,7 +46,7 @@ public class SalaJantar2 extends Cenario {
             Config.criaPopupPadrao("Vaso", null, "Apenas um vaso comum \nnão há nada dentro...", this);
         });
         lareira.addActionListener(e -> {
-            JogoController.pegarBrasao(this);
+            JogoController.pegarBrasaoLareira(this);
         });
         portaDireita.addActionListener(e -> {
             JogoController.trocaCenario(this, "Corredor1AndarOeste");

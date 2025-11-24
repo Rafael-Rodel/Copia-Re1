@@ -1,5 +1,6 @@
 package view;
 
+import java.awt.*;
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 
@@ -8,12 +9,9 @@ import controller.JogoController;
 import model.Cenario;
 import model.Config;
 
-import java.awt.*;
-
 public class SalaJantar1 extends Cenario {
 
     JButton relogio, quadro, portaDupla, prosseguir;
-    JPanel painelMenu;
 
     public SalaJantar1() {
         super("Sala de Jantar");
@@ -46,8 +44,7 @@ public class SalaJantar1 extends Cenario {
         prosseguir = new JButton("Prosseguir na sala");
 
         relogio.addActionListener(e -> {
-            Config.criaPopupPadrao("Relógio", "/resources/imgs/relogio.png",
-                    "Um velho relógio \nParece ter algo atrás mas não consigo mover...", this);
+            JogoController.checarRelogio(this);
         });
         quadro.addActionListener(e -> {
             Config.criaPopupPadrao("Quadro", null, "Uma pintura a óleo \nNão tem importância...", this);

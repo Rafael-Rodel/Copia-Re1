@@ -13,7 +13,6 @@ import model.Config;
 
 public class Corredor1AndarOeste extends Cenario {
     JButton portaDupla, portaVermelha, porta, sala, salaJantar;
-    JPanel painelMenu;
 
     public Corredor1AndarOeste() {
         super("Corredor");
