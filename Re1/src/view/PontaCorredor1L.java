@@ -1,29 +1,23 @@
 package view;
-
 import java.awt.*;
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 
 import controller.InventarioController;
 import controller.JogoController;
-import controller.MapaController;
 import model.Cenario;
 import model.Config;
 
-public class SalaEstatua extends Cenario {
-    JButton estatua;
+public class PontaCorredor1L extends Cenario{
 
-    public SalaEstatua() {
-        super("Sala com Estatua");
+    JButton continuar;
 
-        String imgSala = "/resources/imgs/sala_estatua_mapa.png";
-        if (MapaController.getPossuiMapa()) {
-            imgSala = "/resources/imgs/sala_estatua.png";
-        }
+    public PontaCorredor1L(){
+        super("Corredor leste");
 
-        mostrarImagem(imgSala);
+        mostrarImagem("/resources/imgs/ponta_corredor1L.png");
 
-        mostrarTexto("Uma sala com algumas pinturas duas portas e uma estatua de uma mulher com um vaso...");
+        mostrarTexto("Você esta no inicio de um grande corredor, há 2 portas e a continuação do corredor...");
 
         configurarBotoes();
 
@@ -33,8 +27,8 @@ public class SalaEstatua extends Cenario {
     @Override
     public void configurarBotoes() {
         painelMenu = new JPanel();
-        painelMenu.setPreferredSize(new Dimension(600, 120));
-        painelMenu.setMaximumSize(new Dimension(600, 120));
+        painelMenu.setPreferredSize(new Dimension(350, 120));
+        painelMenu.setMaximumSize(new Dimension(350, 120));
         painelMenu.setLayout(new FlowLayout(FlowLayout.CENTER));
         painelMenu.setOpaque(false);
         TitledBorder borda = BorderFactory.createTitledBorder(
@@ -46,42 +40,41 @@ public class SalaEstatua extends Cenario {
         borda.setTitleFont(Config.FONTE_TITULO_BORDA);
         painelMenu.setBorder(borda);
 
-        voltar = new JButton("Voltar ao hall");
-        portaDireita = new JButton("Porta a direita");
-        portaEsquerda = new JButton("Porta a esquerda");
-        estatua = new JButton("Estatua");
+        portaEsquerda = new JButton("Porta esquerda");
+        voltar = new JButton("Sala com Estatua");
 
         voltar.addActionListener(e -> {
-            JogoController.trocaCenario(this, "HallEntrada");
+            JogoController.trocaCenario(this, "SalaEstatua");
+        });
+
+        portaEsquerda.addActionListener(e -> {
+            JogoController.trocaCenario(this, "Banheiro");
         });
 
         portaDireita.addActionListener(e -> {
-            JogoController.trocaCenario(this, "CorredorCachorro");
-        });
-        
-        portaEsquerda.addActionListener(e -> {
-            JogoController.trocaCenario(this, "SalaQuadros");
+            JogoController.criaPopupPadrao("Trancado", null, "A porta esta trancada, há um escudo entalhado", this);
         });
 
-        estatua.addActionListener(e -> {
-            JogoController.pegarMapa(this);
+        continuar.addActionListener(e -> {
+            JogoController.trocaCenario(this, "Corredor1L");
         });
+
 
         voltar.setForeground(Color.decode(Config.COR_TEXTO));
         voltar.setBackground(Color.decode(Config.COR_BOTAO));
         voltar.setFont(Config.FONTE_BOTAO);
 
-        portaDireita.setForeground(Color.decode(Config.COR_TEXTO));
-        portaDireita.setBackground(Color.decode(Config.COR_BOTAO));
-        portaDireita.setFont(Config.FONTE_BOTAO);
-
         portaEsquerda.setForeground(Color.decode(Config.COR_TEXTO));
         portaEsquerda.setBackground(Color.decode(Config.COR_BOTAO));
         portaEsquerda.setFont(Config.FONTE_BOTAO);
 
-        estatua.setForeground(Color.decode(Config.COR_TEXTO));
-        estatua.setBackground(Color.decode(Config.COR_BOTAO));
-        estatua.setFont(Config.FONTE_BOTAO);
+        portaDireita.setForeground(Color.decode(Config.COR_TEXTO));
+        portaDireita.setBackground(Color.decode(Config.COR_BOTAO));
+        portaDireita.setFont(Config.FONTE_BOTAO);
+
+        continuar.setForeground(Color.decode(Config.COR_TEXTO));
+        continuar.setBackground(Color.decode(Config.COR_BOTAO));
+        continuar.setFont(Config.FONTE_BOTAO);
 
         JPanel navMenu = new JPanel();
         navMenu.setOpaque(false);
@@ -101,16 +94,13 @@ public class SalaEstatua extends Cenario {
         inventario.setFont(Config.FONTE_BOTAO);
 
         navMenu.add(portaEsquerda);
-        navMenu.add(portaDireita);
-        navMenu.add(estatua);
         navMenu.add(voltar);
 
         painelMenu.add(navMenu);
         painelMenu.add(navInventario);
         painelPrincipal.add(painelMenu);
     }
-
     public static void main(String[] args) {
-        new SalaEstatua();
+        new CorredorCachorro();
     }
 }

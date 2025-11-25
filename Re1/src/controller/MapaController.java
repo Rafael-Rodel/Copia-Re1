@@ -52,6 +52,12 @@ public class MapaController extends JPanel {
                 case "SalaBusto" -> gifLabel.setBounds(230, 220, larguraGif, alturaGif);
 
                 case "SalaEstatua" -> gifLabel.setBounds(510, 420, larguraGif, alturaGif);
+
+                case "SalaQuadros" -> gifLabel.setBounds(510, 420, larguraGif, alturaGif);
+
+                case "CorredorCachorro" -> gifLabel.setBounds(510, 420, larguraGif, alturaGif);
+
+                case "PontaCorredor1L" -> gifLabel.setBounds(510, 420, larguraGif, alturaGif);
             }
 
             popMapa.add(mapa);

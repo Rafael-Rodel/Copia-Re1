@@ -3,9 +3,6 @@ package model;
 import javax.swing.*;
 import java.awt.*;
 
-// usem essa classe pra cirar os cenarios ja ta tudo configuradinho
-// -R
-
 public abstract class Cenario extends JFrame {
     protected JButton portaEsquerda, portaDireita, inventario, voltar;
     protected ImageIcon imagemFundo;

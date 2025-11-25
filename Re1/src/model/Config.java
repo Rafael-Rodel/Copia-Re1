@@ -2,10 +2,6 @@ package model;
 
 import java.awt.*;
 
-// cria os construtores dos itens aqui pra ficar melhor de usar no resto do codigo
-// tmb tem um metodo aq pra cria os popup padrão com texto, se n quiser botar imagem só coloca null no construtor
-// -R
-
 public class Config {
         public static Boolean censurado = false;
 
@@ -50,23 +46,23 @@ public class Config {
                 pistola = new Itens(textoPistola, imgPistola,
                                 "Uma " + textoPistola
                                                 + " semiautomática 9mm. Baixo poder de fogo, mas boa para conter inimigos comuns. Causa 10 de dano.",
-                                "arma");
+                                "arma", 15);
                 faca = new Itens(textoFaca, imgFaca,
                                 "Um " + textoFaca
                                                 + " padrão das Forças Especiais. Tem pouco alcance e causa pouco dano, mas pode salvar em situações críticas. Causa 5 de dano.",
-                                "arma");
+                                "arma", 1);
                 spray = new Itens("Spray", "/resources/imgs/spray.png",
-                                "Restaura totalmente a saúde. Um item valioso em momentos de perigo.", "consumivel");
+                                "Restaura totalmente a saúde. Um item valioso em momentos de perigo.", "consumivel", 1);
                 emblemaDourado = new Itens("Emblema dourado", "/resources/imgs/emblema_dourado.png",
                                 "Um pesado emblema dourado com entalhes de família. Parece encaixar em algum mecanismo especial.",
-                                "chave");
+                                "chave", 1);
                 emblemaVelho = new Itens("Emblema velho", "/resources/imgs/emblema_velho.png",
                                 "Um estranho emblema de madeira com entalhes de família. Parece encaixar em algum mecanismo especial.",
-                                "chave");
+                                "chave", 1);
                 partitura = new Itens("Partitura", "/resources/imgs/partitura.png",
-                                "O titulo diz 'a sonata do luar' de Beethoven.", "chave");
+                                "O titulo diz 'a sonata do luar' de Beethoven.", "chave", 1);
                 chaveEscudo = new Itens("Chave escudo", "/resources/imgs/chave_escudo.png",
-                                "Uma chave com um escudo entalhado", "chave");
+                                "Uma chave com um escudo entalhado", "chave", 1);
 
                 zumbi = new Inimigo(textoZumbi, imgZumbi,
                                 "O " + textoZumbi + " se aproxima lentamente...", 40, 5, 6, 1);
@@ -78,11 +74,11 @@ public class Config {
                 censurado = censura;
 
                 if (censurado) {
-                        imgZumbi = "/resources/imgs/zumbi_censurado.png"; 
-                        imgCaoZumbi = "/resources/imgs/cao_zumbi_censurado.png"; 
-                        imgPistola = "/resources/imgs/pistola_censurada.png"; 
-                        imgFaca = "/resources/imgs/faca_censurada.png"; 
-                        imgMorte = "/resources/imgs/game_over_censurado.jpg"; 
+                        imgZumbi = "/resources/imgs/zumbi_censurado.png";
+                        imgCaoZumbi = "/resources/imgs/cao_zumbi_censurado.png";
+                        imgPistola = "/resources/imgs/pistola_censurada.png";
+                        imgFaca = "/resources/imgs/faca_censurada.png";
+                        imgMorte = "/resources/imgs/game_over_censurado.jpg";
                         imgShotgun = "/resources/imgs/shotgun_censurada.png";
                         imgPrimeiroZumbi = "/resources/imgs/zumbi_censurado.png";
                         textoZumbi = "Ursinho";

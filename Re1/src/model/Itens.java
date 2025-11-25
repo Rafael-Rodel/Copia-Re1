@@ -4,24 +4,32 @@ import java.util.List;
 import javax.swing.*;
 import java.awt.*;
 
-// aq tem um pop up pra mostrar quando acha um item 
-// -R
-
 public class Itens {
     private String nome;
     private String caminhoImagem;
     private String descricao;
     private String tipoItem;
+    private int quantidade;
+
     private int linha;
     private int coluna;
     private static List<Itens> listaItens = new ArrayList<>();
 
-    public Itens(String nome, String imagem, String descricao, String tipoItem) {
+    public Itens(String nome, String imagem, String descricao, String tipoItem, int quantidade) {
         this.nome = nome;
         this.caminhoImagem = imagem;
         this.descricao = descricao;
         this.tipoItem = tipoItem;
+        this.quantidade = quantidade;
         listaItens.add(this);
+    }
+
+    public int getQuantidade() {
+        return this.quantidade;
+    }
+
+    public void setQuantidade(int quantidade) {
+        this.quantidade = quantidade;
     }
 
     public String getNome() {

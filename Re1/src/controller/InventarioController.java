@@ -17,6 +17,7 @@ public class InventarioController {
 
     private HashMap<Point, JLabel> slotsImagem = new HashMap<>();
     private HashMap<Point, JButton> slotsBotao = new HashMap<>();
+    private HashMap<Point, JLabel> slotsQuantidade = new HashMap<>();
 
     public InventarioController(JPanel gridItens) {
         this.gridItens = gridItens;
@@ -66,6 +67,19 @@ public class InventarioController {
                     }
                 });
 
+                JLabel quantidadeSlot = new JLabel("");
+                quantidadeSlot.setOpaque(false);
+                quantidadeSlot.setFont(Config.FONTE_PADRAO.deriveFont(Font.BOLD, 20f));
+                quantidadeSlot.setForeground(Color.green);
+
+                quantidadeSlot.setHorizontalAlignment(SwingConstants.RIGHT);
+                quantidadeSlot.setVerticalAlignment(SwingConstants.BOTTOM);
+
+                quantidadeSlot.setBorder(BorderFactory.createEmptyBorder(45, 0, 0, 5));
+
+                quantidadeSlot.setAlignmentX(1.0f); 
+                quantidadeSlot.setAlignmentY(1.0f);
+
                 JPanel overlay = new JPanel();
                 overlay.setLayout(new OverlayLayout(overlay));
                 overlay.setOpaque(false);
@@ -76,6 +90,7 @@ public class InventarioController {
                 slotPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE));
 
                 overlay.add(botao);
+                overlay.add(quantidadeSlot);
                 overlay.add(imagem);
 
                 slotPanel.add(overlay, BorderLayout.CENTER);
@@ -85,8 +100,10 @@ public class InventarioController {
 
                 gridItens.add(slotPanel, gbc);
 
-                slotsImagem.put(new Point(coluna, linha), imagem);
-                slotsBotao.put(new Point(coluna, linha), botao);
+                Point pos = new Point(coluna, linha);
+                slotsImagem.put(pos, imagem);
+                slotsBotao.put(pos, botao);
+                slotsQuantidade.put(pos, quantidadeSlot);
             }
         }
 
@@ -136,6 +153,11 @@ public class InventarioController {
 
             img.setIcon(null);
             btn.putClientProperty("item", null);
+
+            JLabel qty = slotsQuantidade.get(p);
+            if (qty != null) {
+                qty.setText("");
+            }
         }
 
         int index = 0;
@@ -147,6 +169,7 @@ public class InventarioController {
 
             JLabel img = slotsImagem.get(pos);
             JButton btn = slotsBotao.get(pos);
+            JLabel qty = slotsQuantidade.get(pos);
 
             if (img != null) {
                 ImageIcon icon = new ImageIcon(getClass().getResource(item.getCaminhoImagem()));
@@ -158,6 +181,13 @@ public class InventarioController {
                 btn.putClientProperty("item", item);
             }
 
+            if (qty != null) {
+                if (item.getQuantidade() > 1) {
+                    qty.setText(String.valueOf(item.getQuantidade()));
+                } else {
+                    qty.setText("");
+                }
+            }
             index++;
         }
 
@@ -230,9 +260,9 @@ public class InventarioController {
                 usar.setAlignmentX(Component.CENTER_ALIGNMENT);
                 usar.addActionListener(ev -> {
                     if (Personagem.getChris()) {
-                        Personagem.setVida(10);
+                        Personagem.setVida(20);
                     } else {
-                        Personagem.setVida(15);
+                        Personagem.setVida(25);
                     }
                     Inventario.removerItem(item);
                     controller.atualizarInventario();

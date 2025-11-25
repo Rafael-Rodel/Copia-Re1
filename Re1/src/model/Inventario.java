@@ -5,8 +5,6 @@ import java.util.List;
 
 import view.PainelInventario;
 
-// usa o metodo que ta aq pra add os itens no inventario a outra classe é só pra parte visual funcionar
-// -R
 
 public class Inventario {
     private static Itens equipado;

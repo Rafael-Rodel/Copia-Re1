@@ -6,8 +6,9 @@ import view.*;
 import javax.swing.*;
 import java.awt.*;
 
-public class JogoController {
-
+public class JogoController { 
+    private static boolean matouCaoCorredor = false;
+    private static boolean matouZumbiQuadros = false;
     private static boolean viuZumbiCorredor = false;
     private static boolean passagemBar = false;
     private static String emblemaInseridoBar = "dourado";
@@ -62,6 +63,12 @@ public class JogoController {
             case "SalaBusto" -> new SalaBusto();
 
             case "SalaEstatua" -> new SalaEstatua();
+
+            case "SalaQuadros" -> new SalaQuadros();
+
+            case "CorredorCachorro" -> new CorredorCachorro();
+
+            case "PontaCorredor1L" -> new PontaCorredor1L();
         }
     }
 
@@ -384,7 +391,6 @@ public class JogoController {
     }
 
     public static void checarRelogio(Window parent) {
-
         if (emblemaInseridoLareira == "dourado") {
             if (Inventario.possui(Config.chaveEscudo)) {
                 criaPopupPadrao("Relogio", "/resources/imgs/relogio_aberto.png",
@@ -410,6 +416,22 @@ public class JogoController {
         } else {
             criaPopupPadrao("Estatua", null,
                     "A estatua não possui mais nada.", parent);
+        }
+    }
+
+    public static void eventosSalaQuadros(Window parent) {
+        if (!matouZumbiQuadros) {
+            matouZumbiQuadros = true;
+            criaPopupPadrao("Sala Quadros", null, "Ao entrar na sala você se depara com um " + Config.textoZumbi, parent);
+            new CombateController(Config.zumbi).iniciar(parent);;
+        }
+    }
+
+    public static void eventosCorredorCachorro(Window parent) {
+        if (!matouCaoCorredor) {
+            matouCaoCorredor = true;
+            criaPopupPadrao("Corredor", null, "Ao entrar no corredor você se depara com um " + Config.textoZumbi, parent);
+            new CombateController(Config.caoZumbi).iniciar(parent);;
         }
     }
 }

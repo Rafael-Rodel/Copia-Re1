@@ -41,7 +41,6 @@ public class SalaCorredor1 extends Cenario{
         painelMenu.setBorder(borda);
 
         voltar = new JButton("Voltar ao corredor");
-        
 
         voltar.addActionListener(e -> {
             JogoController.trocaCenario(this, "Corredor1AndarOeste");

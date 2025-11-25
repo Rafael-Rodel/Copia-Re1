@@ -8,9 +8,6 @@ import controller.JogoController;
 import model.Cenario;
 import model.Config;
 
-    // esse é pra ser aquele corredor onde a gente encontra o primeiro zumbi
-    // -R
-
 public class Corredor1AndarOeste extends Cenario {
     JButton portaDupla, portaVermelha, porta, sala, salaJantar;
 

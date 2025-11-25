@@ -10,6 +10,7 @@ public class CombateController {
     private Inimigo inimigo;
     private int distanciaAtual;
     JLabel textoDano;
+    private boolean exibindoFeedbackAtaque = false;
 
     public CombateController(Inimigo inimigo) {
         this.inimigo = inimigo;
@@ -85,6 +86,11 @@ public class CombateController {
 
         timer[0] = new Timer(1200, e -> {
 
+            if (inimigo.getVidaInimigo() <= 0) {
+                timer[0].stop();
+                return;
+            }
+
             distanciaAtual -= inimigo.getVelocidade();
             atualizarTexto(texto);
 
@@ -113,7 +119,7 @@ public class CombateController {
                 distanciaAtual = 8;
                 atualizarTexto(texto);
             } else {
-                if (textoDano != null) {
+                if (!exibindoFeedbackAtaque && textoDano != null) {
                     painelDano.remove(textoDano);
                     textoDano = null;
                     painelDano.revalidate();
@@ -130,6 +136,20 @@ public class CombateController {
             distanciaAtual += 1;
             limitarDistancia();
 
+            atacar.setBackground(Color.GRAY);
+            atacar.setForeground(Color.BLACK);
+            atacar.setEnabled(false);
+
+            Timer ataqueTimer = new Timer(2000, e -> {
+                timer[0].start();
+                atacar.setEnabled(true);
+                atacar.setBackground(Color.decode(Config.COR_BOTAO));
+                atacar.setForeground(Color.decode(Config.COR_DESTAQUE));
+            });
+
+            ataqueTimer.setRepeats(false);
+            ataqueTimer.start();
+
             if (arma == null) {
                 JogoController.criaPopupPadrao("Aviso!", null,
                         "Você não possui arma equipada!", popUp);
@@ -137,12 +157,35 @@ public class CombateController {
             }
 
             switch (arma.getNome()) {
-                case "Pistola" , "Pistola d'agua" -> {
-                    JogoController.criaPopupPadrao("Ataque!", null,
-                            "Você atacou com " + arma.getNome() + "!", popUp);
+                case "Pistola", "Pistola d'agua" -> {
+                    exibindoFeedbackAtaque = true;
+
+                    textoDano = new JLabel("Você atacou com " + arma.getNome() + "!");
+                    textoDano.setOpaque(false);
+                    textoDano.setFont(Config.FONTE_PADRAO);
+                    textoDano.setForeground(Color.decode(Config.COR_DESTAQUE));
+                    textoDano.setAlignmentX(Component.CENTER_ALIGNMENT);
+                    painelDano.add(textoDano);
+                    painelDano.revalidate();
+                    painelDano.repaint();
+
+                    Timer removeTextTimer = new Timer(2000, e -> {
+                        if (textoDano != null) {
+                            painelDano.remove(textoDano);
+                            textoDano = null;
+                            painelDano.revalidate();
+                            painelDano.repaint();
+                        }
+                        exibindoFeedbackAtaque = false;
+                    });
+                    removeTextTimer.setRepeats(false);
+                    removeTextTimer.start();
+
                     inimigo.darDano(10);
+                    Config.pistola.setQuantidade(Config.pistola.getQuantidade() - 1);
 
                     if (inimigo.getVidaInimigo() <= 0) {
+                        removeTextTimer.stop();
                         timer[0].stop();
                         popUp.dispose();
                         JogoController.criaPopupPadrao("Vitória!", null,
@@ -151,17 +194,56 @@ public class CombateController {
                     }
                 }
                 case "Faca", "Pau" -> {
+                    exibindoFeedbackAtaque = true;
+
                     if (distanciaAtual > 5) {
-                        JogoController.criaPopupPadrao("Muito longe!", null,
-                                "O inimigo está muito distante, não consigo atacar com a faca...", parent);
+                        textoDano = new JLabel(
+                                "Muito longe, não consigo atacar com " + arma.getNome());
+                        textoDano.setOpaque(false);
+                        textoDano.setFont(Config.FONTE_PADRAO);
+                        textoDano.setForeground(Color.decode(Config.COR_DESTAQUE));
+                        textoDano.setAlignmentX(Component.CENTER_ALIGNMENT);
+                        painelDano.add(textoDano);
+                        painelDano.revalidate();
+                        painelDano.repaint();
+
+                        Timer removeTextTimer = new Timer(3000, e -> {
+                            if (textoDano != null) {
+                                painelDano.remove(textoDano);
+                                textoDano = null;
+                                painelDano.revalidate();
+                                painelDano.repaint();
+                            }
+                        });
+                        removeTextTimer.setRepeats(false);
+                        removeTextTimer.start();
                         return;
                     }
-                    JogoController.criaPopupPadrao("Ataque!", null,
-                            "Você atacou com " + arma.getNome() + "!", popUp);
 
+                    textoDano = new JLabel("Você atacou com " + arma.getNome() + "!");
+                    textoDano.setOpaque(false);
+                    textoDano.setFont(Config.FONTE_PADRAO);
+                    textoDano.setForeground(Color.decode(Config.COR_DESTAQUE));
+                    textoDano.setAlignmentX(Component.CENTER_ALIGNMENT);
+                    painelDano.add(textoDano);
+                    painelDano.revalidate();
+                    painelDano.repaint();
+
+                    Timer removeTextTimer = new Timer(2000, e -> {
+                        if (textoDano != null) {
+                            painelDano.remove(textoDano);
+                            textoDano = null;
+                            painelDano.revalidate();
+                            painelDano.repaint();
+                        }
+                        exibindoFeedbackAtaque = false;
+                    });
+                    removeTextTimer.setRepeats(false);
+                    removeTextTimer.start();
                     inimigo.darDano(5);
 
                     if (inimigo.getVidaInimigo() <= 0) {
+                        removeTextTimer.stop();
                         timer[0].stop();
                         popUp.dispose();
                         JogoController.criaPopupPadrao("Vitória!", null,
@@ -190,8 +272,8 @@ public class CombateController {
             Timer esquivaTimer = new Timer(3000, e -> {
                 timer[0].start();
                 esquivar.setEnabled(true);
-            esquivar.setBackground(Color.decode(Config.COR_BOTAO));
-            esquivar.setForeground(Color.decode(Config.COR_DESTAQUE));
+                esquivar.setBackground(Color.decode(Config.COR_BOTAO));
+                esquivar.setForeground(Color.decode(Config.COR_DESTAQUE));
             });
 
             esquivaTimer.setRepeats(false);

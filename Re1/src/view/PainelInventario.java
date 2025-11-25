@@ -9,10 +9,6 @@ import model.Inventario;
 import model.Itens;
 import model.Personagem;
 
-// usei o GridBag pra fazer o "Position Layout" do inventario e ele se organizar automatico
-// o Grid comum fica mudando o posicionamento sempre q tu add ou retira um item, ruinzão
-// -R
-
 public class PainelInventario extends JPanel {
     private static PainelInventario instancia;
     private Image imagemFundo;
@@ -35,7 +31,7 @@ public class PainelInventario extends JPanel {
 
         gifVida = new JLabel();
         atualizarVida();
-        gifVida.setBounds(174, 388, 165, 100);
+        gifVida.setBounds(175, 388, 165, 95);
         add(gifVida);
 
         imagemEquipado = new JLabel();
@@ -109,7 +105,10 @@ public class PainelInventario extends JPanel {
     public void atualizarVida() {
         String gifPath = getClass().getResource("/resources/imgs/vida_fine.gif").toExternalForm();
 
-        if (Personagem.getVida() < 10) {
+        if (Personagem.getVida() <= 10) {
+            gifPath = getClass().getResource("/resources/imgs/vida_caution.gif").toExternalForm();
+        } 
+        if (Personagem.getVida() <= 5) {
             gifPath = getClass().getResource("/resources/imgs/vida_danger.gif").toExternalForm();
         }
 
