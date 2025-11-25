@@ -50,7 +50,7 @@ public class SalaBusto extends Cenario {
         });
         voltar.addActionListener(e -> {
             if (JogoController.checarPortaTrancadaBar()) {
-                Config.criaPopupPadrao("Porta trancada!", null,
+                JogoController.criaPopupPadrao("Porta trancada!", null,
                         "A porta está trancada! \nO mecanismo foi ativado quando removi o emblema...", this);
             } else {
                 JogoController.trocaCenario(this, "BarAberto");

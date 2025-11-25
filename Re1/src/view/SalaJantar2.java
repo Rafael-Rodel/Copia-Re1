@@ -43,7 +43,7 @@ public class SalaJantar2 extends Cenario {
         voltar = new JButton("Voltar na sala");
 
         vaso.addActionListener(e -> {
-            Config.criaPopupPadrao("Vaso", null, "Apenas um vaso comum \nnão há nada dentro...", this);
+            JogoController.criaPopupPadrao("Vaso", null, "Apenas um vaso comum \nnão há nada dentro...", this);
         });
         lareira.addActionListener(e -> {
             JogoController.pegarBrasaoLareira(this);

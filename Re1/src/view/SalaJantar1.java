@@ -47,7 +47,7 @@ public class SalaJantar1 extends Cenario {
             JogoController.checarRelogio(this);
         });
         quadro.addActionListener(e -> {
-            Config.criaPopupPadrao("Quadro", null, "Uma pintura a óleo \nNão tem importância...", this);
+            JogoController.criaPopupPadrao("Quadro", null, "Uma pintura a óleo \nNão tem importância...", this);
         });
         portaDupla.addActionListener(e -> {
             JogoController.trocaCenario(this, "HallEntrada");

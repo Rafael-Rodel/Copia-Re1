@@ -3,7 +3,6 @@ package controller;
 import javax.swing.*;
 import java.awt.*;
 
-import model.Config;
 import view.PainelMapa;
 
 public class MapaController extends JPanel {
@@ -60,7 +59,7 @@ public class MapaController extends JPanel {
             popMapa.setVisible(true);
         } else {
             Window janela = SwingUtilities.getWindowAncestor(parent);
-            Config.criaPopupPadrao("Mapa", null, "Ainda não possuo o mapa da mansão.", janela);
+            JogoController.criaPopupPadrao("Mapa", null, "Ainda não possuo o mapa da mansão.", janela);
         }
     }
 }

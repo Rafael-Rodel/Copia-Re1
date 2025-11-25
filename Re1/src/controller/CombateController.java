@@ -9,7 +9,7 @@ public class CombateController {
 
     private Inimigo inimigo;
     private int distanciaAtual;
-    JTextArea textoDano;
+    JLabel textoDano;
 
     public CombateController(Inimigo inimigo) {
         this.inimigo = inimigo;
@@ -20,6 +20,7 @@ public class CombateController {
         JDialog popUp = new JDialog(parent, "Combate - " + inimigo.getNome(), Dialog.ModalityType.APPLICATION_MODAL);
         popUp.setSize(500, 500);
         popUp.setLocationRelativeTo(parent);
+        popUp.setUndecorated(true);
 
         JPanel painel = new JPanel();
         painel.setBackground(Color.decode(Config.COR_FUNDO));
@@ -45,7 +46,10 @@ public class CombateController {
         texto.setAlignmentX(Component.CENTER_ALIGNMENT);
         painel.add(texto);
 
-        painel.add(Box.createVerticalStrut(10));
+        JPanel painelDano = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        painelDano.setOpaque(false);
+        painelDano.setPreferredSize(new Dimension(400, 30));
+        painel.add(painelDano);
 
         JPanel painelBotoes = new JPanel(new FlowLayout(FlowLayout.CENTER, 15, 0));
         painelBotoes.setOpaque(false);
@@ -88,25 +92,21 @@ public class CombateController {
                 Personagem.levarDano(inimigo.getDanoInimigo());
 
                 if (textoDano == null) {
-                    textoDano = new JTextArea("LEVOU " + inimigo.getDanoInimigo() + " DE DANO!");
-                    textoDano.setWrapStyleWord(true);
-                    textoDano.setLineWrap(true);
-                    textoDano.setEditable(false);
-                    textoDano.setFocusable(false);
+                    textoDano = new JLabel("LEVOU " + inimigo.getDanoInimigo() + " DE DANO!");
                     textoDano.setOpaque(false);
                     textoDano.setFont(Config.FONTE_PADRAO);
                     textoDano.setForeground(Color.decode(Config.COR_DESTAQUE));
                     textoDano.setAlignmentX(Component.CENTER_ALIGNMENT);
-                    painel.add(textoDano);
-                    painel.revalidate();
-                    painel.repaint();
+                    painelDano.add(textoDano);
+                    painelDano.revalidate();
+                    painelDano.repaint();
                 }
 
                 if (Personagem.getVida() <= 0) {
                     timer[0].stop();
                     popUp.dispose();
-                    Config.criaPopupPadrao("GAME OVER", null,
-                            "Você foi morto pelo " + inimigo.getNome() + "...", parent);
+                    JogoController.criaPopupPadrao("GAME OVER", Config.imgMorte,
+                            Config.textoMorte + " pelo " + inimigo.getNome() + "...", parent);
                     System.exit(0);
                 }
 
@@ -114,10 +114,10 @@ public class CombateController {
                 atualizarTexto(texto);
             } else {
                 if (textoDano != null) {
-                    painel.remove(textoDano);
+                    painelDano.remove(textoDano);
                     textoDano = null;
-                    painel.revalidate();
-                    painel.repaint();
+                    painelDano.revalidate();
+                    painelDano.repaint();
                 }
             }
         });
@@ -131,32 +131,32 @@ public class CombateController {
             limitarDistancia();
 
             if (arma == null) {
-                Config.criaPopupPadrao("Aviso!", null,
+                JogoController.criaPopupPadrao("Aviso!", null,
                         "Você não possui arma equipada!", popUp);
                 return;
             }
 
             switch (arma.getNome()) {
-                case "Pistola" -> {
-                    Config.criaPopupPadrao("Ataque!", null,
+                case "Pistola" , "Pistola d'agua" -> {
+                    JogoController.criaPopupPadrao("Ataque!", null,
                             "Você atacou com " + arma.getNome() + "!", popUp);
                     inimigo.darDano(10);
 
                     if (inimigo.getVidaInimigo() <= 0) {
                         timer[0].stop();
                         popUp.dispose();
-                        Config.criaPopupPadrao("Vitória!", null,
+                        JogoController.criaPopupPadrao("Vitória!", null,
                                 "Você derrotou o " + inimigo.getNome() + "!", parent);
                         return;
                     }
                 }
-                case "Faca" -> {
+                case "Faca", "Pau" -> {
                     if (distanciaAtual > 5) {
-                        Config.criaPopupPadrao("Muito longe!", null,
+                        JogoController.criaPopupPadrao("Muito longe!", null,
                                 "O inimigo está muito distante, não consigo atacar com a faca...", parent);
                         return;
                     }
-                    Config.criaPopupPadrao("Ataque!", null,
+                    JogoController.criaPopupPadrao("Ataque!", null,
                             "Você atacou com " + arma.getNome() + "!", popUp);
 
                     inimigo.darDano(5);
@@ -164,13 +164,13 @@ public class CombateController {
                     if (inimigo.getVidaInimigo() <= 0) {
                         timer[0].stop();
                         popUp.dispose();
-                        Config.criaPopupPadrao("Vitória!", null,
+                        JogoController.criaPopupPadrao("Vitória!", null,
                                 "Você derrotou o " + inimigo.getNome() + "!", parent);
                         return;
                     }
                 }
                 default -> {
-                    Config.criaPopupPadrao("Aviso!", null,
+                    JogoController.criaPopupPadrao("Aviso!", null,
                             "Você não possui arma equipada!", popUp);
                     return;
                 }
@@ -180,22 +180,35 @@ public class CombateController {
         });
 
         esquivar.addActionListener(ev -> {
-            distanciaAtual += 3;
+            esquivar.setBackground(Color.GRAY);
+            esquivar.setForeground(Color.BLACK);
+            esquivar.setEnabled(false);
+            distanciaAtual += 4;
             limitarDistancia();
             atualizarTexto(texto);
+
+            Timer esquivaTimer = new Timer(3000, e -> {
+                timer[0].start();
+                esquivar.setEnabled(true);
+            esquivar.setBackground(Color.decode(Config.COR_BOTAO));
+            esquivar.setForeground(Color.decode(Config.COR_DESTAQUE));
+            });
+
+            esquivaTimer.setRepeats(false);
+            esquivaTimer.start();
         });
 
         fugir.addActionListener(ev -> {
             timer[0].stop();
             popUp.dispose();
             Personagem.levarDano(inimigo.getDanoInimigo());
-            Config.criaPopupPadrao("Fuga!", null, "Você conseguiu fugir, mas o " + inimigo.getNome()
+            JogoController.criaPopupPadrao("Fuga!", null, "Você conseguiu fugir, mas o " + inimigo.getNome()
                     + " conseguiu te atacar, você levou " + inimigo.getDanoInimigo() + " de dano...", parent);
 
             if (Personagem.getVida() <= 0) {
                 timer[0].stop();
                 popUp.dispose();
-                Config.criaPopupPadrao("GAME OVER", null,
+                JogoController.criaPopupPadrao("GAME OVER", null,
                         "Você foi morto pelo " + inimigo.getNome() + "...", parent);
                 System.exit(0);
             }

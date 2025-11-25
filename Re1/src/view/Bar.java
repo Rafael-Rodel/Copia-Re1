@@ -49,7 +49,7 @@ public class Bar extends Cenario {
             JogoController.tocarPiano(this);
         });
         bar.addActionListener(e -> {
-            Config.criaPopupPadrao("Bar", null, "Apenas bebidas comuns, nada util.", this);
+            JogoController.criaPopupPadrao("Bar", null, "Apenas bebidas comuns, nada util.", this);
         });
         estante.addActionListener(e -> {
             JogoController.pegarPartitura(this);

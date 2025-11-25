@@ -56,7 +56,7 @@ public class TelaInicial extends JFrame {
             popHistoria(this);
         });
 
-        Chris.addActionListener(e -> {  
+        Chris.addActionListener(e -> {
             JogoController.iniciaChris();
             popHistoria(this);
         });
@@ -72,6 +72,51 @@ public class TelaInicial extends JFrame {
         painelRotas.add(Chris);
         painelRotas.setOpaque(false);
 
+        JPanel painelCensura = new JPanel(new GridLayout(2, 1));
+        painelCensura.setOpaque(false);
+        painelCensura.setPreferredSize(new Dimension(160, 80));
+        painelCensura.setMaximumSize(new Dimension(160, 80));
+
+        TitledBorder bordaCensura = BorderFactory.createTitledBorder(
+                BorderFactory.createLineBorder(Color.decode(Config.COR_DESTAQUE), 3),
+                "Modo de Jogo",
+                TitledBorder.CENTER, TitledBorder.TOP);
+        bordaCensura.setTitleColor(Color.decode(Config.COR_DESTAQUE));
+        bordaCensura.setTitleFont(Config.FONTE_TITULO_BORDA);
+        painelCensura.setBorder(bordaCensura);
+
+        JRadioButton radioNaoCensurado = new JRadioButton("Original");
+        JRadioButton radioCensurado = new JRadioButton("Censurado");
+
+        ButtonGroup grupoCensura = new ButtonGroup();
+        grupoCensura.add(radioNaoCensurado);
+        grupoCensura.add(radioCensurado);
+
+        radioNaoCensurado.setOpaque(false);
+        radioCensurado.setOpaque(false);
+        radioNaoCensurado.setForeground(Color.decode(Config.COR_TEXTO));
+        radioCensurado.setForeground(Color.decode(Config.COR_TEXTO));
+        radioNaoCensurado.setFont(Config.FONTE_PADRAO);
+        radioCensurado.setFont(Config.FONTE_PADRAO);
+
+        if (Config.censurado) {
+            radioCensurado.setSelected(true);
+        } else {
+            radioNaoCensurado.setSelected(true);
+        }
+
+        radioNaoCensurado.addActionListener(e -> {
+            Config.setCensurado(false);
+        });
+
+        radioCensurado.addActionListener(e -> {
+            Config.setCensurado(true);
+        });
+
+        painelCensura.add(radioNaoCensurado);
+        painelCensura.add(radioCensurado);
+        nav.add(painelCensura);
+
         Sair = new JButton("Sair");
 
         Sair.setForeground(Color.decode(Config.COR_DESTAQUE));
@@ -81,7 +126,7 @@ public class TelaInicial extends JFrame {
 
         nav.setOpaque(false);
         nav.add(painelRotas);
-        nav.add(Box.createHorizontalStrut(150));
+        nav.add(Box.createHorizontalStrut(100));
         nav.add(Sair);
 
         painelPrincipal.add(nav);

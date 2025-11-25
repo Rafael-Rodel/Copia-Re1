@@ -98,13 +98,13 @@ public class HallEntrada extends Cenario {
             JogoController.trocaCenario(this, "SalaEstatua");
         });
         portaPequena.addActionListener(e -> {
-            Config.criaPopupPadrao("Porta pequena à direita", null, "A porta está trancada, há uma gravura de escudo.", this);
+            JogoController.criaPopupPadrao("Porta pequena à direita", null, "A porta está trancada, há uma gravura de escudo.", this);
         });
         escadaria.addActionListener(e -> {
-            Config.criaPopupPadrao("Escadaria", null, "Não posso ir pra lá ainda.", this);
+            JogoController.criaPopupPadrao("Escadaria", null, "Não posso ir pra lá ainda.", this);
         });
         maquina.addActionListener(e -> {
-            Config.criaPopupPadrao("Maquina de escrever", "/resources/imgs/maquina.png",
+            JogoController.criaPopupPadrao("Maquina de escrever", "/resources/imgs/maquina.png",
                     "Uma velha maquina de escrever.\n" + "Se eu tivesse tinta poderia salvar o jogo.", this);
         });
 

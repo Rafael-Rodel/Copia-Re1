@@ -49,10 +49,10 @@ public class Corredor1AndarOeste extends Cenario {
         salaJantar = new JButton("Sala de jantar");
 
         porta.addActionListener(e -> {
-            Config.criaPopupPadrao("Porta de madeira", null, "Essa porta esta trancada.", this);
+            JogoController.criaPopupPadrao("Porta de madeira", null, "Essa porta esta trancada.", this);
         });
         portaDupla.addActionListener(e -> {
-            Config.criaPopupPadrao("Porta dupla", null, "Parece trancado por dentro", this);
+            JogoController.criaPopupPadrao("Porta dupla", null, "Parece trancado por dentro", this);
         });
         portaVermelha.addActionListener(e -> {
             JogoController.trocaCenario(this, JogoController.verificarBar());

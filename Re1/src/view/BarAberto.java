@@ -47,13 +47,13 @@ public class BarAberto extends Cenario {
         voltar = new JButton("voltar");
 
         piano.addActionListener(e -> {
-            Config.criaPopupPadrao("Piano", null, "Um belo piano grande que abre passagens secretas.", this);
+            JogoController.criaPopupPadrao("Piano", null, "Um belo piano grande que abre passagens secretas.", this);
         });
         bar.addActionListener(e -> {
-            Config.criaPopupPadrao("Bar", null, "Apenas bebidas comuns, nada util.", this);
+            JogoController.criaPopupPadrao("Bar", null, "Apenas bebidas comuns, nada util.", this);
         });
         estante.addActionListener(e -> {
-            Config.criaPopupPadrao("Estante", "/resources/imgs/estante_vazia.png",
+            JogoController.criaPopupPadrao("Estante", "/resources/imgs/estante_vazia.png",
                     "Uma estante com livros estranhos...", this);
         });
         passagem.addActionListener(e -> {
