@@ -7,20 +7,21 @@ import javax.swing.*;
 import java.awt.*;
 
 public class JogoController { 
+    private static boolean primeiraVez1L = true;
     private static boolean matouCaoCorredor = false;
     private static boolean matouZumbiQuadros = false;
+    private static boolean matouZumbiPassagem = false;
     private static boolean viuZumbiCorredor = false;
     private static boolean passagemBar = false;
+    private static boolean primeiraVezHall = true;
     private static String emblemaInseridoBar = "dourado";
     private static String emblemaInseridoLareira = "velho";
     private static String cenarioAtual;
+    private static String shotgunInserida = "nova";
+    private static int distanciaArmadilha = 5;
 
     public void iniciarJogo() {
         new PainelInventario();
-
-        // Inventario.adicionarItem(Config.TESTE1);
-        // Inventario.adicionarItem(Config.TESTE2);
-        // Inventario.adicionarItem(Config.TESTE3);
 
         new TelaInicial();
     }
@@ -31,6 +32,7 @@ public class JogoController {
         Inventario.adicionarItem(Config.pistola);
         Inventario.adicionarItem(Config.faca);
         Inventario.adicionarItem(Config.spray);
+        Inventario.adicionarItem(Config.shotgunQuebrada);
     }
 
     public static void iniciaChris() {
@@ -52,7 +54,7 @@ public class JogoController {
 
             case "SalaJantar2" -> new SalaJantar2();
 
-            case "Corredor1AndarOeste" -> new Corredor1AndarOeste();
+            case "Corredor1Oeste" -> new Corredor1Oeste();
 
             case "SalaCorredor1" -> new SalaCorredor1();
 
@@ -69,6 +71,14 @@ public class JogoController {
             case "CorredorCachorro" -> new CorredorCachorro();
 
             case "PontaCorredor1L" -> new PontaCorredor1L();
+
+            case "Banheiro" -> new Banheiro();
+
+            case "Corredor1Leste" -> new Corredor1Leste();
+
+            case "SalaArmadilha" -> new SalaArmadilha();
+
+            case "SalaEstar" -> new SalaEstar();
         }
     }
 
@@ -78,13 +88,13 @@ public class JogoController {
 
     public static void criaPopupPadrao(String titulo, String caminhoImagem, String textoPop, Window parent) {
         JDialog popPadrao = new JDialog(parent, titulo, Dialog.ModalityType.APPLICATION_MODAL);
-        popPadrao.setSize(400, 250);
+        popPadrao.setSize(500, 250);
         popPadrao.setLocationRelativeTo(parent);
 
         JPanel painel = new JPanel();
         painel.setBackground(Color.decode(Config.COR_FUNDO));
         painel.setLayout(new BoxLayout(painel, BoxLayout.Y_AXIS));
-        painel.setBorder(BorderFactory.createEmptyBorder(30, 30, 30, 30));
+        painel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
         if (caminhoImagem != null) {
             popPadrao.setSize(500, 450);
@@ -136,21 +146,43 @@ public class JogoController {
 
     public static void verificarEventosHall(JFrame parent) {
         if (Personagem.getChris() && viuZumbiCorredor) {
-            Itens.popupItem("pistola", "Você vê uma pistola no chão!", parent);
+            Itens.popupItem(Config.textoPistola, "Você vê uma pistola no chão!", parent);
             Inventario.adicionarItem(Config.pistola);
+        }
+
+        if (primeiraVezHall) {
+            primeiraVezHall = false;
+            criaPopupPadrao("História", null,
+                    "Ao entrar, sua equipe ouve um barulho de tiro na parte oeste da mansão,\nVocês decidem se separar para explorar...",
+                    parent);
         }
     }
 
     public static void pegarBrasaoLareira(JFrame parent) {
         if (emblemaInseridoLareira == null) {
             JDialog popLareira = new JDialog(parent, "Lareira", true);
-            popLareira.setSize(600, 250);
+            popLareira.setSize(600, 450);
             popLareira.setLocationRelativeTo(parent);
 
             JPanel painel = new JPanel();
             painel.setBackground(Color.decode(Config.COR_FUNDO));
             painel.setLayout(new BoxLayout(painel, BoxLayout.Y_AXIS));
             painel.setBorder(BorderFactory.createEmptyBorder(30, 30, 30, 30));
+
+            ImageIcon imagem = new ImageIcon(Itens.class.getResource("/resources/imgs/lareira_vazia.png"));
+            Image redimensImage = imagem.getImage().getScaledInstance(300, 200,
+                    Image.SCALE_SMOOTH);
+            imagem = new ImageIcon(redimensImage);
+
+            JPanel painelImagem = new JPanel();
+            painelImagem.setOpaque(false);
+            painelImagem.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 0));
+
+            JLabel img = new JLabel(imagem);
+            img.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+            painelImagem.add(img);
+            painel.add(painelImagem);
 
             JTextArea texto = new JTextArea("O espaço na lareira esta vazio, deseja colocar algum emblema?");
             texto.setWrapStyleWord(true);
@@ -398,7 +430,7 @@ public class JogoController {
             } else {
                 criaPopupPadrao("Relogio", "/resources/imgs/relogio_aberto.png",
                         "O relógio se moveu sozinho! Atrás há um cofre agora aberto. \nHá uma chave no cofre.", parent);
-                Itens.popupItem("Chave escudo", "Você achou uma chave!", null);
+                Itens.popupItem("Chave escudo", "Você achou uma chave!", parent);
                 Inventario.adicionarItem(Config.chaveEscudo);
             }
         } else {
@@ -422,16 +454,226 @@ public class JogoController {
     public static void eventosSalaQuadros(Window parent) {
         if (!matouZumbiQuadros) {
             matouZumbiQuadros = true;
-            criaPopupPadrao("Sala Quadros", null, "Ao entrar na sala você se depara com um " + Config.textoZumbi, parent);
-            new CombateController(Config.zumbi).iniciar(parent);;
+            criaPopupPadrao("Sala Quadros", null, "Ao entrar na sala você se depara com um " + Config.textoZumbi,
+                    parent);
+            new CombateController(Config.zumbi).iniciar(parent);
+            ;
         }
     }
 
     public static void eventosCorredorCachorro(Window parent) {
         if (!matouCaoCorredor) {
             matouCaoCorredor = true;
-            criaPopupPadrao("Corredor", null, "Ao entrar no corredor você se depara com um " + Config.textoZumbi, parent);
-            new CombateController(Config.caoZumbi).iniciar(parent);;
+            criaPopupPadrao("Corredor", null, "Ao entrar no corredor você se depara com um " + Config.textoCaoZumbi,
+                    parent);
+            new CombateController(Config.caoZumbi).iniciar(parent);
+            ;
+        }
+    }
+
+    public static void eventosCorredor1L(Window parent) {
+        Itens itemSpray = Config.spray;
+
+        if (primeiraVez1L) {
+            Itens.popupItem("spray", "Você encontra uma lata de spray no chão!", parent);
+
+            if (Inventario.possui(itemSpray)) {
+                itemSpray.setQuantidade(itemSpray.getQuantidade() + 1);
+            } else {
+                Inventario.adicionarItem(Config.spray);
+            }
+            primeiraVez1L = false;
+        }
+    }
+
+    public static void eventosSalaArmadilha(Window parent) {
+        if (shotgunInserida == null) {
+            criaPopupPadrao("Armadilha!", null, "A " + Config.textoShotgun + " era uma armadilha!", parent);
+
+            JDialog popUp = new JDialog(parent, "Armadilha!", Dialog.ModalityType.APPLICATION_MODAL);
+            popUp.setSize(500, 400);
+            popUp.setLocationRelativeTo(parent);
+            popUp.setUndecorated(true);
+
+            JPanel painel = new JPanel();
+            painel.setBackground(Color.decode(Config.COR_FUNDO));
+            painel.setLayout(new BoxLayout(painel, BoxLayout.Y_AXIS));
+            painel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+
+            ImageIcon icon = new ImageIcon(JogoController.class.getResource("/resources/imgs/teto.png"));
+            Image scaled = icon.getImage().getScaledInstance(400, 300, Image.SCALE_SMOOTH);
+            JLabel imagem = new JLabel(new ImageIcon(scaled));
+            imagem.setAlignmentX(Component.CENTER_ALIGNMENT);
+            painel.add(imagem);
+
+            painel.add(Box.createVerticalStrut(10));
+
+            JTextArea texto = new JTextArea("As portas estão trancadas!\nO teto está a " + distanciaArmadilha + " metros de distancia!");
+            texto.setWrapStyleWord(true);
+            texto.setLineWrap(true);
+            texto.setEditable(false);
+            texto.setFocusable(false);
+            texto.setOpaque(false);
+            texto.setFont(Config.FONTE_PADRAO);
+            texto.setForeground(Color.decode(Config.COR_TEXTO));
+            texto.setAlignmentX(Component.CENTER_ALIGNMENT);
+            painel.add(texto);
+
+            final Timer armadilhaTimer[] = new Timer[1]; 
+            
+            armadilhaTimer[0] = new Timer(1500, e -> {
+                distanciaArmadilha--;
+
+                texto.setText("As portas estão trancadas!\nO teto está a " + distanciaArmadilha + " metros de distancia!");
+
+                popUp.revalidate();
+                popUp.repaint();
+
+                if (Personagem.getJill()) {
+                    if (distanciaArmadilha == 2) {
+                        armadilhaTimer[0].stop();
+                        popUp.dispose();
+                        criaPopupPadrao("Ajuda!", null, "'Jill você está ai? Se afaste vou derrubar a porta!'", parent);
+                        criaPopupPadrao("História", "/resources/imgs/jill_sanduiche.png", "Jill - Muito obrigada Barry, se você não estivesse aqui eu poderia ter morrido!\nBarry - Se eu não chegasse a tempo você teria virado um sanduiche de Jill, mas chega de conversa, vamos continuar a exploração!", parent);
+                        trocaCenario(parent, "Corredor1Leste");
+                    }
+                }
+
+                if (distanciaArmadilha == 0) {
+                    armadilhaTimer[0].stop();
+                    popUp.dispose();
+                    JogoController.criaPopupPadrao("GAME OVER", Config.imgMorte, "Você morreu na armadilha...", parent);
+                    System.exit(0);
+                }
+            });
+
+            armadilhaTimer[0].start();
+            popUp.add(painel);
+            popUp.setVisible(true);
+        }
+    }
+
+    public static void pegarShotgun(JFrame parent) {
+        if (shotgunInserida == null) {
+            JDialog popShotgun = new JDialog(parent, "Moldura", true);
+            popShotgun.setSize(600, 450);
+            popShotgun.setLocationRelativeTo(parent);
+
+            JPanel painel = new JPanel();
+            painel.setBackground(Color.decode(Config.COR_FUNDO));
+            painel.setLayout(new BoxLayout(painel, BoxLayout.Y_AXIS));
+            painel.setBorder(BorderFactory.createEmptyBorder(30, 30, 30, 30));
+
+            ImageIcon imagem = new ImageIcon(Itens.class.getResource("/resources/imgs/moldura_vazia.png"));
+            Image redimensImage = imagem.getImage().getScaledInstance(300, 200,
+                    Image.SCALE_SMOOTH);
+            imagem = new ImageIcon(redimensImage);
+
+            JPanel painelImagem = new JPanel();
+            painelImagem.setOpaque(false);
+            painelImagem.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 0));
+
+            JLabel img = new JLabel(imagem);
+            img.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+            painelImagem.add(img);
+            painel.add(painelImagem);
+
+            JTextArea texto = new JTextArea("O espaço na moldura esta vazio, deseja colocar alguma coisa?");
+            texto.setWrapStyleWord(true);
+            texto.setLineWrap(true);
+            texto.setEditable(false);
+            texto.setFocusable(false);
+            texto.setOpaque(false);
+            texto.setFont(Config.FONTE_PADRAO);
+            texto.setForeground(Color.decode(Config.COR_TEXTO));
+
+            JButton nova = new JButton(Config.textoShotgun + " nova");
+            JButton velho = new JButton(Config.textoShotgunQuebrada);
+
+            nova.setForeground(Color.decode(Config.COR_TEXTO));
+            nova.setBackground(Color.decode(Config.COR_BOTAO));
+            nova.setFont(Config.FONTE_BOTAO);
+            nova.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+            velho.setForeground(Color.decode(Config.COR_TEXTO));
+            velho.setBackground(Color.decode(Config.COR_BOTAO));
+            velho.setFont(Config.FONTE_BOTAO);
+            velho.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+            painel.add(Box.createVerticalStrut(20));
+            painel.add(texto);
+
+            if (Inventario.possui(Config.shotgun)) {
+                nova.addActionListener(e -> {
+                    Inventario.removerItem(Config.shotgun);
+                    shotgunInserida = "nova";
+                    JogoController.trocaCenario(parent, "SalaEstar");
+                    popShotgun.dispose();
+
+                });
+                painel.add(Box.createVerticalStrut(10));
+                painel.add(nova);
+            }
+            if (Inventario.possui(Config.shotgunQuebrada)) {
+                velho.addActionListener(e -> {
+                    Inventario.removerItem(Config.shotgunQuebrada);
+                    shotgunInserida = "velho";
+                    JogoController.trocaCenario(parent, "SalaEstar");
+                    popShotgun.dispose();
+                });
+                painel.add(Box.createVerticalStrut(10));
+                painel.add(velho);
+            }
+
+            popShotgun.add(painel);
+            popShotgun.setVisible(true);
+        } else {
+            criaPopupPadrao("Moldura", null, "A " + Config.textoShotgun
+                    + " na moldura parece real, \nAo tirar a arma você ouve um barulho de mecanismo ativando, sera uma armadilha?",
+                    parent);
+            if (shotgunInserida == "nova") {
+                shotgunInserida = null;
+                Itens.popupItem(Config.textoShotgun, "Você pegou uma " + Config.textoShotgun, parent);
+                Inventario.adicionarItem(Config.shotgun);
+            } else {
+                shotgunInserida = null;
+                Itens.popupItem(Config.textoShotgunQuebrada, "Você pegou uma " + Config.textoShotgunQuebrada, parent);
+                Inventario.adicionarItem(Config.shotgunQuebrada);
+            }
+        }
+    }
+
+    public static void pegarMunicaoPistola(Window parent) {
+        Itens itemPistola = Config.pistola;
+
+        criaPopupPadrao("Munição", "/resources/imgs/carregador.png", "Voçê achou um carregador de pistola!", parent);
+        itemPistola.setQuantidade(itemPistola.getQuantidade() + 7);
+    }
+
+    public static void eventosBanheiro(Window parent) {
+        if (Personagem.getChris()) {
+            Itens.popupItem("Chave de mesa", "Esvaziando a banheira você acha uma chave de mesa.", parent);
+            Inventario.adicionarItem(Config.chaveMesa);
+        } else {
+            criaPopupPadrao("Banheira", null, "Não há nada dentro da banheira.", parent);
+        }
+    }
+
+    public static void checkArmadilha(Window parent) {
+        if (shotgunInserida == null) {
+            criaPopupPadrao("Bloqueado", null, "A armadilha agora está bloqueando a porta...", parent);
+        } else {
+            trocaCenario(parent, "SalaEstar");
+        }
+    }
+
+    public static void eventoPassagem(Window parent) {
+        if (!matouZumbiPassagem) {
+            matouZumbiPassagem = true;
+            criaPopupPadrao("Passagem", null, "Ao entrar na passagem você se depara com um " + Config.textoZumbi,
+                    parent);
+            new CombateController(Config.zumbi).iniciar(parent);
         }
     }
 }

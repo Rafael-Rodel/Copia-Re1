@@ -77,7 +77,7 @@ public class InventarioController {
 
                 quantidadeSlot.setBorder(BorderFactory.createEmptyBorder(45, 0, 0, 5));
 
-                quantidadeSlot.setAlignmentX(1.0f); 
+                quantidadeSlot.setAlignmentX(1.0f);
                 quantidadeSlot.setAlignmentY(1.0f);
 
                 JPanel overlay = new JPanel();
@@ -106,7 +106,6 @@ public class InventarioController {
                 slotsQuantidade.put(pos, quantidadeSlot);
             }
         }
-
     }
 
     public void colocarItem(Itens item) {
@@ -264,8 +263,7 @@ public class InventarioController {
                     } else {
                         Personagem.setVida(25);
                     }
-                    Inventario.removerItem(item);
-                    controller.atualizarInventario();
+                    Inventario.consumirItem(item);
                     PainelInventario.getInstancia().atualizarVida();
                     popPadrao.dispose();
                 });

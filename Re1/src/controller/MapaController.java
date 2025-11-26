@@ -35,29 +35,37 @@ public class MapaController extends JPanel {
             JLabel gifLabel = new JLabel(iconRedimensionado);
 
             switch (JogoController.getCenarioAtual()) {
-                case "HallEntrada" -> gifLabel.setBounds(400, 420, larguraGif, alturaGif);
+                case "HallEntrada" -> gifLabel.setBounds(380, 440, larguraGif, alturaGif);
 
-                case "SalaJantar1" -> gifLabel.setBounds(280, 400, larguraGif, alturaGif);
+                case "SalaJantar1" -> gifLabel.setBounds(250, 390, larguraGif, alturaGif);
 
-                case "SalaJantar2" -> gifLabel.setBounds(180, 400, larguraGif, alturaGif);
+                case "SalaJantar2" -> gifLabel.setBounds(140, 390, larguraGif, alturaGif);
 
-                case "Corredor1AndarOeste" -> gifLabel.setBounds(140, 345, larguraGif, alturaGif);
+                case "Corredor1Oeste" -> gifLabel.setBounds(125, 327, larguraGif, alturaGif);
 
-                case "SalaCorredor1" -> gifLabel.setBounds(85, 330, larguraGif, alturaGif);
+                case "SalaCorredor1" -> gifLabel.setBounds(70, 320, larguraGif, alturaGif);
 
-                case "Bar" -> gifLabel.setBounds(240, 295, larguraGif, alturaGif);
+                case "Bar" -> gifLabel.setBounds(195, 260, larguraGif, alturaGif);
 
-                case "BarAberto" -> gifLabel.setBounds(240, 295, larguraGif, alturaGif);
+                case "BarAberto" -> gifLabel.setBounds(195, 260, larguraGif, alturaGif);
 
-                case "SalaBusto" -> gifLabel.setBounds(230, 220, larguraGif, alturaGif);
+                case "SalaBusto" -> gifLabel.setBounds(195, 185, larguraGif, alturaGif);
 
-                case "SalaEstatua" -> gifLabel.setBounds(510, 420, larguraGif, alturaGif);
+                case "SalaEstatua" -> gifLabel.setBounds(510, 430, larguraGif, alturaGif);
 
-                case "SalaQuadros" -> gifLabel.setBounds(510, 420, larguraGif, alturaGif);
+                case "SalaQuadros" -> gifLabel.setBounds(575, 375, larguraGif, alturaGif);
 
-                case "CorredorCachorro" -> gifLabel.setBounds(510, 420, larguraGif, alturaGif);
+                case "CorredorCachorro" -> gifLabel.setBounds(660, 450, larguraGif, alturaGif);
 
-                case "PontaCorredor1L" -> gifLabel.setBounds(510, 420, larguraGif, alturaGif);
+                case "PontaCorredor1L" -> gifLabel.setBounds(690, 245, larguraGif, alturaGif);
+
+                case "Banheiro" -> gifLabel.setBounds(680, 190, larguraGif, alturaGif);
+
+                case "Corredor1Leste" -> gifLabel.setBounds(580, 220, larguraGif, alturaGif);
+
+                case "SalaArmadilha" -> gifLabel.setBounds(580, 220, larguraGif, alturaGif);
+
+                case "SalaEstar" ->gifLabel.setBounds(580, 220, larguraGif, alturaGif);
             }
 
             popMapa.add(mapa);

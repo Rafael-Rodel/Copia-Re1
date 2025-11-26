@@ -1,4 +1,5 @@
 package view;
+
 import java.awt.*;
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
@@ -8,16 +9,19 @@ import controller.JogoController;
 import model.Cenario;
 import model.Config;
 
-public class CorredorCachorro extends Cenario{
+public class CorredorCachorro extends Cenario {
 
-    public CorredorCachorro(){
+    JButton armario;
+
+    public CorredorCachorro() {
         super("Corredor");
 
         JogoController.eventosCorredorCachorro(this);
 
         mostrarImagem("/resources/imgs/corredor_cachorro.png");
 
-        mostrarTexto("Um corredor com as janelas quebradas e repleto de velharia bizarra \nHá apenas uma porta à esquerda...");
+        mostrarTexto(
+                "Um corredor com as janelas quebradas e repleto de velharia bizarra, parece haver algo embaixo de um dos armarios. \nHá apenas uma porta à esquerda...");
 
         configurarBotoes();
 
@@ -27,8 +31,8 @@ public class CorredorCachorro extends Cenario{
     @Override
     public void configurarBotoes() {
         painelMenu = new JPanel();
-        painelMenu.setPreferredSize(new Dimension(350, 120));
-        painelMenu.setMaximumSize(new Dimension(350, 120));
+        painelMenu.setPreferredSize(new Dimension(500, 120));
+        painelMenu.setMaximumSize(new Dimension(500, 120));
         painelMenu.setLayout(new FlowLayout(FlowLayout.CENTER));
         painelMenu.setOpaque(false);
         TitledBorder borda = BorderFactory.createTitledBorder(
@@ -41,10 +45,15 @@ public class CorredorCachorro extends Cenario{
         painelMenu.setBorder(borda);
 
         portaEsquerda = new JButton("Porta esquerda");
+        armario = new JButton("Checar armario");
         voltar = new JButton("Sala com Estatua");
 
         voltar.addActionListener(e -> {
             JogoController.trocaCenario(this, "SalaEstatua");
+        });
+
+        armario.addActionListener(e -> {
+            JogoController.pegarMunicaoPistola(this);
         });
 
         portaEsquerda.addActionListener(e -> {
@@ -54,6 +63,10 @@ public class CorredorCachorro extends Cenario{
         voltar.setForeground(Color.decode(Config.COR_TEXTO));
         voltar.setBackground(Color.decode(Config.COR_BOTAO));
         voltar.setFont(Config.FONTE_BOTAO);
+
+        armario.setForeground(Color.decode(Config.COR_TEXTO));
+        armario.setBackground(Color.decode(Config.COR_BOTAO));
+        armario.setFont(Config.FONTE_BOTAO);
 
         portaEsquerda.setForeground(Color.decode(Config.COR_TEXTO));
         portaEsquerda.setBackground(Color.decode(Config.COR_BOTAO));
@@ -77,12 +90,14 @@ public class CorredorCachorro extends Cenario{
         inventario.setFont(Config.FONTE_BOTAO);
 
         navMenu.add(portaEsquerda);
+        navMenu.add(armario);
         navMenu.add(voltar);
 
         painelMenu.add(navMenu);
         painelMenu.add(navInventario);
         painelPrincipal.add(painelMenu);
     }
+
     public static void main(String[] args) {
         new CorredorCachorro();
     }

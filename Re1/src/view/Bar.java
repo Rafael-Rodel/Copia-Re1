@@ -55,7 +55,7 @@ public class Bar extends Cenario {
             JogoController.pegarPartitura(this);
         });
         voltar.addActionListener(e -> {
-            JogoController.trocaCenario(this, "Corredor1AndarOeste");
+            JogoController.trocaCenario(this, "Corredor1Oeste");
         });
 
         piano.setForeground(Color.decode(Config.COR_TEXTO));

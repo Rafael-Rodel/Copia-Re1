@@ -1,5 +1,4 @@
 package view;
-
 import java.awt.*;
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
@@ -9,18 +8,16 @@ import controller.JogoController;
 import model.Cenario;
 import model.Config;
 
-public class PontaCorredor1L extends Cenario {
+public class SalaArmadilha extends Cenario{
 
-    JButton continuar;
+    public SalaArmadilha(){
+        super("Sala fechada");
 
-    public PontaCorredor1L() {
-        super("Corredor leste");
+        JogoController.eventosSalaArmadilha(this);
 
-        JogoController.eventosCorredor1L(this);
+        mostrarImagem("/resources/imgs/sala_armadilha.png");
 
-        mostrarImagem("/resources/imgs/ponta_corredor1L.png");
-
-        mostrarTexto("Você esta no inicio de um grande corredor, há 2 portas e a continuação do corredor...");
+        mostrarTexto("uma estranha sala fechada com apenas 2 portas...");
 
         configurarBotoes();
 
@@ -30,8 +27,8 @@ public class PontaCorredor1L extends Cenario {
     @Override
     public void configurarBotoes() {
         painelMenu = new JPanel();
-        painelMenu.setPreferredSize(new Dimension(700, 120));
-        painelMenu.setMaximumSize(new Dimension(700, 120));
+        painelMenu.setPreferredSize(new Dimension(350, 120));
+        painelMenu.setMaximumSize(new Dimension(350, 120));
         painelMenu.setLayout(new FlowLayout(FlowLayout.CENTER));
         painelMenu.setOpaque(false);
         TitledBorder borda = BorderFactory.createTitledBorder(
@@ -43,25 +40,15 @@ public class PontaCorredor1L extends Cenario {
         borda.setTitleFont(Config.FONTE_TITULO_BORDA);
         painelMenu.setBorder(borda);
 
-        portaDireita = new JButton("Porta direita");
-        portaEsquerda = new JButton("Porta esquerda");
-        voltar = new JButton("Corredor anterior");
-        continuar = new JButton("Continuar no corredor");
+        portaEsquerda = new JButton("Porta à frente");
+        voltar = new JButton("Voltar ao corredor");
 
         voltar.addActionListener(e -> {
-            JogoController.trocaCenario(this, "CorredorCachorro");
+            JogoController.trocaCenario(this, "Corredor1Leste");
         });
 
         portaEsquerda.addActionListener(e -> {
-            JogoController.trocaCenario(this, "Banheiro");
-        });
-
-        portaDireita.addActionListener(e -> {
-            JogoController.criaPopupPadrao("Trancado", null, "A porta esta trancada, há um escudo entalhado", this);
-        });
-
-        continuar.addActionListener(e -> {
-            JogoController.trocaCenario(this, "Corredor1Leste");
+            JogoController.trocaCenario(this, "SalaEstar");
         });
 
         voltar.setForeground(Color.decode(Config.COR_TEXTO));
@@ -71,14 +58,6 @@ public class PontaCorredor1L extends Cenario {
         portaEsquerda.setForeground(Color.decode(Config.COR_TEXTO));
         portaEsquerda.setBackground(Color.decode(Config.COR_BOTAO));
         portaEsquerda.setFont(Config.FONTE_BOTAO);
-
-        portaDireita.setForeground(Color.decode(Config.COR_TEXTO));
-        portaDireita.setBackground(Color.decode(Config.COR_BOTAO));
-        portaDireita.setFont(Config.FONTE_BOTAO);
-
-        continuar.setForeground(Color.decode(Config.COR_TEXTO));
-        continuar.setBackground(Color.decode(Config.COR_BOTAO));
-        continuar.setFont(Config.FONTE_BOTAO);
 
         JPanel navMenu = new JPanel();
         navMenu.setOpaque(false);
@@ -97,17 +76,14 @@ public class PontaCorredor1L extends Cenario {
         inventario.setAlignmentX(Component.CENTER_ALIGNMENT);
         inventario.setFont(Config.FONTE_BOTAO);
 
-        navMenu.add(voltar);
         navMenu.add(portaEsquerda);
-        navMenu.add(portaDireita);
-        navMenu.add(continuar);
+        navMenu.add(voltar);
 
         painelMenu.add(navMenu);
         painelMenu.add(navInventario);
         painelPrincipal.add(painelMenu);
     }
-
     public static void main(String[] args) {
-        new PontaCorredor1L();
+        new SalaArmadilha();
     }
 }

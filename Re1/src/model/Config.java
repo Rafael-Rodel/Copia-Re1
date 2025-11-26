@@ -11,6 +11,7 @@ public class Config {
         public static String imgFaca = "/resources/imgs/faca.png";
         public static String imgMorte = "/resources/imgs/game_over.jpg";
         public static String imgShotgun = "/resources/imgs/shotgun.png";
+        public static String imgShotgunQuebrada = "/resources/imgs/shotgun_quebrada.png";
         public static String imgPrimeiroZumbi = "/resources/imgs/primeiro_zumbi.png";
 
         public static String textoZumbi = "Zumbi";
@@ -19,6 +20,7 @@ public class Config {
         public static String textoFaca = "Faca";
         public static String textoMorte = "Você foi morto";
         public static String textoShotgun = "Shotgun";
+        public static String textoShotgunQuebrada = "Shotgun Quebrada";
 
         public static final int LARGURA_TELA = 1280;
         public static final int ALTURA_TELA = 720;
@@ -35,7 +37,8 @@ public class Config {
         public static final Font FONTE_TITULO_BORDA = new Font("Arial", Font.BOLD, 18);
         public static final Font FONTE_PADRAO = new Font("Arial", Font.BOLD, 20);
 
-        public static Itens pistola, faca, spray, emblemaDourado, emblemaVelho, partitura, chaveEscudo;
+        public static Itens pistola, faca, shotgun, spray, emblemaDourado, emblemaVelho, partitura, chaveEscudo,
+                        chaveMesa, shotgunQuebrada;
         public static Inimigo zumbi, caoZumbi;
 
         static {
@@ -51,6 +54,9 @@ public class Config {
                                 "Um " + textoFaca
                                                 + " padrão das Forças Especiais. Tem pouco alcance e causa pouco dano, mas pode salvar em situações críticas. Causa 5 de dano.",
                                 "arma", 1);
+                shotgun = new Itens(textoShotgun, imgShotgun,
+                                "Uma classica " + textoShotgun + " pump-action, ela utiliza cartuchos proprios. Causa 25 de dano.",
+                                "arma", 7);
                 spray = new Itens("Spray", "/resources/imgs/spray.png",
                                 "Restaura totalmente a saúde. Um item valioso em momentos de perigo.", "consumivel", 1);
                 emblemaDourado = new Itens("Emblema dourado", "/resources/imgs/emblema_dourado.png",
@@ -63,11 +69,15 @@ public class Config {
                                 "O titulo diz 'a sonata do luar' de Beethoven.", "chave", 1);
                 chaveEscudo = new Itens("Chave escudo", "/resources/imgs/chave_escudo.png",
                                 "Uma chave com um escudo entalhado", "chave", 1);
+                chaveMesa = new Itens("Chave de mesa", "/resources/imgs/chave_mesa.png",
+                                "Uma chave para uma gaveta de mesa.", "chave", 1);
+                shotgunQuebrada = new Itens(textoShotgunQuebrada, imgShotgunQuebrada,
+                                "Uma " + textoShotgunQuebrada + " e velha, imagino se isso sera util...", "chave", 1);
 
                 zumbi = new Inimigo(textoZumbi, imgZumbi,
                                 "O " + textoZumbi + " se aproxima lentamente...", 40, 5, 6, 1);
                 caoZumbi = new Inimigo(textoCaoZumbi, imgCaoZumbi,
-                                "O " + textoCaoZumbi + " avança rapidamente!", 25, 8, 4, 2);
+                                "O " + textoCaoZumbi + " avança rapidamente!", 25, 7, 4, 2);
         }
 
         public static void setCensurado(boolean censura) {
@@ -81,12 +91,14 @@ public class Config {
                         imgMorte = "/resources/imgs/game_over_censurado.jpg";
                         imgShotgun = "/resources/imgs/shotgun_censurada.png";
                         imgPrimeiroZumbi = "/resources/imgs/zumbi_censurado.png";
+                        imgShotgunQuebrada = "/resources/imgs/shotgun_quebrada_censurada.png";
                         textoZumbi = "Ursinho";
                         textoCaoZumbi = "Cão fofinho";
                         textoPistola = "Pistola d'agua";
                         textoFaca = "Pau";
                         textoMorte = "Você foi abraçado";
                         textoShotgun = "Arma de dardo";
+                        textoShotgunQuebrada = "Arma de dardo quebrada";
                 } else {
                         imgZumbi = "/resources/imgs/zumbi.png";
                         imgCaoZumbi = "/resources/imgs/cao_zumbi.png";
@@ -94,6 +106,7 @@ public class Config {
                         imgFaca = "/resources/imgs/faca.png";
                         imgMorte = "/resources/imgs/game_over.jpg";
                         imgShotgun = "/resources/imgs/shotgun.png";
+                        imgShotgunQuebrada = "/resources/imgs/shotgun_quebrada.png";
                         imgPrimeiroZumbi = "/resources/imgs/primeiro_zumbi.png";
                         textoZumbi = "Zumbi";
                         textoCaoZumbi = "Cão Zumbi";
@@ -101,6 +114,7 @@ public class Config {
                         textoFaca = "Faca";
                         textoMorte = "Você foi morto";
                         textoShotgun = "Shotgun";
+                        textoShotgunQuebrada = "Shotgun Quebrada";
                 }
 
                 inicializaItensEInimigos();

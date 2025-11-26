@@ -49,7 +49,7 @@ public class SalaJantar2 extends Cenario {
             JogoController.pegarBrasaoLareira(this);
         });
         portaDireita.addActionListener(e -> {
-            JogoController.trocaCenario(this, "Corredor1AndarOeste");
+            JogoController.trocaCenario(this, "Corredor1Oeste");
         });
         voltar.addActionListener(e -> {
             JogoController.trocaCenario(this, "SalaJantar1");

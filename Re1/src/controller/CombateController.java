@@ -11,6 +11,7 @@ public class CombateController {
     private int distanciaAtual;
     JLabel textoDano;
     private boolean exibindoFeedbackAtaque = false;
+    private volatile boolean combateEncerrado = false;
 
     public CombateController(Inimigo inimigo) {
         this.inimigo = inimigo;
@@ -85,6 +86,11 @@ public class CombateController {
         final Timer[] timer = new Timer[1];
 
         timer[0] = new Timer(1200, e -> {
+
+            if (combateEncerrado) {
+                timer[0].stop();
+                return;
+            }
 
             if (inimigo.getVidaInimigo() <= 0) {
                 timer[0].stop();
@@ -196,7 +202,7 @@ public class CombateController {
                 case "Faca", "Pau" -> {
                     exibindoFeedbackAtaque = true;
 
-                    if (distanciaAtual > 5) {
+                    if (distanciaAtual > 6) {
                         textoDano = new JLabel(
                                 "Muito longe, não consigo atacar com " + arma.getNome());
                         textoDano.setOpaque(false);
@@ -207,48 +213,50 @@ public class CombateController {
                         painelDano.revalidate();
                         painelDano.repaint();
 
-                        Timer removeTextTimer = new Timer(3000, e -> {
+                        Timer removeTextTimer = new Timer(2000, e -> {
                             if (textoDano != null) {
                                 painelDano.remove(textoDano);
                                 textoDano = null;
                                 painelDano.revalidate();
                                 painelDano.repaint();
                             }
+                            exibindoFeedbackAtaque = false;
                         });
                         removeTextTimer.setRepeats(false);
                         removeTextTimer.start();
                         return;
-                    }
+                    } else {
 
-                    textoDano = new JLabel("Você atacou com " + arma.getNome() + "!");
-                    textoDano.setOpaque(false);
-                    textoDano.setFont(Config.FONTE_PADRAO);
-                    textoDano.setForeground(Color.decode(Config.COR_DESTAQUE));
-                    textoDano.setAlignmentX(Component.CENTER_ALIGNMENT);
-                    painelDano.add(textoDano);
-                    painelDano.revalidate();
-                    painelDano.repaint();
+                        textoDano = new JLabel("Você atacou com " + arma.getNome() + "!");
+                        textoDano.setOpaque(false);
+                        textoDano.setFont(Config.FONTE_PADRAO);
+                        textoDano.setForeground(Color.decode(Config.COR_DESTAQUE));
+                        textoDano.setAlignmentX(Component.CENTER_ALIGNMENT);
+                        painelDano.add(textoDano);
+                        painelDano.revalidate();
+                        painelDano.repaint();
 
-                    Timer removeTextTimer = new Timer(2000, e -> {
-                        if (textoDano != null) {
-                            painelDano.remove(textoDano);
-                            textoDano = null;
-                            painelDano.revalidate();
-                            painelDano.repaint();
+                        Timer removeTextTimer = new Timer(2000, e -> {
+                            if (textoDano != null) {
+                                painelDano.remove(textoDano);
+                                textoDano = null;
+                                painelDano.revalidate();
+                                painelDano.repaint();
+                            }
+                            exibindoFeedbackAtaque = false;
+                        });
+                        removeTextTimer.setRepeats(false);
+                        removeTextTimer.start();
+                        inimigo.darDano(5);
+
+                        if (inimigo.getVidaInimigo() <= 0) {
+                            removeTextTimer.stop();
+                            timer[0].stop();
+                            popUp.dispose();
+                            JogoController.criaPopupPadrao("Vitória!", null,
+                                    "Você derrotou o " + inimigo.getNome() + "!", parent);
+                            return;
                         }
-                        exibindoFeedbackAtaque = false;
-                    });
-                    removeTextTimer.setRepeats(false);
-                    removeTextTimer.start();
-                    inimigo.darDano(5);
-
-                    if (inimigo.getVidaInimigo() <= 0) {
-                        removeTextTimer.stop();
-                        timer[0].stop();
-                        popUp.dispose();
-                        JogoController.criaPopupPadrao("Vitória!", null,
-                                "Você derrotou o " + inimigo.getNome() + "!", parent);
-                        return;
                     }
                 }
                 default -> {
@@ -281,18 +289,24 @@ public class CombateController {
         });
 
         fugir.addActionListener(ev -> {
-            timer[0].stop();
-            popUp.dispose();
-            Personagem.levarDano(inimigo.getDanoInimigo());
-            JogoController.criaPopupPadrao("Fuga!", null, "Você conseguiu fugir, mas o " + inimigo.getNome()
-                    + " conseguiu te atacar, você levou " + inimigo.getDanoInimigo() + " de dano...", parent);
-
-            if (Personagem.getVida() <= 0) {
+            if (distanciaAtual >= 10) {
+                combateEncerrado = true;
                 timer[0].stop();
+                Personagem.levarDano(inimigo.getDanoInimigo());
                 popUp.dispose();
-                JogoController.criaPopupPadrao("GAME OVER", null,
-                        "Você foi morto pelo " + inimigo.getNome() + "...", parent);
-                System.exit(0);
+                JogoController.criaPopupPadrao("Fuga!", null, "Você conseguiu fugir, mas o " + inimigo.getNome()
+                        + " conseguiu te atacar, você levou " + inimigo.getDanoInimigo() + " de dano...", parent);
+
+                if (Personagem.getVida() <= 0) {
+                    timer[0].stop();
+                    popUp.dispose();
+                    JogoController.criaPopupPadrao("GAME OVER", Config.imgMorte,
+                            Config.textoMorte + " pelo " + inimigo.getNome() + "...", parent);
+                    System.exit(0);
+                }
+            } else {
+                JogoController.criaPopupPadrao("Muito perto", null, "Ainda estou muito perto, não consigo fugir!",
+                        parent);
             }
 
         });

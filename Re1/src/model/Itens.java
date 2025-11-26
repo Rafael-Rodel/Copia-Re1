@@ -64,7 +64,7 @@ public class Itens {
         return this.tipoItem;
     }
 
-    public static void popupItem(String nomeItem, String textoPop, JFrame parent) {
+    public static void popupItem(String nomeItem, String textoPop, Window parent) {
         String caminhoImagem = null;
 
         for (Itens i : listaItens) {
@@ -74,7 +74,7 @@ public class Itens {
             }
         }
 
-        JDialog popup = new JDialog(parent, "Achou Item", true);
+        JDialog popup = new JDialog(parent, "Achou Item", Dialog.ModalityType.APPLICATION_MODAL);
         popup.setSize(800, 600);
         popup.setLocationRelativeTo(parent);
 

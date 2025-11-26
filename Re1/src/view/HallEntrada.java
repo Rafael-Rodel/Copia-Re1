@@ -10,51 +10,11 @@ import model.Config;
 
 public class HallEntrada extends Cenario {
 
-    private static boolean primeiraVezHall = true;
+    
     private JButton escadaria, maquina, portaPequena;
 
     public HallEntrada() {
         super("Hall de Entrada");
-
-        if (primeiraVezHall) {
-            JDialog popHistoria = new JDialog(this, "História", true);
-            popHistoria.setSize(600, 250);
-            popHistoria.setLocationRelativeTo(this);
-
-            JPanel painel = new JPanel();
-            painel.setBackground(Color.decode(Config.COR_FUNDO));
-            painel.setLayout(new BoxLayout(painel, BoxLayout.Y_AXIS));
-            painel.setBorder(BorderFactory.createEmptyBorder(30, 30, 30, 30));
-
-            JTextArea texto = new JTextArea(
-                    "Ao entrar, sua equipe ouve um barulho de tiro na parte oeste da mansão,\nVocês decidem se separar para explorar...");
-            texto.setWrapStyleWord(true);
-            texto.setLineWrap(true);
-            texto.setEditable(false);
-            texto.setFocusable(false);
-            texto.setOpaque(false);
-            texto.setFont(Config.FONTE_PADRAO);
-            texto.setForeground(Color.decode(Config.COR_TEXTO));
-
-            JButton ok = new JButton("Prosseguir");
-            ok.setAlignmentX(Component.CENTER_ALIGNMENT);
-            ok.addActionListener(ev -> {
-                primeiraVezHall = false;
-                popHistoria.dispose();
-            });
-
-            ok.setForeground(Color.decode(Config.COR_DESTAQUE));
-            ok.setBackground(Color.decode(Config.COR_BOTAO));
-            ok.setFont(Config.FONTE_BOTAO);
-
-            painel.add(Box.createVerticalStrut(20));
-            painel.add(texto);
-            painel.add(Box.createVerticalStrut(20));
-            painel.add(ok);
-
-            popHistoria.add(painel);
-            popHistoria.setVisible(true);
-        }
 
         JogoController.verificarEventosHall(this);
 
@@ -98,7 +58,7 @@ public class HallEntrada extends Cenario {
             JogoController.trocaCenario(this, "SalaEstatua");
         });
         portaPequena.addActionListener(e -> {
-            JogoController.criaPopupPadrao("Porta pequena à direita", null, "A porta está trancada, há uma gravura de escudo.", this);
+            JogoController.criaPopupPadrao("Porta pequena à direita", null, "A porta está trancada, há uma gravura de armadura.", this);
         });
         escadaria.addActionListener(e -> {
             JogoController.criaPopupPadrao("Escadaria", null, "Não posso ir pra lá ainda.", this);

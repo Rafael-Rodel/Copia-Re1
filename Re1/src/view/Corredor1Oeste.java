@@ -8,10 +8,10 @@ import controller.JogoController;
 import model.Cenario;
 import model.Config;
 
-public class Corredor1AndarOeste extends Cenario {
+public class Corredor1Oeste extends Cenario {
     JButton portaDupla, portaVermelha, porta, sala, salaJantar;
 
-    public Corredor1AndarOeste() {
+    public Corredor1Oeste() {
         super("Corredor");
 
         mostrarImagem("/resources/imgs/corredor1O.png");
@@ -110,6 +110,6 @@ public class Corredor1AndarOeste extends Cenario {
     }
 
     public static void main(String[] args) {
-        new Corredor1AndarOeste();
+        new Corredor1Oeste();
     }
 }

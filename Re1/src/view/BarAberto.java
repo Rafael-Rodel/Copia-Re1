@@ -60,7 +60,7 @@ public class BarAberto extends Cenario {
             JogoController.trocaCenario(this, "SalaBusto");
         });
         voltar.addActionListener(e -> {
-            JogoController.trocaCenario(this, "Corredor1AndarOeste");
+            JogoController.trocaCenario(this, "Corredor1Oeste");
         });
 
         piano.setForeground(Color.decode(Config.COR_TEXTO));
