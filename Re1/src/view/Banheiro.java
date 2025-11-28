@@ -14,6 +14,7 @@ public class Banheiro extends Cenario{
 
     public Banheiro(){
         super("Banheiro");
+        this.setIconImage(JogoController.getIconePrincipal());
 
         mostrarImagem("/resources/imgs/banheiro.png");
 

@@ -14,6 +14,7 @@ public class BarAberto extends Cenario {
 
     public BarAberto() {
         super("Bar");
+        this.setIconImage(JogoController.getIconePrincipal());
 
         mostrarImagem("/resources/imgs/bar_aberto.png");
 

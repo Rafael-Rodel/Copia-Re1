@@ -12,6 +12,7 @@ public class SalaQuadros extends Cenario{
 
     public SalaQuadros(){
         super("Sala Quadros");
+        this.setIconImage(JogoController.getIconePrincipal());
 
         JogoController.eventosSalaQuadros(this);
 

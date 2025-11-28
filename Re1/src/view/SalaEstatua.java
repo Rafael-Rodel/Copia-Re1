@@ -9,12 +9,14 @@ import controller.JogoController;
 import controller.MapaController;
 import model.Cenario;
 import model.Config;
+import model.Personagem;
 
 public class SalaEstatua extends Cenario {
     JButton estatua;
 
     public SalaEstatua() {
         super("Sala com Estatua");
+        this.setIconImage(JogoController.getIconePrincipal());
 
         String imgSala = "/resources/imgs/sala_estatua_mapa.png";
         if (MapaController.getPossuiMapa()) {
@@ -56,9 +58,13 @@ public class SalaEstatua extends Cenario {
         });
 
         portaDireita.addActionListener(e -> {
-            JogoController.trocaCenario(this, "CorredorCachorro");
+            if (Personagem.getChris()) {
+                JogoController.criaPopupPadrao("Trancado", null, "Porta trancada, há uma espada entalhada.", this);
+            } else {
+                JogoController.trocaCenario(this, "CorredorCachorro");
+            }
         });
-        
+
         portaEsquerda.addActionListener(e -> {
             JogoController.trocaCenario(this, "SalaQuadros");
         });

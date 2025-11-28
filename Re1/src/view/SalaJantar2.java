@@ -14,6 +14,7 @@ public class SalaJantar2 extends Cenario {
 
     public SalaJantar2() {
         super("Sala de Jantar");
+        this.setIconImage(JogoController.getIconePrincipal());
         
         mostrarImagem("/resources/imgs/sala_jantar_2.png");
         mostrarTexto("Segunda metade da sala: \nVocê vê uma porta a direita, um vaso e uma lareira com um emblema em cima...");

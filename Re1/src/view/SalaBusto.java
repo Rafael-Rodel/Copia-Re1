@@ -15,6 +15,7 @@ public class SalaBusto extends Cenario {
 
     public SalaBusto() {
         super("Sala com busto");
+        this.setIconImage(JogoController.getIconePrincipal());
 
         mostrarImagem("/resources/imgs/sala_busto.png");
 

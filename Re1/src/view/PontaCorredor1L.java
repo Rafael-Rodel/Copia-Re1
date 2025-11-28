@@ -15,6 +15,7 @@ public class PontaCorredor1L extends Cenario {
 
     public PontaCorredor1L() {
         super("Corredor leste");
+        this.setIconImage(JogoController.getIconePrincipal());
 
         JogoController.eventosCorredor1L(this);
 
@@ -96,11 +97,11 @@ public class PontaCorredor1L extends Cenario {
         inventario.setBackground(Color.decode(Config.COR_BOTAO));
         inventario.setAlignmentX(Component.CENTER_ALIGNMENT);
         inventario.setFont(Config.FONTE_BOTAO);
-
-        navMenu.add(voltar);
+        
+        navMenu.add(continuar);
         navMenu.add(portaEsquerda);
         navMenu.add(portaDireita);
-        navMenu.add(continuar);
+        navMenu.add(voltar);
 
         painelMenu.add(navMenu);
         painelMenu.add(navInventario);

@@ -15,6 +15,7 @@ public class SalaCorredor1 extends Cenario {
 
     public SalaCorredor1() {
         super("Sala Corredor");
+        this.setIconImage(JogoController.getIconePrincipal());
 
         JogoController.verificarEventosCorredor1(this);
 

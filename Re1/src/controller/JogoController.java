@@ -6,11 +6,13 @@ import view.*;
 import javax.swing.*;
 import java.awt.*;
 
-public class JogoController { 
+public class JogoController {
     private static boolean primeiraVez1L = true;
     private static boolean matouCaoCorredor = false;
     private static boolean matouZumbiQuadros = false;
     private static boolean matouZumbiPassagem = false;
+    private static boolean matouZumbiEscadaria1L = false;
+    private static boolean matouCaoPassagemCoberta = false;
     private static boolean viuZumbiCorredor = false;
     private static boolean passagemBar = false;
     private static boolean primeiraVezHall = true;
@@ -79,7 +81,21 @@ public class JogoController {
             case "SalaArmadilha" -> new SalaArmadilha();
 
             case "SalaEstar" -> new SalaEstar();
+
+            case "PassagemTraseira" -> new PassagemTraseira();
+
+            case "PassagemCoberta" -> new PassagemCoberta();
+
+            case "Escadaria1L" -> new Escadaria1L();
+
+            // case "SafaRoom1L" -> new SafaRoom1L();
         }
+    }
+
+    public static Image getIconePrincipal() {
+        Image iconePrincipal = new ImageIcon(JogoController.class.getResource("/resources/imgs/icone.png")).getImage();
+
+        return iconePrincipal;
     }
 
     public static String getCenarioAtual() {
@@ -508,7 +524,8 @@ public class JogoController {
 
             painel.add(Box.createVerticalStrut(10));
 
-            JTextArea texto = new JTextArea("As portas estão trancadas!\nO teto está a " + distanciaArmadilha + " metros de distancia!");
+            JTextArea texto = new JTextArea(
+                    "As portas estão trancadas!\nO teto está a " + distanciaArmadilha + " metros de distancia!");
             texto.setWrapStyleWord(true);
             texto.setLineWrap(true);
             texto.setEditable(false);
@@ -519,12 +536,13 @@ public class JogoController {
             texto.setAlignmentX(Component.CENTER_ALIGNMENT);
             painel.add(texto);
 
-            final Timer armadilhaTimer[] = new Timer[1]; 
-            
+            final Timer armadilhaTimer[] = new Timer[1];
+
             armadilhaTimer[0] = new Timer(1500, e -> {
                 distanciaArmadilha--;
 
-                texto.setText("As portas estão trancadas!\nO teto está a " + distanciaArmadilha + " metros de distancia!");
+                texto.setText(
+                        "As portas estão trancadas!\nO teto está a " + distanciaArmadilha + " metros de distancia!");
 
                 popUp.revalidate();
                 popUp.repaint();
@@ -534,8 +552,9 @@ public class JogoController {
                         armadilhaTimer[0].stop();
                         popUp.dispose();
                         criaPopupPadrao("Ajuda!", null, "'Jill você está ai? Se afaste vou derrubar a porta!'", parent);
-                        criaPopupPadrao("História", "/resources/imgs/jill_sanduiche.png", "Jill - Muito obrigada Barry, se você não estivesse aqui eu poderia ter morrido!\nBarry - Se eu não chegasse a tempo você teria virado um sanduiche de Jill, mas chega de conversa, vamos continuar a exploração!", parent);
-                        trocaCenario(parent, "Corredor1Leste");
+                        criaPopupPadrao("História", "/resources/imgs/jill_sanduiche.png",
+                                "Jill - Muito obrigada Barry, se você não estivesse aqui eu poderia ter morrido!\nBarry - Se eu não chegasse a tempo você teria virado um sanduiche de Jill, mas chega de conversa, vamos continuar a exploração!",
+                                parent);
                     }
                 }
 
@@ -664,7 +683,7 @@ public class JogoController {
         if (shotgunInserida == null) {
             criaPopupPadrao("Bloqueado", null, "A armadilha agora está bloqueando a porta...", parent);
         } else {
-            trocaCenario(parent, "SalaEstar");
+            trocaCenario(parent, "SalaArmadilha");
         }
     }
 
@@ -675,5 +694,34 @@ public class JogoController {
                     parent);
             new CombateController(Config.zumbi).iniciar(parent);
         }
+    }
+
+    public static void eventoPassagemCoberta(Window parent) {
+        if (!matouCaoPassagemCoberta) {
+            matouCaoPassagemCoberta = true;
+            criaPopupPadrao("Passagem", null, "Ao entrar na passagem você se depara com um " + Config.textoCaoZumbi,
+                    parent);
+            new CombateController(Config.caoZumbi).iniciar(parent);
+        }
+    }
+
+    public static void eventosEscadaria1L(Window parent) {
+        Itens itemSpray = Config.spray;
+
+        if (!matouZumbiEscadaria1L) {
+            matouZumbiEscadaria1L = true;
+            criaPopupPadrao("Escadaria", null, "Ao entrar na escadaria você se depara com um " + Config.textoZumbi,
+                    parent);
+            new CombateController(Config.zumbi).iniciar(parent);
+
+            Itens.popupItem("spray", "Você encontra uma lata de spray no chão!", parent);
+
+            if (Inventario.possui(itemSpray)) {
+                itemSpray.setQuantidade(itemSpray.getQuantidade() + 1);
+            } else {
+                Inventario.adicionarItem(Config.spray);
+            }
+        }
+
     }
 }

@@ -12,6 +12,7 @@ public class Corredor1Leste extends Cenario{
 
     public Corredor1Leste(){
         super("Corredor leste");
+        this.setIconImage(JogoController.getIconePrincipal());
 
         mostrarImagem("/resources/imgs/corredor1L.png");
 
@@ -51,7 +52,7 @@ public class Corredor1Leste extends Cenario{
         });
 
         portaDireita.addActionListener(e -> {
-            JogoController.trocaCenario(this, "");
+            JogoController.trocaCenario(this, "PassagemTraseira");
         });
 
         voltar.setForeground(Color.decode(Config.COR_TEXTO));
@@ -83,9 +84,9 @@ public class Corredor1Leste extends Cenario{
         inventario.setAlignmentX(Component.CENTER_ALIGNMENT);
         inventario.setFont(Config.FONTE_BOTAO);
 
-        navMenu.add(voltar);
         navMenu.add(portaEsquerda);
         navMenu.add(portaDireita);
+        navMenu.add(voltar);
 
         painelMenu.add(navMenu);
         painelMenu.add(navInventario);

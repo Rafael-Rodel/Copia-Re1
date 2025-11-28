@@ -13,6 +13,7 @@ public class Corredor1Oeste extends Cenario {
 
     public Corredor1Oeste() {
         super("Corredor");
+        this.setIconImage(JogoController.getIconePrincipal());
 
         mostrarImagem("/resources/imgs/corredor1O.png");
 

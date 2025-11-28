@@ -15,6 +15,7 @@ public class CorredorCachorro extends Cenario {
 
     public CorredorCachorro() {
         super("Corredor");
+        this.setIconImage(JogoController.getIconePrincipal());
 
         JogoController.eventosCorredorCachorro(this);
 

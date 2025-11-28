@@ -13,6 +13,7 @@ public class PassagemTraseira extends Cenario {
 
     public PassagemTraseira() {
         super("Passagem");
+        this.setIconImage(JogoController.getIconePrincipal());        
 
         JogoController.eventoPassagem(this);
 
@@ -48,16 +49,16 @@ public class PassagemTraseira extends Cenario {
         voltar = new JButton("Voltar ao corredor");
 
         estudos.addActionListener(e -> {
-            JogoController.trocaCenario(this, "SalaEstudos");
+            JogoController.criaPopupPadrao("Trancado", null, "Porta trancada, há um capacete entalhado.", this);
         });
         galeria.addActionListener(e -> {
-            JogoController.trocaCenario(this, "Galeria");
+            JogoController.criaPopupPadrao("Trancado", null, "Ainda não posso ir lá.", this);
         });
         fundo.addActionListener(e -> {
             JogoController.trocaCenario(this, "PassagemCoberta");
         });
         direita.addActionListener(e ->{
-            JogoController.trocaCenario(this, "Escadaria1Leste");
+            JogoController.trocaCenario(this, "Escadaria1L");
         });
         voltar.addActionListener(e ->{
             JogoController.trocaCenario(this, "Corredor1Leste");

@@ -14,6 +14,7 @@ public class Bar extends Cenario {
 
     public Bar() {
         super("Bar");
+        this.setIconImage(JogoController.getIconePrincipal());
 
         mostrarImagem("/resources/imgs/bar.png");
 

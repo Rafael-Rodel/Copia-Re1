@@ -15,6 +15,7 @@ public class HallEntrada extends Cenario {
 
     public HallEntrada() {
         super("Hall de Entrada");
+        this.setIconImage(JogoController.getIconePrincipal());
 
         JogoController.verificarEventosHall(this);
 

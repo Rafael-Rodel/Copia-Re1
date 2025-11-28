@@ -12,6 +12,7 @@ public class SalaArmadilha extends Cenario{
 
     public SalaArmadilha(){
         super("Sala fechada");
+        this.setIconImage(JogoController.getIconePrincipal());
 
         JogoController.eventosSalaArmadilha(this);
 

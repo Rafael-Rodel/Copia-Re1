@@ -13,6 +13,8 @@ public class TelaInicial extends JFrame {
 
     public TelaInicial() {
         setTitle("Copia Resident Evil");
+        this.setIconImage(JogoController.getIconePrincipal());
+        
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(Config.LARGURA_TELA, Config.ALTURA_TELA);
         setLocationRelativeTo(null);

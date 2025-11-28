@@ -14,6 +14,7 @@ public class SalaEstar extends Cenario{
 
     public SalaEstar(){
         super("Sala de estar");
+        this.setIconImage(JogoController.getIconePrincipal());
 
         mostrarImagem("/resources/imgs/sala_estar.png");
 

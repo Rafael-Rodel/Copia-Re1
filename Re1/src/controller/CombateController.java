@@ -259,6 +259,42 @@ public class CombateController {
                         }
                     }
                 }
+                case "Shotgun", "Arma de dardo" -> {
+                    exibindoFeedbackAtaque = true;
+
+                    textoDano = new JLabel("Você atacou com " + arma.getNome() + "!");
+                    textoDano.setOpaque(false);
+                    textoDano.setFont(Config.FONTE_PADRAO);
+                    textoDano.setForeground(Color.decode(Config.COR_DESTAQUE));
+                    textoDano.setAlignmentX(Component.CENTER_ALIGNMENT);
+                    painelDano.add(textoDano);
+                    painelDano.revalidate();
+                    painelDano.repaint();
+
+                    Timer removeTextTimer = new Timer(2000, e -> {
+                        if (textoDano != null) {
+                            painelDano.remove(textoDano);
+                            textoDano = null;
+                            painelDano.revalidate();
+                            painelDano.repaint();
+                        }
+                        exibindoFeedbackAtaque = false;
+                    });
+                    removeTextTimer.setRepeats(false);
+                    removeTextTimer.start();
+
+                    inimigo.darDano(25);
+                    Config.shotgun.setQuantidade(Config.shotgun.getQuantidade() - 1);
+
+                    if (inimigo.getVidaInimigo() <= 0) {
+                        removeTextTimer.stop();
+                        timer[0].stop();
+                        popUp.dispose();
+                        JogoController.criaPopupPadrao("Vitória!", null,
+                                "Você derrotou o " + inimigo.getNome() + "!", parent);
+                        return;
+                    }
+                }
                 default -> {
                     JogoController.criaPopupPadrao("Aviso!", null,
                             "Você não possui arma equipada!", popUp);
