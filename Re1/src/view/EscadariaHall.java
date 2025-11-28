@@ -9,19 +9,17 @@ import controller.JogoController;
 import model.Cenario;
 import model.Config;
 
-public class Escadaria1L extends Cenario {
+public class EscadariaHall extends Cenario {
 
-    JButton escadaria;
+    JButton direita2;
 
-    public Escadaria1L() {
+    public EscadariaHall() {
         super("Escadaria");
         this.setIconImage(JogoController.getIconePrincipal());
 
-        JogoController.eventosEscadaria1L(this);
+        mostrarImagem("/resources/imgs/escadaria_hall.png");
 
-        mostrarImagem("/resources/imgs/escadaria1L.png");
-
-        mostrarTexto("Uma escadaria que leva ao segundo andar, após um pequeno corredor há uma porta...");
+        mostrarTexto("A escadaria se divide em dois, há uma porta a esquerda e duas à direita...");
 
         configurarBotoes();
 
@@ -31,8 +29,8 @@ public class Escadaria1L extends Cenario {
     @Override
     public void configurarBotoes() {
         painelMenu = new JPanel();
-        painelMenu.setPreferredSize(new Dimension(400, 120));
-        painelMenu.setMaximumSize(new Dimension(400, 120));
+        painelMenu.setPreferredSize(new Dimension(850, 120));
+        painelMenu.setMaximumSize(new Dimension(850, 120));
         painelMenu.setLayout(new FlowLayout(FlowLayout.CENTER));
         painelMenu.setOpaque(false);
         TitledBorder borda = BorderFactory.createTitledBorder(
@@ -44,18 +42,25 @@ public class Escadaria1L extends Cenario {
         borda.setTitleFont(Config.FONTE_TITULO_BORDA);
         painelMenu.setBorder(borda);
 
-        voltar = new JButton("Voltar ao corredor");
-        portaDireita = new JButton("Porta");
-        escadaria = new JButton("Escadaria");
+        voltar = new JButton("Voltar ao hall");
+        portaEsquerda = new JButton("Porta a esquerda");
+        portaDireita = new JButton("Porta a direita mais proxima");
+        direita2 = new JButton("Porta a direita mais distante");
 
         voltar.addActionListener(e -> {
-            JogoController.trocaCenario(this, "PassagemTraseira");
+            JogoController.trocaCenario(this, "HallEntrada");
         });
+
+        portaEsquerda.addActionListener(e -> {
+            JogoController.trocaCenario(this, "SalaJantarSegundoAndar");
+        });
+
         portaDireita.addActionListener(e -> {
-            JogoController.trocaCenario(this, "SafeRoom1L");
+            JogoController.criaPopupPadrao("trancado", null, "Ainda não posso ir lá...", this);
         });
-        escadaria.addActionListener(e -> {
-            JogoController.criaPopupPadrao("Escadaria", null, "Ainda não posso ir lá...", this);
+
+        direita2.addActionListener(e -> {
+            JogoController.criaPopupPadrao("trancado", null, "Ainda não posso ir lá...", this);
         });
 
         voltar.setForeground(Color.decode(Config.COR_TEXTO));
@@ -66,10 +71,13 @@ public class Escadaria1L extends Cenario {
         portaDireita.setBackground(Color.decode(Config.COR_BOTAO));
         portaDireita.setFont(Config.FONTE_BOTAO);
 
-        escadaria.setForeground(Color.decode(Config.COR_TEXTO));
-        escadaria.setBackground(Color.decode(Config.COR_BOTAO));
-        escadaria.setFont(Config.FONTE_BOTAO);
+        portaEsquerda.setForeground(Color.decode(Config.COR_TEXTO));
+        portaEsquerda.setBackground(Color.decode(Config.COR_BOTAO));
+        portaEsquerda.setFont(Config.FONTE_BOTAO);
 
+        direita2.setForeground(Color.decode(Config.COR_TEXTO));
+        direita2.setBackground(Color.decode(Config.COR_BOTAO));
+        direita2.setFont(Config.FONTE_BOTAO);
 
         JPanel navMenu = new JPanel();
         navMenu.setOpaque(false);
@@ -88,8 +96,9 @@ public class Escadaria1L extends Cenario {
         inventario.setAlignmentX(Component.CENTER_ALIGNMENT);
         inventario.setFont(Config.FONTE_BOTAO);
 
-        navMenu.add(escadaria);
+        navMenu.add(portaEsquerda);
         navMenu.add(portaDireita);
+        navMenu.add(direita2);
         navMenu.add(voltar);
 
         painelMenu.add(navMenu);
@@ -98,6 +107,6 @@ public class Escadaria1L extends Cenario {
     }
 
     public static void main(String[] args) {
-        new Escadaria1L();
+        new EscadariaHall();
     }
 }

@@ -1,4 +1,5 @@
 package view;
+
 import java.awt.*;
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
@@ -10,7 +11,6 @@ import model.Config;
 
 public class HallEntrada extends Cenario {
 
-    
     private JButton escadaria, maquina, portaPequena;
 
     public HallEntrada() {
@@ -59,10 +59,11 @@ public class HallEntrada extends Cenario {
             JogoController.trocaCenario(this, "SalaEstatua");
         });
         portaPequena.addActionListener(e -> {
-            JogoController.criaPopupPadrao("Porta pequena à direita", null, "A porta está trancada, há uma gravura de armadura.", this);
+            JogoController.criaPopupPadrao("Porta pequena à direita", null,
+                    "A porta está trancada, há uma gravura de armadura.", this);
         });
         escadaria.addActionListener(e -> {
-            JogoController.criaPopupPadrao("Escadaria", null, "Não posso ir pra lá ainda.", this);
+            JogoController.trocaCenario(this, "EscadariaHall");
         });
         maquina.addActionListener(e -> {
             JogoController.criaPopupPadrao("Maquina de escrever", "/resources/imgs/maquina.png",

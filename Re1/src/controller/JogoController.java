@@ -88,7 +88,11 @@ public class JogoController {
 
             case "Escadaria1L" -> new Escadaria1L();
 
-            // case "SafaRoom1L" -> new SafaRoom1L();
+            case "EscadariaHall" -> new EscadariaHall();
+
+            case "SafeRoom1L" -> new SafeRoom1L();
+            
+            // case "SalaJantarSegundoAndar" -> new SalaJantarSegundoAndar();
         }
     }
 
