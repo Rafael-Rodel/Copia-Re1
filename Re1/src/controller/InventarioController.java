@@ -263,7 +263,7 @@ public class InventarioController {
                     } else {
                         Personagem.setVida(25);
                     }
-                    Inventario.consumirItem(item);
+                    consumirItem(item);
                     PainelInventario.getInstancia().atualizarVida();
                     popPadrao.dispose();
                 });
@@ -292,5 +292,98 @@ public class InventarioController {
 
         popPadrao.add(painel);
         popPadrao.setVisible(true);
+    }
+
+    public static void adicionarItem(Itens item) {
+
+        if (!Inventario.getItens().contains(item)) {
+            int index = Inventario.getItens().size();
+            int linha = index / 2;
+            int coluna = index % 2;
+
+            item.setLinha(linha);
+            item.setColuna(coluna);
+            Inventario.getItens().add(item);
+
+            PainelInventario painel = PainelInventario.getInstancia();
+            if (painel != null) {
+                painel.getController().atualizarInventario();
+            }
+        }
+    }
+
+    public static void exibirAvisoInventarioCheio(Window parent) {
+
+        JogoController.criaPopupPadrao("Aviso", null, "Inventário Cheio!\nNão é possível carregar mais itens.", parent);
+    }
+
+    public static void consumirItem(Itens item) {
+        item.setQuantidade(item.getQuantidade() - 1);
+
+        if (item.getQuantidade() <= 0) {
+
+            if (!item.getTipoItem().equalsIgnoreCase("arma")) {
+                Inventario.getItens().remove(item);
+
+                if (Inventario.getEquipado() == item) {
+                    Inventario.setEquipado(null);
+                }
+            }
+        }
+
+        PainelInventario painel = PainelInventario.getInstancia();
+        if (painel != null) {
+            painel.getController().atualizarInventario();
+            painel.atualizarEquipado();
+        }
+    }
+
+    public static void removerItem(Itens item) {
+        Inventario.getItens().remove(item);
+
+        if (Inventario.getEquipado() == item) {
+            Inventario.setEquipado(null);
+        }
+
+        PainelInventario painel = PainelInventario.getInstancia();
+        if (painel != null) {
+            painel.getController().atualizarInventario();
+            painel.atualizarEquipado();
+        }
+    }
+
+    public static boolean tentarAdicionarItem(Itens item, Window parent) {
+        final int CAPACIDADE_MAXIMA = 8;
+
+        if (Inventario.possui(item)) {
+            item.setQuantidade(item.getQuantidade() + 1);
+
+            PainelInventario painel = PainelInventario.getInstancia();
+            if (painel != null) {
+                painel.getController().atualizarInventario();
+            }
+            return true;
+        }
+
+        if (Inventario.getItens().size() >= CAPACIDADE_MAXIMA) {
+            exibirAvisoInventarioCheio(parent);
+            return false;
+        }
+
+        int index = Inventario.getItens().size();
+        int linha = index / 2;
+        int coluna = index % 2;
+
+        item.setLinha(linha);
+        item.setColuna(coluna);
+
+        Inventario.getItens().add(item);
+
+        PainelInventario painel = PainelInventario.getInstancia();
+        if (painel != null) {
+            painel.getController().atualizarInventario();
+        }
+
+        return true;
     }
 }

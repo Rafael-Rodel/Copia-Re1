@@ -1,4 +1,5 @@
 package view;
+
 import javax.swing.border.TitledBorder;
 import javax.swing.*;
 import java.awt.*;
@@ -7,6 +8,7 @@ import controller.InventarioController;
 import controller.JogoController;
 import model.Cenario;
 import model.Config;
+import model.Personagem;
 
 public class Corredor1Oeste extends Cenario {
     JButton portaDupla, portaVermelha, porta, sala, salaJantar;
@@ -17,7 +19,8 @@ public class Corredor1Oeste extends Cenario {
 
         mostrarImagem("/resources/imgs/corredor1O.png");
 
-        mostrarTexto("Você vê uma porta de madeira a sua frente, uma porta dupla ao fundo do corredor e uma porta vermelha ao lado dela, \nA sua esquerda há uma pequena sala e atras de você a porta da sala de jantar...");
+        mostrarTexto(
+                "Você vê uma porta de madeira a sua frente, uma porta dupla ao fundo do corredor e uma porta vermelha ao lado dela, \nA sua esquerda há uma pequena sala e atras de você a porta da sala de jantar...");
 
         configurarBotoes();
 
@@ -47,18 +50,22 @@ public class Corredor1Oeste extends Cenario {
         salaJantar = new JButton("Sala de jantar");
 
         porta.addActionListener(e -> {
-            JogoController.criaPopupPadrao("Porta de madeira", null, "Essa porta esta trancada.", this);
+            JogoController.verificarPortaC1O(this);
         });
         portaDupla.addActionListener(e -> {
             JogoController.criaPopupPadrao("Porta dupla", null, "Parece trancado por dentro", this);
         });
         portaVermelha.addActionListener(e -> {
-            JogoController.trocaCenario(this, JogoController.verificarBar());
+            if (Personagem.getChris()) {
+                JogoController.checaChaveEspada(this, JogoController.verificarBar());
+            } else {
+                JogoController.trocaCenario(this, JogoController.verificarBar());
+            }
         });
-        sala.addActionListener(e ->{
+        sala.addActionListener(e -> {
             JogoController.trocaCenario(this, "SalaCorredor1");
         });
-        salaJantar.addActionListener(e ->{
+        salaJantar.addActionListener(e -> {
             JogoController.trocaCenario(this, "SalaJantar2");
         });
 

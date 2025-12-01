@@ -10,18 +10,20 @@ import controller.JogoController;
 import model.Cenario;
 import model.Config;
 
-public class SafeRoom1L extends Cenario {
+public class SafeRoom1O extends Cenario {
 
     JButton bau;
-    JButton quimicos;
+    JButton estante;
 
-    public SafeRoom1L() {
+    public SafeRoom1O() {
         super("Sala segura");
         this.setIconImage(JogoController.getIconePrincipal());
 
-        mostrarImagem("/resources/imgs/safe_room_1L.png");
+        JogoController.eventoSafeRoom1O(this);
 
-        mostrarTexto("Um deposito com produtos quimicos e um baú...");
+        mostrarImagem("/resources/imgs/safe_room_1O.png");
+
+        mostrarTexto("Um aconchegante quarto com um baú e uma estante...");
 
         configurarBotoes();
 
@@ -45,14 +47,14 @@ public class SafeRoom1L extends Cenario {
         painelMenu.setBorder(borda);
 
         voltar = new JButton("Voltar a escadaria");
-        quimicos = new JButton("Examinar quimicos");
+        estante = new JButton("Examinar estante");
         bau = new JButton("bau");
 
         voltar.addActionListener(e -> {
-            JogoController.trocaCenario(this, "Escadaria1L");
+            JogoController.trocaCenario(this, "Escadaria1O");
         });
-        quimicos.addActionListener(e -> {
-            JogoController.pegarHerbicida(this); 
+        estante.addActionListener(e -> {
+            JogoController.criaPopupPadrao("Estante", null, "Uma estante com soros e outras velharias, não é util agora...", this);
         });
         bau.addActionListener(e -> {
             BauController.exibirBau(this);
@@ -62,9 +64,9 @@ public class SafeRoom1L extends Cenario {
         voltar.setBackground(Color.decode(Config.COR_BOTAO));
         voltar.setFont(Config.FONTE_BOTAO);
 
-        quimicos.setForeground(Color.decode(Config.COR_TEXTO));
-        quimicos.setBackground(Color.decode(Config.COR_BOTAO));
-        quimicos.setFont(Config.FONTE_BOTAO);
+        estante.setForeground(Color.decode(Config.COR_TEXTO));
+        estante.setBackground(Color.decode(Config.COR_BOTAO));
+        estante.setFont(Config.FONTE_BOTAO);
 
         bau.setForeground(Color.decode(Config.COR_TEXTO));
         bau.setBackground(Color.decode(Config.COR_BOTAO));
@@ -89,7 +91,7 @@ public class SafeRoom1L extends Cenario {
         inventario.setFont(Config.FONTE_BOTAO);
 
         navMenu.add(bau);
-        navMenu.add(quimicos);
+        navMenu.add(estante);
         navMenu.add(voltar);
 
         painelMenu.add(navMenu);
@@ -98,6 +100,6 @@ public class SafeRoom1L extends Cenario {
     }
 
     public static void main(String[] args) {
-        new SafeRoom1L();
+        new SafeRoom1O();
     }
 }

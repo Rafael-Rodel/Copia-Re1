@@ -38,7 +38,7 @@ public class Config {
         public static final Font FONTE_PADRAO = new Font("Arial", Font.BOLD, 20);
 
         public static Itens pistola, faca, shotgun, spray, emblemaDourado, emblemaVelho, partitura, chaveEscudo,
-                        chaveMesa, shotgunQuebrada;
+                        chaveArmadura, chaveEspada, chaveMesa, shotgunQuebrada, herbicida;
         public static Inimigo zumbi, caoZumbi;
 
         static {
@@ -55,7 +55,8 @@ public class Config {
                                                 + " padrão das Forças Especiais. Tem pouco alcance e causa pouco dano, mas pode salvar em situações críticas. Causa 5 de dano.",
                                 "arma", 1);
                 shotgun = new Itens(textoShotgun, imgShotgun,
-                                "Uma classica " + textoShotgun + " pump-action, ela utiliza cartuchos proprios. Causa 25 de dano.",
+                                "Uma classica " + textoShotgun
+                                                + " pump-action, ela utiliza cartuchos proprios. Causa 25 de dano.",
                                 "arma", 7);
                 spray = new Itens("Spray", "/resources/imgs/spray.png",
                                 "Restaura totalmente a saúde. Um item valioso em momentos de perigo.", "consumivel", 1);
@@ -69,10 +70,16 @@ public class Config {
                                 "O titulo diz 'a sonata do luar' de Beethoven.", "chave", 1);
                 chaveEscudo = new Itens("Chave escudo", "/resources/imgs/chave_escudo.png",
                                 "Uma chave com um escudo entalhado", "chave", 1);
+                chaveArmadura = new Itens("Chave armadura", "/resources/imgs/chave_armadura.png",
+                                "Uma chave com um armadura entalhada", "chave", 1);
+                chaveEspada = new Itens("Chave espada", "/resources/imgs/chave_espada.png",
+                                "Uma chave com uma espada entalhada", "chave", 1);
                 chaveMesa = new Itens("Chave de mesa", "/resources/imgs/chave_mesa.png",
                                 "Uma chave para uma gaveta de mesa.", "chave", 1);
                 shotgunQuebrada = new Itens(textoShotgunQuebrada, imgShotgunQuebrada,
                                 "Uma " + textoShotgunQuebrada + " e velha, imagino se isso sera util...", "chave", 1);
+                herbicida = new Itens("Herbicida", "/resources/imgs/herbicida.png",
+                                "Um pacote de um potente herbicida.", "chave", 1);
 
                 zumbi = new Inimigo(textoZumbi, imgZumbi,
                                 "O " + textoZumbi + " se aproxima lentamente...", 40, 5, 6, 1);

@@ -1,27 +1,24 @@
 package view;
-
 import java.awt.*;
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 
-import controller.BauController;
 import controller.InventarioController;
 import controller.JogoController;
 import model.Cenario;
 import model.Config;
 
-public class SafeRoom1L extends Cenario {
+public class JardimInterno extends Cenario{
 
-    JButton bau;
-    JButton quimicos;
+    JButton planta;
 
-    public SafeRoom1L() {
-        super("Sala segura");
+    public JardimInterno(){
+        super("Jardim Interno");
         this.setIconImage(JogoController.getIconePrincipal());
 
-        mostrarImagem("/resources/imgs/safe_room_1L.png");
+        mostrarImagem("/resources/imgs/jardim_interno.png");
 
-        mostrarTexto("Um deposito com produtos quimicos e um baú...");
+        mostrarTexto("Um jardim interno com uma planta monstruosa crescendo numa fonte, posso ver algo atrás dela...");
 
         configurarBotoes();
 
@@ -31,8 +28,8 @@ public class SafeRoom1L extends Cenario {
     @Override
     public void configurarBotoes() {
         painelMenu = new JPanel();
-        painelMenu.setPreferredSize(new Dimension(450, 120));
-        painelMenu.setMaximumSize(new Dimension(450, 120));
+        painelMenu.setPreferredSize(new Dimension(250, 120));
+        painelMenu.setMaximumSize(new Dimension(250, 120));
         painelMenu.setLayout(new FlowLayout(FlowLayout.CENTER));
         painelMenu.setOpaque(false);
         TitledBorder borda = BorderFactory.createTitledBorder(
@@ -44,32 +41,24 @@ public class SafeRoom1L extends Cenario {
         borda.setTitleFont(Config.FONTE_TITULO_BORDA);
         painelMenu.setBorder(borda);
 
-        voltar = new JButton("Voltar a escadaria");
-        quimicos = new JButton("Examinar quimicos");
-        bau = new JButton("bau");
+        planta = new JButton("Planta");
+        voltar = new JButton("Voltar");
 
         voltar.addActionListener(e -> {
-            JogoController.trocaCenario(this, "Escadaria1L");
+            JogoController.trocaCenario(this, "CorredorCentral");
         });
-        quimicos.addActionListener(e -> {
-            JogoController.pegarHerbicida(this); 
-        });
-        bau.addActionListener(e -> {
-            BauController.exibirBau(this);
+
+        planta.addActionListener(e -> {
+            JogoController.matarPlanta(this);
         });
 
         voltar.setForeground(Color.decode(Config.COR_TEXTO));
         voltar.setBackground(Color.decode(Config.COR_BOTAO));
         voltar.setFont(Config.FONTE_BOTAO);
 
-        quimicos.setForeground(Color.decode(Config.COR_TEXTO));
-        quimicos.setBackground(Color.decode(Config.COR_BOTAO));
-        quimicos.setFont(Config.FONTE_BOTAO);
-
-        bau.setForeground(Color.decode(Config.COR_TEXTO));
-        bau.setBackground(Color.decode(Config.COR_BOTAO));
-        bau.setFont(Config.FONTE_BOTAO);
-
+        planta.setForeground(Color.decode(Config.COR_TEXTO));
+        planta.setBackground(Color.decode(Config.COR_BOTAO));
+        planta.setFont(Config.FONTE_BOTAO);
 
         JPanel navMenu = new JPanel();
         navMenu.setOpaque(false);
@@ -88,16 +77,14 @@ public class SafeRoom1L extends Cenario {
         inventario.setAlignmentX(Component.CENTER_ALIGNMENT);
         inventario.setFont(Config.FONTE_BOTAO);
 
-        navMenu.add(bau);
-        navMenu.add(quimicos);
+        navMenu.add(planta);
         navMenu.add(voltar);
 
         painelMenu.add(navMenu);
         painelMenu.add(navInventario);
         painelPrincipal.add(painelMenu);
     }
-
     public static void main(String[] args) {
-        new SafeRoom1L();
+        new JardimInterno();
     }
 }

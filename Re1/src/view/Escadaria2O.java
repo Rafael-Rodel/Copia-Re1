@@ -4,24 +4,24 @@ import java.awt.*;
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 
-import controller.BauController;
 import controller.InventarioController;
 import controller.JogoController;
 import model.Cenario;
 import model.Config;
 
-public class SafeRoom1L extends Cenario {
+public class Escadaria2O extends Cenario {
 
-    JButton bau;
-    JButton quimicos;
+    JButton escadaria;
 
-    public SafeRoom1L() {
-        super("Sala segura");
+    public Escadaria2O() {
+        super("Escadaria");
         this.setIconImage(JogoController.getIconePrincipal());
 
-        mostrarImagem("/resources/imgs/safe_room_1L.png");
+        JogoController.eventosEscadaria2O(this);
 
-        mostrarTexto("Um deposito com produtos quimicos e um baú...");
+        mostrarImagem("/resources/imgs/escadaria2O.png");
+
+        mostrarTexto("Uma escadaria que leva ao primeiro andar, após um corredor há duas portas...");
 
         configurarBotoes();
 
@@ -31,8 +31,8 @@ public class SafeRoom1L extends Cenario {
     @Override
     public void configurarBotoes() {
         painelMenu = new JPanel();
-        painelMenu.setPreferredSize(new Dimension(450, 120));
-        painelMenu.setMaximumSize(new Dimension(450, 120));
+        painelMenu.setPreferredSize(new Dimension(600, 120));
+        painelMenu.setMaximumSize(new Dimension(600, 120));
         painelMenu.setLayout(new FlowLayout(FlowLayout.CENTER));
         painelMenu.setOpaque(false);
         TitledBorder borda = BorderFactory.createTitledBorder(
@@ -44,31 +44,39 @@ public class SafeRoom1L extends Cenario {
         borda.setTitleFont(Config.FONTE_TITULO_BORDA);
         painelMenu.setBorder(borda);
 
-        voltar = new JButton("Voltar a escadaria");
-        quimicos = new JButton("Examinar quimicos");
-        bau = new JButton("bau");
+        voltar = new JButton("Sala de jantar");
+        portaDireita = new JButton("Porta ao fundo");
+        portaEsquerda = new JButton("Porta a esquerda");
+        escadaria = new JButton("Escadaria");
 
         voltar.addActionListener(e -> {
-            JogoController.trocaCenario(this, "Escadaria1L");
+            JogoController.trocaCenario(this, "SalaJantar2Andar");
         });
-        quimicos.addActionListener(e -> {
-            JogoController.pegarHerbicida(this); 
+        portaDireita.addActionListener(e -> {
+            JogoController.criaPopupPadrao("Porta trancada", null, "A porta está trancada, um capacete entalhado...", this);
         });
-        bau.addActionListener(e -> {
-            BauController.exibirBau(this);
+        portaEsquerda.addActionListener(e -> {
+            JogoController.criaPopupPadrao("Porta trancada", null, "A porta está trancada, há um painel numérico mas eu não sei qual a senha...", this);
+        });
+        escadaria.addActionListener(e -> {
+            JogoController.trocaCenario(this, "Escadaria1O");
         });
 
         voltar.setForeground(Color.decode(Config.COR_TEXTO));
         voltar.setBackground(Color.decode(Config.COR_BOTAO));
         voltar.setFont(Config.FONTE_BOTAO);
 
-        quimicos.setForeground(Color.decode(Config.COR_TEXTO));
-        quimicos.setBackground(Color.decode(Config.COR_BOTAO));
-        quimicos.setFont(Config.FONTE_BOTAO);
+        portaDireita.setForeground(Color.decode(Config.COR_TEXTO));
+        portaDireita.setBackground(Color.decode(Config.COR_BOTAO));
+        portaDireita.setFont(Config.FONTE_BOTAO);
+        
+        portaEsquerda.setForeground(Color.decode(Config.COR_TEXTO));
+        portaEsquerda.setBackground(Color.decode(Config.COR_BOTAO));
+        portaEsquerda.setFont(Config.FONTE_BOTAO);
 
-        bau.setForeground(Color.decode(Config.COR_TEXTO));
-        bau.setBackground(Color.decode(Config.COR_BOTAO));
-        bau.setFont(Config.FONTE_BOTAO);
+        escadaria.setForeground(Color.decode(Config.COR_TEXTO));
+        escadaria.setBackground(Color.decode(Config.COR_BOTAO));
+        escadaria.setFont(Config.FONTE_BOTAO);
 
 
         JPanel navMenu = new JPanel();
@@ -88,8 +96,9 @@ public class SafeRoom1L extends Cenario {
         inventario.setAlignmentX(Component.CENTER_ALIGNMENT);
         inventario.setFont(Config.FONTE_BOTAO);
 
-        navMenu.add(bau);
-        navMenu.add(quimicos);
+        navMenu.add(escadaria);
+        navMenu.add(portaDireita);
+        navMenu.add(portaEsquerda);
         navMenu.add(voltar);
 
         painelMenu.add(navMenu);
@@ -98,6 +107,6 @@ public class SafeRoom1L extends Cenario {
     }
 
     public static void main(String[] args) {
-        new SafeRoom1L();
+        new Escadaria2O();
     }
 }

@@ -9,17 +9,21 @@ import controller.JogoController;
 import model.Cenario;
 import model.Config;
 
-public class EscadariaHall extends Cenario {
+public class Escadaria1O extends Cenario {
 
-    JButton direita2;
+    JButton escadaria;
+    JButton safeRoom;
 
-    public EscadariaHall() {
+    public Escadaria1O() {
         super("Escadaria");
         this.setIconImage(JogoController.getIconePrincipal());
 
-        mostrarImagem("/resources/imgs/escadaria_hall.png");
+        JogoController.eventosEscadaria1O(this);
 
-        mostrarTexto("A escadaria se divide em dois, há uma porta a esquerda e duas à direita...");
+        mostrarImagem("/resources/imgs/escadaria1O.png");
+
+        mostrarTexto(
+                "Uma escadaria que leva ao segundo andar, há uma pequena sala atras das escadas e após um corredor há duas portas...");
 
         configurarBotoes();
 
@@ -29,8 +33,8 @@ public class EscadariaHall extends Cenario {
     @Override
     public void configurarBotoes() {
         painelMenu = new JPanel();
-        painelMenu.setPreferredSize(new Dimension(850, 120));
-        painelMenu.setMaximumSize(new Dimension(850, 120));
+        painelMenu.setPreferredSize(new Dimension(600, 120));
+        painelMenu.setMaximumSize(new Dimension(600, 120));
         painelMenu.setLayout(new FlowLayout(FlowLayout.CENTER));
         painelMenu.setOpaque(false);
         TitledBorder borda = BorderFactory.createTitledBorder(
@@ -42,30 +46,27 @@ public class EscadariaHall extends Cenario {
         borda.setTitleFont(Config.FONTE_TITULO_BORDA);
         painelMenu.setBorder(borda);
 
-        voltar = new JButton("Voltar ao hall");
-        portaEsquerda = new JButton("Porta a esquerda");
-        portaDireita = new JButton("Porta a direita mais proxima");
-        direita2 = new JButton("Porta a direita mais distante");
+        safeRoom = new JButton("Pequena sala");
+        portaDireita = new JButton("Porta direita");
+        portaEsquerda = new JButton("Porta ao fundo");
+        escadaria = new JButton("Escadaria");
 
-        voltar.addActionListener(e -> {
-            JogoController.trocaCenario(this, "HallEntrada");
+        safeRoom.addActionListener(e -> {
+            JogoController.trocaCenario(this, "SafeRoom1O");
         });
-
-        portaEsquerda.addActionListener(e -> {
-            JogoController.trocaCenario(this, "SalaJantar2Andar");
-        });
-
         portaDireita.addActionListener(e -> {
-            JogoController.criaPopupPadrao("trancado", null, "Ainda não posso ir lá...", this);
+            JogoController.checaChaveArmadura(this, "ArmazemArmas");
+        });
+        portaEsquerda.addActionListener(e -> {
+            JogoController.trocaCenario(this, "CorredorCentral");
+        });
+        escadaria.addActionListener(e -> {
+            JogoController.trocaCenario(this, "Escadaria2O");
         });
 
-        direita2.addActionListener(e -> {
-            JogoController.criaPopupPadrao("trancado", null, "Ainda não posso ir lá...", this);
-        });
-
-        voltar.setForeground(Color.decode(Config.COR_TEXTO));
-        voltar.setBackground(Color.decode(Config.COR_BOTAO));
-        voltar.setFont(Config.FONTE_BOTAO);
+        safeRoom.setForeground(Color.decode(Config.COR_TEXTO));
+        safeRoom.setBackground(Color.decode(Config.COR_BOTAO));
+        safeRoom.setFont(Config.FONTE_BOTAO);
 
         portaDireita.setForeground(Color.decode(Config.COR_TEXTO));
         portaDireita.setBackground(Color.decode(Config.COR_BOTAO));
@@ -75,9 +76,9 @@ public class EscadariaHall extends Cenario {
         portaEsquerda.setBackground(Color.decode(Config.COR_BOTAO));
         portaEsquerda.setFont(Config.FONTE_BOTAO);
 
-        direita2.setForeground(Color.decode(Config.COR_TEXTO));
-        direita2.setBackground(Color.decode(Config.COR_BOTAO));
-        direita2.setFont(Config.FONTE_BOTAO);
+        escadaria.setForeground(Color.decode(Config.COR_TEXTO));
+        escadaria.setBackground(Color.decode(Config.COR_BOTAO));
+        escadaria.setFont(Config.FONTE_BOTAO);
 
         JPanel navMenu = new JPanel();
         navMenu.setOpaque(false);
@@ -96,10 +97,10 @@ public class EscadariaHall extends Cenario {
         inventario.setAlignmentX(Component.CENTER_ALIGNMENT);
         inventario.setFont(Config.FONTE_BOTAO);
 
-        navMenu.add(portaEsquerda);
+        navMenu.add(escadaria);
         navMenu.add(portaDireita);
-        navMenu.add(direita2);
-        navMenu.add(voltar);
+        navMenu.add(portaEsquerda);
+        navMenu.add(safeRoom);
 
         painelMenu.add(navMenu);
         painelMenu.add(navInventario);
@@ -107,6 +108,6 @@ public class EscadariaHall extends Cenario {
     }
 
     public static void main(String[] args) {
-        new EscadariaHall();
+        new Escadaria1O();
     }
 }

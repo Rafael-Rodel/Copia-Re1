@@ -9,7 +9,7 @@ public class MapaController extends JPanel {
 
     private static final int larguraGif = 40;
     private static final int alturaGif = 40;
-    private static boolean possuiMapa = false;
+    private static boolean possuiMapa = true;
 
     public static void setPossuiMapa(boolean temMapa) {
         possuiMapa = temMapa;
@@ -63,9 +63,35 @@ public class MapaController extends JPanel {
 
                 case "Corredor1Leste" -> gifLabel.setBounds(580, 220, larguraGif, alturaGif);
 
-                case "SalaArmadilha" -> gifLabel.setBounds(580, 220, larguraGif, alturaGif);
+                case "SalaArmadilha" -> gifLabel.setBounds(615, 220, larguraGif, alturaGif);
 
-                case "SalaEstar" ->gifLabel.setBounds(580, 220, larguraGif, alturaGif);
+                case "SalaEstar" -> gifLabel.setBounds(640, 280, larguraGif, alturaGif);
+
+                case "PassagemTraseira" -> gifLabel.setBounds(520, 220, larguraGif, alturaGif);
+
+                case "PassagemCoberta" -> gifLabel.setBounds(450, 155, larguraGif, alturaGif);
+
+                case "Escadaria1L" ->  gifLabel.setBounds(530, 170, larguraGif, alturaGif);
+
+                case "EscadariaHall" -> gifLabel.setBounds(380, 330, larguraGif, alturaGif);
+
+                case "SafeRoom1L" -> gifLabel.setBounds(560, 170, larguraGif, alturaGif);
+
+                case "SafeRoom1O" -> gifLabel.setBounds(80, 170, larguraGif, alturaGif);
+
+                case "SalaJantar2Andar" -> gifLabel.setBounds(140, 390, larguraGif, alturaGif);
+
+                case "Escadaria1O" -> gifLabel.setBounds(40, 180, larguraGif, alturaGif);
+
+                case "Escadaria2O" -> gifLabel.setBounds(40, 200, larguraGif, alturaGif);
+
+                case "CorredorCentral" -> gifLabel.setBounds(140, 160, larguraGif, alturaGif);
+
+                case "JardimInterno" -> gifLabel.setBounds(220, 180, larguraGif, alturaGif);
+
+                case "QuartoCaseiro" -> gifLabel.setBounds(120, 250, larguraGif, alturaGif);
+
+                case "ArmazemArmas" -> gifLabel.setBounds(120, 190, larguraGif, alturaGif);
             }
 
             popMapa.add(mapa);

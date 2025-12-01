@@ -59,7 +59,7 @@ public class SalaEstatua extends Cenario {
 
         portaDireita.addActionListener(e -> {
             if (Personagem.getChris()) {
-                JogoController.criaPopupPadrao("Trancado", null, "Porta trancada, há uma espada entalhada.", this);
+                JogoController.checaChaveEspada(this, "CorredorCachorro");
             } else {
                 JogoController.trocaCenario(this, "CorredorCachorro");
             }

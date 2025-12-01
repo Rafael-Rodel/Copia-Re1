@@ -20,7 +20,7 @@ public class SalaBusto extends Cenario {
         mostrarImagem("/resources/imgs/sala_busto.png");
 
         mostrarTexto(
-                "Você vê uma pequena sala com uma grande janela para rua, esta muito escuro para enxergar, no fundo da sala há um busto...");
+                "Você vê uma pequena sala com uma grande janela para um jardim, no fundo da sala há um busto...");
 
         configurarBotoes();
 

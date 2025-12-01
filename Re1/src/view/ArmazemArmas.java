@@ -4,24 +4,23 @@ import java.awt.*;
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 
-import controller.BauController;
 import controller.InventarioController;
 import controller.JogoController;
 import model.Cenario;
 import model.Config;
+import model.Personagem;
 
-public class SafeRoom1L extends Cenario {
+public class ArmazemArmas extends Cenario {
 
-    JButton bau;
-    JButton quimicos;
+    JButton mesa, armario;
 
-    public SafeRoom1L() {
-        super("Sala segura");
+    public ArmazemArmas() {
+        super("Armazem de Armas");
         this.setIconImage(JogoController.getIconePrincipal());
 
-        mostrarImagem("/resources/imgs/safe_room_1L.png");
+        mostrarImagem("/resources/imgs/armazem_armas.png");
 
-        mostrarTexto("Um deposito com produtos quimicos e um baú...");
+        mostrarTexto("Um deposito de armas com um armadio e uma mesinha...");
 
         configurarBotoes();
 
@@ -45,30 +44,34 @@ public class SafeRoom1L extends Cenario {
         painelMenu.setBorder(borda);
 
         voltar = new JButton("Voltar a escadaria");
-        quimicos = new JButton("Examinar quimicos");
-        bau = new JButton("bau");
+        armario = new JButton("Examinar armario");
+        mesa = new JButton("mesa");
 
         voltar.addActionListener(e -> {
-            JogoController.trocaCenario(this, "Escadaria1L");
+            JogoController.trocaCenario(this, "Escadaria1O");
         });
-        quimicos.addActionListener(e -> {
-            JogoController.pegarHerbicida(this); 
+        armario.addActionListener(e -> {
+            JogoController.pegarShotgunVelha(this); 
         });
-        bau.addActionListener(e -> {
-            BauController.exibirBau(this);
+        mesa.addActionListener(e -> {
+            if (Personagem.getChris()) {
+                JogoController.checarChaveMesa(this);
+            } else{
+                JogoController.pegarMunicaoShotgunArmazem(this);
+            }
         });
 
         voltar.setForeground(Color.decode(Config.COR_TEXTO));
         voltar.setBackground(Color.decode(Config.COR_BOTAO));
         voltar.setFont(Config.FONTE_BOTAO);
 
-        quimicos.setForeground(Color.decode(Config.COR_TEXTO));
-        quimicos.setBackground(Color.decode(Config.COR_BOTAO));
-        quimicos.setFont(Config.FONTE_BOTAO);
+        armario.setForeground(Color.decode(Config.COR_TEXTO));
+        armario.setBackground(Color.decode(Config.COR_BOTAO));
+        armario.setFont(Config.FONTE_BOTAO);
 
-        bau.setForeground(Color.decode(Config.COR_TEXTO));
-        bau.setBackground(Color.decode(Config.COR_BOTAO));
-        bau.setFont(Config.FONTE_BOTAO);
+        mesa.setForeground(Color.decode(Config.COR_TEXTO));
+        mesa.setBackground(Color.decode(Config.COR_BOTAO));
+        mesa.setFont(Config.FONTE_BOTAO);
 
 
         JPanel navMenu = new JPanel();
@@ -88,8 +91,8 @@ public class SafeRoom1L extends Cenario {
         inventario.setAlignmentX(Component.CENTER_ALIGNMENT);
         inventario.setFont(Config.FONTE_BOTAO);
 
-        navMenu.add(bau);
-        navMenu.add(quimicos);
+        navMenu.add(mesa);
+        navMenu.add(armario);
         navMenu.add(voltar);
 
         painelMenu.add(navMenu);
@@ -98,6 +101,6 @@ public class SafeRoom1L extends Cenario {
     }
 
     public static void main(String[] args) {
-        new SafeRoom1L();
+        new ArmazemArmas();
     }
 }

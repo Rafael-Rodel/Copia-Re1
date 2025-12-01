@@ -7,7 +7,13 @@ import javax.swing.*;
 import java.awt.*;
 
 public class JogoController {
-    private static boolean primeiraVez1L = true;
+    private static boolean matouZumbiSalajantar = false;
+    private static boolean matouCaseiro = false;
+    private static boolean matouPlanta = false;
+    private static boolean matouZumbiCorredorCentral = false;
+    private static boolean portaC1O = false;
+    private static boolean matouZumbiEscadaria2O = false;
+    private static boolean matouZumbiEscadaria1O = false;
     private static boolean matouCaoCorredor = false;
     private static boolean matouZumbiQuadros = false;
     private static boolean matouZumbiPassagem = false;
@@ -18,9 +24,26 @@ public class JogoController {
     private static boolean primeiraVezHall = true;
     private static String emblemaInseridoBar = "dourado";
     private static String emblemaInseridoLareira = "velho";
-    private static String cenarioAtual;
     private static String shotgunInserida = "nova";
     private static int distanciaArmadilha = 5;
+    private static String cenarioAtual;
+    private static final int CAPACIDADE_MAXIMA = 8;
+
+    private static boolean shotgunQuebradaColetada = false;
+    private static boolean municaoSArmazemColetada = false;
+    private static boolean municaoPArmazemColetada = false;
+    private static boolean municaoPCaseiroColetada = false;
+    private static boolean municaoSCaseiroColetada = false;
+    private static boolean municaoSafeRoom1LColetada = false;
+    private static boolean chaveArmaduraColetada = false;
+    private static boolean sprayPlantaColetado = false;
+    private static boolean pistolaColetadaHall = false;
+    private static boolean sprayCorredor1LColetado = false;
+    private static boolean partituraColetada = false;
+    private static boolean chaveEscudoColetada = false;
+    private static boolean mapaColetado = false;
+    private static boolean chaveMesaColetada = false;
+    private static boolean herbicidaColetado = false;
 
     public void iniciarJogo() {
         new PainelInventario();
@@ -31,17 +54,16 @@ public class JogoController {
     public static void iniciaJill() {
         Personagem.setJill(true);
         Personagem.setVida(25);
-        Inventario.adicionarItem(Config.pistola);
-        Inventario.adicionarItem(Config.faca);
-        Inventario.adicionarItem(Config.spray);
-        Inventario.adicionarItem(Config.shotgunQuebrada);
+        InventarioController.adicionarItem(Config.pistola);
+        InventarioController.adicionarItem(Config.faca);
+        InventarioController.adicionarItem(Config.spray);
     }
 
     public static void iniciaChris() {
         Personagem.setChris(true);
         Personagem.setVida(20);
-        Inventario.adicionarItem(Config.faca);
-        Inventario.adicionarItem(Config.spray);
+        InventarioController.adicionarItem(Config.faca);
+        InventarioController.adicionarItem(Config.spray);
     }
 
     public static void trocaCenario(Window parent, String nomeCenario) {
@@ -91,8 +113,22 @@ public class JogoController {
             case "EscadariaHall" -> new EscadariaHall();
 
             case "SafeRoom1L" -> new SafeRoom1L();
-            
-            // case "SalaJantarSegundoAndar" -> new SalaJantarSegundoAndar();
+
+            case "SafeRoom1O" -> new SafeRoom1O();
+
+            case "SalaJantar2Andar" -> new SalaJantar2Andar();
+
+            case "Escadaria1O" -> new Escadaria1O();
+
+            case "Escadaria2O" -> new Escadaria2O();
+
+            case "CorredorCentral" -> new CorredorCentral();
+
+            case "JardimInterno" -> new JardimInterno();
+
+            case "QuartoCaseiro" -> new QuartoCaseiro();
+
+            case "ArmazemArmas" -> new ArmazemArmas();
         }
     }
 
@@ -165,9 +201,13 @@ public class JogoController {
     }
 
     public static void verificarEventosHall(JFrame parent) {
-        if (Personagem.getChris() && viuZumbiCorredor) {
+        if (Personagem.getChris() && viuZumbiCorredor && !pistolaColetadaHall) {
+
             Itens.popupItem(Config.textoPistola, "Você vê uma pistola no chão!", parent);
-            Inventario.adicionarItem(Config.pistola);
+
+            if (InventarioController.tentarAdicionarItem(Config.pistola, parent)) {
+                pistolaColetadaHall = true;
+            }
         }
 
         if (primeiraVezHall) {
@@ -231,7 +271,7 @@ public class JogoController {
 
             if (Inventario.possui(Config.emblemaDourado)) {
                 dourado.addActionListener(e -> {
-                    Inventario.removerItem(Config.emblemaDourado);
+                    InventarioController.removerItem(Config.emblemaDourado);
                     emblemaInseridoLareira = "dourado";
                     JogoController.trocaCenario(parent, "SalaJantar2");
                     popLareira.dispose();
@@ -242,7 +282,7 @@ public class JogoController {
             }
             if (Inventario.possui(Config.emblemaVelho)) {
                 velho.addActionListener(e -> {
-                    Inventario.removerItem(Config.emblemaVelho);
+                    InventarioController.removerItem(Config.emblemaVelho);
                     emblemaInseridoLareira = "velho";
                     JogoController.trocaCenario(parent, "SalaJantar2");
                     popLareira.dispose();
@@ -255,14 +295,19 @@ public class JogoController {
             popLareira.setVisible(true);
         } else {
             criaPopupPadrao("Lareira", null, "O emblema parece removivel", parent);
-            if (emblemaInseridoLareira == "dourado") {
-                emblemaInseridoLareira = null;
+
+            if (emblemaInseridoLareira.equals("dourado")) {
                 Itens.popupItem("Emblema dourado", "Você pegou um emblema dourado com um brasão de familia...", parent);
-                Inventario.adicionarItem(Config.emblemaDourado);
+
+                if (InventarioController.tentarAdicionarItem(Config.emblemaDourado, parent)) {
+                    emblemaInseridoLareira = null;
+                }
             } else {
-                emblemaInseridoLareira = null;
                 Itens.popupItem("Emblema velho", "Você pegou um emblema velho com um brasão de familia...", parent);
-                Inventario.adicionarItem(Config.emblemaVelho);
+
+                if (InventarioController.tentarAdicionarItem(Config.emblemaVelho, parent)) {
+                    emblemaInseridoLareira = null;
+                }
             }
         }
     }
@@ -277,14 +322,20 @@ public class JogoController {
     }
 
     public static void pegarPartitura(JFrame parent) {
-        if (Inventario.possui(Config.partitura)) {
+        if (Inventario.possui(Config.partitura) || partituraColetada) {
             criaPopupPadrao("Estante", "/resources/imgs/estante_vazia.png",
                     "Uma estante com livros estranhos...", parent);
         } else {
             criaPopupPadrao("Estante", "/resources/imgs/estante_bar.png", "Na estante há uma partitura...",
                     parent);
-            Itens.popupItem("Partitura", "Você pegou uma partitura de piano...", parent);
-            Inventario.adicionarItem(Config.partitura);
+
+            if (Inventario.getItens().size() < CAPACIDADE_MAXIMA) {
+                Itens.popupItem("Partitura", "Você pegou uma partitura de piano...", parent);
+                InventarioController.tentarAdicionarItem(Config.partitura, parent);
+                partituraColetada = true;
+            } else {
+                InventarioController.exibirAvisoInventarioCheio(parent);
+            }
         }
     }
 
@@ -318,37 +369,37 @@ public class JogoController {
             texto.setFont(Config.FONTE_PADRAO);
             texto.setForeground(Color.decode(Config.COR_TEXTO));
 
-            JButton dourado = new JButton("Tocar");
-            JButton velho = new JButton("Sair");
+            JButton tocar = new JButton("Tocar");
+            JButton sair = new JButton("Sair");
 
-            dourado.setForeground(Color.decode(Config.COR_TEXTO));
-            dourado.setBackground(Color.decode(Config.COR_BOTAO));
-            dourado.setFont(Config.FONTE_BOTAO);
-            dourado.setAlignmentX(Component.CENTER_ALIGNMENT);
+            tocar.setForeground(Color.decode(Config.COR_TEXTO));
+            tocar.setBackground(Color.decode(Config.COR_BOTAO));
+            tocar.setFont(Config.FONTE_BOTAO);
+            tocar.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-            velho.setForeground(Color.decode(Config.COR_DESTAQUE));
-            velho.setBackground(Color.decode(Config.COR_BOTAO));
-            velho.setFont(Config.FONTE_BOTAO);
-            velho.setAlignmentX(Component.CENTER_ALIGNMENT);
+            sair.setForeground(Color.decode(Config.COR_DESTAQUE));
+            sair.setBackground(Color.decode(Config.COR_BOTAO));
+            sair.setFont(Config.FONTE_BOTAO);
+            sair.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-            dourado.addActionListener(e -> {
+            tocar.addActionListener(e -> {
                 criaPopupPadrao("Passagem Secreta!", null, "Uma passagem se abriu na parede do bar!", parent);
                 criaPopupPadrao("Partitura", null, "Essa partitura não é mais util e será descartada.", parent);
-                Inventario.removerItem(Config.partitura);
+                InventarioController.removerItem(Config.partitura);
                 passagemBar = true;
                 popPiano.dispose();
                 trocaCenario(parent, "BarAberto");
             });
-            velho.addActionListener(e -> {
+            sair.addActionListener(e -> {
                 popPiano.dispose();
             });
 
             painel.add(Box.createVerticalStrut(20));
             painel.add(texto);
             painel.add(Box.createVerticalStrut(10));
-            painel.add(dourado);
+            painel.add(tocar);
             painel.add(Box.createVerticalStrut(10));
-            painel.add(velho);
+            painel.add(sair);
 
             popPiano.add(painel);
             popPiano.setVisible(true);
@@ -395,7 +446,7 @@ public class JogoController {
 
             if (Inventario.possui(Config.emblemaDourado)) {
                 dourado.addActionListener(e -> {
-                    Inventario.removerItem(Config.emblemaDourado);
+                    InventarioController.removerItem(Config.emblemaDourado);
                     emblemaInseridoBar = "dourado";
                     JogoController.trocaCenario(parent, "SalaBusto");
                     popBusto.dispose();
@@ -406,7 +457,7 @@ public class JogoController {
             }
             if (Inventario.possui(Config.emblemaVelho)) {
                 velho.addActionListener(e -> {
-                    Inventario.removerItem(Config.emblemaVelho);
+                    InventarioController.removerItem(Config.emblemaVelho);
                     emblemaInseridoBar = "velho";
                     JogoController.trocaCenario(parent, "SalaBusto");
                     popBusto.dispose();
@@ -422,11 +473,11 @@ public class JogoController {
             if (emblemaInseridoBar == "dourado") {
                 emblemaInseridoBar = null;
                 Itens.popupItem("Emblema dourado", "Você pegou um emblema dourado com um brasão de familia...", parent);
-                Inventario.adicionarItem(Config.emblemaDourado);
+                InventarioController.tentarAdicionarItem(Config.emblemaDourado, parent);
             } else {
                 emblemaInseridoBar = null;
                 Itens.popupItem("Emblema velho", "Você pegou um emblema velho com um brasão de familia...", parent);
-                Inventario.adicionarItem(Config.emblemaVelho);
+                InventarioController.tentarAdicionarItem(Config.emblemaVelho, parent);
             }
         }
     }
@@ -444,15 +495,25 @@ public class JogoController {
 
     public static void checarRelogio(Window parent) {
         if (emblemaInseridoLareira == "dourado") {
-            if (Inventario.possui(Config.chaveEscudo)) {
-                criaPopupPadrao("Relogio", "/resources/imgs/relogio_aberto.png",
-                        "Atras do relógio há um cofre aberto vazio.", parent);
-            } else {
+
+            if (!chaveEscudoColetada) {
                 criaPopupPadrao("Relogio", "/resources/imgs/relogio_aberto.png",
                         "O relógio se moveu sozinho! Atrás há um cofre agora aberto. \nHá uma chave no cofre.", parent);
-                Itens.popupItem("Chave escudo", "Você achou uma chave!", parent);
-                Inventario.adicionarItem(Config.chaveEscudo);
+
+                if (Inventario.getItens().size() < CAPACIDADE_MAXIMA) {
+                    Itens.popupItem("Chave escudo", "Você achou uma chave!", parent);
+                    InventarioController.tentarAdicionarItem(Config.chaveEscudo, parent);
+
+                    chaveEscudoColetada = true;
+                } else {
+                    InventarioController.exibirAvisoInventarioCheio(parent);
+                }
+
+            } else {
+                criaPopupPadrao("Relogio", "/resources/imgs/relogio_aberto.png",
+                        "Atras do relógio há um cofre aberto vazio.", parent);
             }
+
         } else {
             criaPopupPadrao("Relógio", "/resources/imgs/relogio.png",
                     "Um velho relógio \nParece ter algo atrás mas não consigo move-lo...", parent);
@@ -460,10 +521,14 @@ public class JogoController {
     }
 
     public static void pegarMapa(Window parent) {
-        if (!MapaController.getPossuiMapa()) {
+        if (!mapaColetado) {
             criaPopupPadrao("Mapa", null,
                     "Você achou um mapa do primeiro andar da mansão! \nO mapa está disponivel no inventario.", parent);
+
             MapaController.setPossuiMapa(true);
+
+            mapaColetado = true;
+
             trocaCenario(parent, "SalaEstatua");
         } else {
             criaPopupPadrao("Estatua", null,
@@ -494,15 +559,26 @@ public class JogoController {
     public static void eventosCorredor1L(Window parent) {
         Itens itemSpray = Config.spray;
 
-        if (primeiraVez1L) {
+        if (!sprayCorredor1LColetado) {
             Itens.popupItem("spray", "Você encontra uma lata de spray no chão!", parent);
+
+            boolean adicionadoComSucesso = false;
 
             if (Inventario.possui(itemSpray)) {
                 itemSpray.setQuantidade(itemSpray.getQuantidade() + 1);
+                adicionadoComSucesso = true;
             } else {
-                Inventario.adicionarItem(Config.spray);
+                if (Inventario.getItens().size() < CAPACIDADE_MAXIMA) {
+                    InventarioController.tentarAdicionarItem(Config.spray, parent);
+                    adicionadoComSucesso = true;
+                } else {
+                    InventarioController.exibirAvisoInventarioCheio(parent);
+                }
             }
-            primeiraVez1L = false;
+
+            if (adicionadoComSucesso) {
+                sprayCorredor1LColetado = true;
+            }
         }
     }
 
@@ -629,7 +705,7 @@ public class JogoController {
 
             if (Inventario.possui(Config.shotgun)) {
                 nova.addActionListener(e -> {
-                    Inventario.removerItem(Config.shotgun);
+                    InventarioController.removerItem(Config.shotgun);
                     shotgunInserida = "nova";
                     JogoController.trocaCenario(parent, "SalaEstar");
                     popShotgun.dispose();
@@ -640,7 +716,7 @@ public class JogoController {
             }
             if (Inventario.possui(Config.shotgunQuebrada)) {
                 velho.addActionListener(e -> {
-                    Inventario.removerItem(Config.shotgunQuebrada);
+                    InventarioController.removerItem(Config.shotgunQuebrada);
                     shotgunInserida = "velho";
                     JogoController.trocaCenario(parent, "SalaEstar");
                     popShotgun.dispose();
@@ -655,14 +731,17 @@ public class JogoController {
             criaPopupPadrao("Moldura", null, "A " + Config.textoShotgun
                     + " na moldura parece real, \nAo tirar a arma você ouve um barulho de mecanismo ativando, sera uma armadilha?",
                     parent);
-            if (shotgunInserida == "nova") {
-                shotgunInserida = null;
+
+            if (shotgunInserida.equals("nova")) {
                 Itens.popupItem(Config.textoShotgun, "Você pegou uma " + Config.textoShotgun, parent);
-                Inventario.adicionarItem(Config.shotgun);
+                if (InventarioController.tentarAdicionarItem(Config.shotgun, parent)) {
+                    shotgunInserida = null;
+                }
             } else {
-                shotgunInserida = null;
                 Itens.popupItem(Config.textoShotgunQuebrada, "Você pegou uma " + Config.textoShotgunQuebrada, parent);
-                Inventario.adicionarItem(Config.shotgunQuebrada);
+                if (InventarioController.tentarAdicionarItem(Config.shotgunQuebrada, parent)) {
+                    shotgunInserida = null;
+                }
             }
         }
     }
@@ -670,14 +749,36 @@ public class JogoController {
     public static void pegarMunicaoPistola(Window parent) {
         Itens itemPistola = Config.pistola;
 
-        criaPopupPadrao("Munição", "/resources/imgs/carregador.png", "Voçê achou um carregador de pistola!", parent);
+        criaPopupPadrao("Munição", "/resources/imgs/carregador.png", "Você achou um carregador de pistola!", parent);
         itemPistola.setQuantidade(itemPistola.getQuantidade() + 7);
+    }
+
+    public static void pegarMunicaoShotgun(Window parent) {
+        Itens itemShotgun = Config.shotgun;
+
+        criaPopupPadrao("Munição", "/resources/imgs/cartucho.png", "Você achou uma caixa de cartuchos de Shotgun!",
+                parent);
+        itemShotgun.setQuantidade(itemShotgun.getQuantidade() + 4);
     }
 
     public static void eventosBanheiro(Window parent) {
         if (Personagem.getChris()) {
-            Itens.popupItem("Chave de mesa", "Esvaziando a banheira você acha uma chave de mesa.", parent);
-            Inventario.adicionarItem(Config.chaveMesa);
+
+            if (!chaveMesaColetada) {
+
+                if (Inventario.getItens().size() < CAPACIDADE_MAXIMA) {
+                    Itens.popupItem("Chave de mesa", "Esvaziando a banheira você acha uma chave de mesa.", parent);
+                    InventarioController.tentarAdicionarItem(Config.chaveMesa, parent);
+
+                    chaveMesaColetada = true;
+                } else {
+                    InventarioController.exibirAvisoInventarioCheio(parent);
+                }
+
+            } else {
+                criaPopupPadrao("Banheira", null, "Não há mais nada dentro da banheira.", parent);
+            }
+
         } else {
             criaPopupPadrao("Banheira", null, "Não há nada dentro da banheira.", parent);
         }
@@ -723,9 +824,285 @@ public class JogoController {
             if (Inventario.possui(itemSpray)) {
                 itemSpray.setQuantidade(itemSpray.getQuantidade() + 1);
             } else {
-                Inventario.adicionarItem(Config.spray);
+                InventarioController.tentarAdicionarItem(Config.spray, parent);
             }
         }
+    }
 
+    public static void eventosSalaJantar2Andar(Window parent) {
+        if (!matouZumbiSalajantar) {
+            matouZumbiSalajantar = true;
+            criaPopupPadrao("Sala Jantar", null,
+                    "Ao entrar na sala de jantar você se depara com um " + Config.textoZumbi,
+                    parent);
+            new CombateController(Config.zumbi).iniciar(parent);
+        }
+    }
+
+    public static void pegarHerbicida(JFrame parent) {
+        if (Inventario.possui(Config.herbicida) || herbicidaColetado) {
+            criaPopupPadrao("Quimicos", null, "Uma pilha de produtos quimicos...", parent);
+        } else {
+            criaPopupPadrao("Quimicos", null, "Uma pilha de produtos quimicos...", parent);
+
+            if (Inventario.getItens().size() < CAPACIDADE_MAXIMA) {
+                Itens.popupItem("Herbicida", "Você pegou um pacote de herbicida...", parent);
+                InventarioController.tentarAdicionarItem(Config.herbicida, parent);
+
+                herbicidaColetado = true;
+            } else {
+                InventarioController.exibirAvisoInventarioCheio(parent);
+            }
+        }
+    }
+
+    public static void eventoSafeRoom1O(JFrame parent) {
+
+        if (!Inventario.possui(Config.chaveEspada) && Personagem.getChris()) {
+            if (Inventario.getItens().size() < CAPACIDADE_MAXIMA) {
+                Itens.popupItem("Chave espada", "Você achou uma chave com entalhe de espada.", parent);
+
+                InventarioController.tentarAdicionarItem(Config.chaveEspada, parent);
+            } else {
+                InventarioController.exibirAvisoInventarioCheio(parent);
+            }
+        }
+        if (!municaoSafeRoom1LColetada) {
+            pegarMunicaoPistola(parent);
+
+            municaoSafeRoom1LColetada = true;
+        }
+    }
+
+    public static void eventosEscadaria2O(Window parent) {
+        if (!matouZumbiEscadaria2O) {
+            matouZumbiEscadaria2O = true;
+            criaPopupPadrao("Escadaria", null, "Ao entrar na escadaria você se depara com um " + Config.textoZumbi,
+                    parent);
+            new CombateController(Config.zumbi).iniciar(parent);
+        }
+    }
+
+    public static void eventosEscadaria1O(Window parent) {
+        if (!matouZumbiEscadaria1O) {
+            matouZumbiEscadaria1O = true;
+            criaPopupPadrao("Escadaria", null, "Ao entrar na escadaria você se depara com um " + Config.textoZumbi,
+                    parent);
+            new CombateController(Config.zumbi).iniciar(parent);
+        }
+    }
+
+    public static void checaChaveArmadura(Window parent, String sala) {
+        Itens chave = Config.chaveArmadura;
+
+        if (Inventario.possui(chave)) {
+            criaPopupPadrao("Porta aberta", null, "Você usou a chave armadura para abrir a porta",
+                    parent);
+            trocaCenario(parent, sala);
+        } else {
+            criaPopupPadrao("Porta trancada", null, "A porta está trancada, uma armadura entalhada...",
+                    parent);
+        }
+    }
+
+    public static void checaChaveEspada(Window parent, String sala) {
+        Itens chave = Config.chaveEspada;
+
+        if (Inventario.possui(chave)) {
+            criaPopupPadrao("Porta aberta", null, "Você usou a chave espada para abrir a porta",
+                    parent);
+            trocaCenario(parent, sala);
+        } else {
+            criaPopupPadrao("Porta trancada", null, "A porta está trancada, uma espada entalhada...",
+                    parent);
+        }
+    }
+
+    public static void verificarPortaC1O(Window parent) {
+        if (portaC1O) {
+            trocaCenario(parent, "CorredorCentral");
+        } else {
+            criaPopupPadrao("Porta de madeira", null, "Parece trancado por dentro.", parent);
+        }
+    }
+
+    public static void eventosCorredorCentral(Window parent) {
+        if (!matouZumbiCorredorCentral) {
+            matouZumbiCorredorCentral = true;
+            criaPopupPadrao("corredor", null, "Ao entrar no corredor você se depara com um " + Config.textoZumbi,
+                    parent);
+            new CombateController(Config.zumbi).iniciar(parent);
+        }
+    }
+
+    public static void abrirPortaC1O(Window parent) {
+        portaC1O = true;
+        criaPopupPadrao("Abriu", null, "Você abriu a porta que estava trancada por dentro!", parent);
+        trocaCenario(parent, "Corredor1Oeste");
+    }
+
+    public static void matarPlanta(JFrame parent) {
+        if (!matouPlanta) {
+            if (Inventario.possui(Config.herbicida)) {
+                JDialog popPlanta = new JDialog(parent, "Planta", true);
+                popPlanta.setSize(600, 250);
+                popPlanta.setLocationRelativeTo(parent);
+
+                JPanel painel = new JPanel();
+                painel.setBackground(Color.decode(Config.COR_FUNDO));
+                painel.setLayout(new BoxLayout(painel, BoxLayout.Y_AXIS));
+                painel.setBorder(BorderFactory.createEmptyBorder(30, 30, 30, 30));
+
+                JTextArea texto = new JTextArea("Deseja usar herbicida para matar a planta?");
+                texto.setWrapStyleWord(true);
+                texto.setLineWrap(true);
+                texto.setEditable(false);
+                texto.setFocusable(false);
+                texto.setOpaque(false);
+                texto.setFont(Config.FONTE_PADRAO);
+                texto.setForeground(Color.decode(Config.COR_TEXTO));
+
+                JButton herbicida = new JButton("Matar planta");
+                JButton sair = new JButton("Sair");
+
+                herbicida.setForeground(Color.decode(Config.COR_TEXTO));
+                herbicida.setBackground(Color.decode(Config.COR_BOTAO));
+                herbicida.setFont(Config.FONTE_BOTAO);
+                herbicida.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+                sair.setForeground(Color.decode(Config.COR_DESTAQUE));
+                sair.setBackground(Color.decode(Config.COR_BOTAO));
+                sair.setFont(Config.FONTE_BOTAO);
+                sair.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+                herbicida.addActionListener(e -> {
+                    criaPopupPadrao("Planta!", null, "Você matou a planta monstruosa, parece haver algo atras dela!",
+                            parent);
+                    criaPopupPadrao("Partitura", null, "O herbicida acabou...", parent);
+                    InventarioController.removerItem(Config.herbicida);
+                    popPlanta.dispose();
+                    matouPlanta = true;
+                });
+                sair.addActionListener(e -> {
+                    popPlanta.dispose();
+                });
+
+                painel.add(Box.createVerticalStrut(20));
+                painel.add(texto);
+                painel.add(Box.createVerticalStrut(10));
+                painel.add(herbicida);
+                painel.add(Box.createVerticalStrut(10));
+                painel.add(sair);
+
+                popPlanta.add(painel);
+                popPlanta.setVisible(true);
+            } else {
+                criaPopupPadrao("Planta gigante", null, "Uma planta gigante e agressiva, nãp consigo passar por ela.",
+                        parent);
+            }
+        } else {
+            criaPopupPadrao("chave", null, "Atras da planta havia uma chave escondida e uma lata de spray.", parent);
+
+            if (!chaveArmaduraColetada) {
+                if (Inventario.getItens().size() < CAPACIDADE_MAXIMA) {
+                    Itens.popupItem("Chave armadura", "Você achou uma chave com gravura de armadura!", parent);
+                    InventarioController.tentarAdicionarItem(Config.chaveArmadura, parent);
+
+                    chaveArmaduraColetada = true;
+                } else {
+                    InventarioController.exibirAvisoInventarioCheio(parent);
+                }
+            }
+
+            if (!sprayPlantaColetado) {
+                if (Inventario.getItens().size() < CAPACIDADE_MAXIMA) {
+                    Itens.popupItem("Spray", "Você achou uma lata de spray!", parent);
+                    InventarioController.tentarAdicionarItem(Config.herbicida, parent);
+
+                    sprayPlantaColetado = true;
+                } else {
+                    InventarioController.exibirAvisoInventarioCheio(parent);
+                }
+            }
+        }
+    }
+
+    public static void pegarMunicaoPistolaCaseiro(Window parent) {
+        if (!municaoPCaseiroColetada) {
+            pegarMunicaoPistola(parent);
+
+            municaoPCaseiroColetada = true;
+        } else {
+            criaPopupPadrao("vazio", null, "Não há mais nada.", parent);
+        }
+    }
+
+    public static void pegarMunicaoShotgunCaseiro(Window parent) {
+        if (!municaoSCaseiroColetada) {
+            pegarMunicaoShotgun(parent);
+
+            municaoSCaseiroColetada = true;
+        } else {
+            criaPopupPadrao("vazio", null, "Não há mais nada.", parent);
+        }
+    }
+
+    public static void eventoQuartoCaseiro(Window parent) {
+        if (!matouCaseiro) {
+            matouCaseiro = true;
+            criaPopupPadrao("Quarto caseiro", null, "Ao entrar no quarto você se depara com um " + Config.textoZumbi,
+                    parent);
+            new CombateController(Config.zumbi).iniciar(parent);
+        }
+    }
+
+    public static void pegarShotgunVelha(Window parent) {
+        if (Inventario.possui(Config.shotgunQuebrada) || shotgunQuebradaColetada) {
+            criaPopupPadrao("Armario", null, "Um armario para armazenar armas...", parent);
+        } else {
+            criaPopupPadrao("Armario", null, "Um armario para armazenar armas...", parent);
+
+            pegarMunicaoPistolaArmazem(parent);
+
+            if (Inventario.getItens().size() < CAPACIDADE_MAXIMA) {
+                Itens.popupItem(Config.textoShotgunQuebrada, "Você pegou uma " + Config.textoShotgunQuebrada, parent);
+                InventarioController.tentarAdicionarItem(Config.shotgunQuebrada, parent);
+
+                shotgunQuebradaColetada = true;
+            } else {
+                InventarioController.exibirAvisoInventarioCheio(parent);
+            }
+        }
+    }
+
+    public static void pegarMunicaoShotgunArmazem(Window parent) {
+        if (!municaoSArmazemColetada) {
+            pegarMunicaoShotgun(parent);
+
+            municaoSArmazemColetada = true;
+        } else {
+            criaPopupPadrao("vazio", null, "Não há mais nada.", parent);
+        }
+    }
+
+    public static void pegarMunicaoPistolaArmazem(Window parent) {
+        if (!municaoPArmazemColetada) {
+            pegarMunicaoPistola(parent);
+
+            municaoPArmazemColetada = true;
+        } else {
+            criaPopupPadrao("vazio", null, "Não há mais nada.", parent);
+        }
+    }
+
+    public static void checarChaveMesa(Window parent) {
+        Itens chave = Config.chaveArmadura;
+
+        if (Inventario.possui(chave)) {
+            criaPopupPadrao("Gaveta aberta", null, "Você usou a chave para abrir a gaveta!", parent);
+            pegarMunicaoShotgunArmazem(parent);
+        } else {
+            criaPopupPadrao("Gaveta trancada", null, "A gaveta está trancada...", parent);
+        }
     }
 }
